@@ -1,12 +1,16 @@
 import * as store from './storage.js';
 import { TOPICS, GROUPS, makeQuestion, levelInfo, topicById } from './toan3.js';
 
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 const ROUND_SIZE = 10;
 const DAY = 86400000;
 const BACKUP_EVERY_DAYS = 3;
 const AVATARS = ['🐱', '🐶', '🐰', '🐼', '🦊', '🐯', '🐸', '🐵', '🦁', '🐨', '🐧', '🦄', '🐢', '🐬', '🦋', '🐝', '🐙', '🦖'];
 const PRAISE = ['Đúng rồi!', 'Giỏi quá!', 'Chính xác!', 'Siêu ghê!', 'Tuyệt vời!', 'Quá đỉnh!'];
+const CHEER = ['Cố lên nào!', 'Bình tĩnh tính nhé!', 'Bạn làm được mà!', 'Mình tin bạn đó!', 'Nghĩ kỹ rồi bấm nha!'];
+// Đồ đội đầu của linh vật, mở dần theo cấp (cấp 1 chưa có gì)
+const HATS = ['', '🎀', '🧢', '🎩', '👒', '🎓', '👑'];
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let state = null;
 const ui = { screen: 'home', pid: null, s: null, modal: null, persisted: null };
@@ -41,7 +45,7 @@ function beep(kind) {
   if (!state.settings.sound) return;
   try {
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    const notes = kind === 'ok' ? [660, 880] : kind === 'up' ? [523, 659, 784, 1047] : [330, 247];
+    const notes = kind === 'ok' ? [660, 880] : kind === 'up' ? [523, 659, 784, 1047] : kind === 'tick' ? [990] : [330, 247];
     let t = actx.currentTime;
     for (const f of notes) {
       const o = actx.createOscillator(), g = actx.createGain();
@@ -57,11 +61,60 @@ function beep(kind) {
   } catch (e) { /* không có âm thanh cũng được */ }
 }
 
+// ---------- Pháo giấy ----------
+function confetti(n = 40) {
+  if (reduceMotion) return;
+  const colors = ['#ff8a3d', '#3d8bff', '#22b573', '#ffd166', '#ef5350', '#b06cff'];
+  const box = document.createElement('div');
+  box.className = 'confetti';
+  for (let i = 0; i < n; i++) {
+    const c = document.createElement('i');
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[i % colors.length];
+    c.style.animationDelay = Math.random() * 0.4 + 's';
+    c.style.animationDuration = 1.2 + Math.random() * 1.2 + 's';
+    c.style.setProperty('--x', (Math.random() * 160 - 80) + 'px');
+    c.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+    box.appendChild(c);
+  }
+  document.body.appendChild(box);
+  setTimeout(() => box.remove(), 3000);
+}
+
+// ---------- Linh vật đi cùng bé ----------
+// Linh vật là con vật bé đã chọn làm hình đại diện. Lên cấp thì to ra và có đồ đội đầu.
+function buddy(p, mood, text, size = 'md') {
+  const L = levelInfo(p.stars);
+  const hat = HATS[Math.min(L.level, HATS.length) - 1];
+  const grow = Math.min(L.level - 1, 9);
+  return `<div class="buddy ${size}">
+    <div class="pet ${mood} ${L.level >= 7 ? 'glow' : ''}" style="--g:${grow}">
+      ${hat ? `<span class="hat">${hat}</span>` : ''}<span class="face">${p.avatar}</span>
+    </div>
+    ${text ? `<div class="bubble">${text}</div>` : ''}
+  </div>`;
+}
+
 // ---------- Vẽ màn hình ----------
 function render() {
   const views = { home: homeView, topics: topicsView, play: playView, result: resultView, teacher: teacherView };
   app.innerHTML = views[ui.screen]() + (ui.modal ? modalView() : '');
+  fitEq();
+  if (ui.s && ui.s.vis) ui.s.vis.fresh = false; // hình mới chỉ nảy lên một lần
 }
+
+// Thu nhỏ chữ để cả phép tính nằm gọn trên một dòng (nhất là trên điện thoại).
+function fitEq() {
+  document.querySelectorAll('.eq').forEach((el) => {
+    el.style.fontSize = '';
+    let size = parseFloat(getComputedStyle(el).fontSize);
+    for (let k = 0; k < 30 && el.scrollWidth > el.clientWidth + 1 && size > 14; k++) {
+      size -= 2;
+      el.style.fontSize = size + 'px';
+    }
+  });
+}
+window.addEventListener('resize', fitEq);
 
 function levelBar(stars) {
   const L = levelInfo(stars);
@@ -131,8 +184,7 @@ function topicsView() {
   return `<div class="screen topics-screen">
     <header class="top"><button class="btn ghost" data-act="home">← Đổi bạn</button>
       <div class="who"><span class="avatar sm">${p.avatar}</span> ${esc(p.name)}</div></header>
-    ${levelBar(p.stars)}
-    <h2 class="ask">Hôm nay luyện dạng nào?</h2>
+    <div class="buddy-row">${buddy(p, 'idle', `Chào ${esc(p.name)}! Hôm nay mình luyện dạng nào?`, 'lg')}${levelBar(p.stars)}</div>
     ${groups}
   </div>`;
 }
@@ -150,7 +202,8 @@ function nextQuestion() {
   let q;
   for (let k = 0; k < 20; k++) { q = makeQuestion(s.topicId); if (!s.seen.has(q.key)) break; }
   s.seen.add(q.key);
-  Object.assign(s, { q, given: {}, active: q.fields ? q.fields[0].id : null, tries: 0, phase: 'answer', msg: null, wrongChoices: [], bad: false, levelUp: null, bonus: 0 });
+  Object.assign(s, { q, given: {}, active: q.fields ? q.fields[0].id : null, tries: 0, phase: 'answer', msg: null, wrongChoices: [], bad: false, levelUp: null, bonus: 0,
+    vis: { open: false, n: 0, fresh: false }, cheer: pick(CHEER) });
   (q.fields || []).forEach((f) => { s.given[f.id] = ''; });
 }
 
@@ -174,7 +227,66 @@ function questionBody(q) {
     html += '<div class="lfields">' + q.fields.map((f) =>
       `<div class="lrow"><span class="lbl">${f.label}:</span>${fieldBtn(f.id)}<span class="unit">${f.unit || ''}</span></div>`).join('') + '</div>';
   }
+  if (q.vis) {
+    const st = ui.s.vis;
+    if (st.open) html += visPanel(q);
+    else html += `<div class="vopen-row"><button class="btn vopen" data-act="vis-open">${q.vis.item} Dùng hình để chia</button></div>`;
+  }
   return html;
+}
+
+// ---------- Hình minh hoạ: bé tự chia đồ vật ----------
+function visPanel(q) {
+  const v = q.vis, st = ui.s.vis;
+  const { a, b, item } = v;
+  const n = st.n, rem = a - n * b, share = v.mode === 'share';
+  const done = rem < b;
+  const it = (cls = '') => `<span class="vi ${cls}">${item}</span>`;
+  const pile = rem ? Array.from({ length: rem }, () => it(done ? 'left' : '')).join('') : '<span class="muted">Hết rồi!</span>';
+  let boxes = '';
+  if (share) {
+    boxes = Array.from({ length: b }, (_, i) => `<div class="vbox">${v.who ? `<span class="who">${['🧒', '👧', '👦'][i % 3]}</span>` : ''}
+      <div class="vin">${Array.from({ length: n }, (_, k) => it(st.fresh && k === n - 1 ? 'new' : '')).join('')}</div>
+      <span class="vcount">${n}</span></div>`).join('');
+  } else {
+    boxes = Array.from({ length: n }, (_, i) => `<div class="vbox ${st.fresh && i === n - 1 ? 'pop' : ''}">
+      <div class="vin">${Array.from({ length: b }, () => it()).join('')}</div><span class="vcount">${v.box} ${i + 1}</span></div>`).join('')
+      || `<div class="vempty">Chưa có ${v.box} nào</div>`;
+  }
+  let say;
+  if (n === 0) say = share ? `Chia đều ${a} ${item} cho ${b} ${v.box}. Bấm nút để mỗi ${v.box} nhận 1 ${item}!` : `Có ${a} ${item}, mỗi ${v.box} ${b} ${item}. Bấm nút để xếp từng ${v.box}!`;
+  else if (!done) say = share ? `Mỗi ${v.box} có ${n} ${item}. Còn ${rem} ${item}, chia tiếp nào!` : `Đã xếp ${n} ${v.box}. Còn ${rem} ${item}, xếp tiếp nào!`;
+  else if (rem) say = share ? `Còn ${rem} ${item}, không đủ chia thêm cho ${b} ${v.box} nữa! Đó là số dư.` : `Còn ${rem} ${item}, không đủ xếp thêm 1 ${v.box} ${b} ${item}! Đó là số dư.`;
+  else say = `Vừa hết, không còn thừa ${item} nào! Đây là phép chia hết.`;
+  const stepLabel = share ? `Mỗi ${v.box} thêm 1 ${item}` : `Xếp 1 ${v.box}`;
+  return `<div class="vis">
+    <div class="vsay ${done ? 'done' : ''}">${say}</div>
+    <div class="vpile-wrap"><div class="vlabel">Còn lại: <b>${rem}</b></div><div class="vpile">${pile}</div></div>
+    <div class="vboxes">${boxes}</div>
+    <div class="vbtns">
+      <button class="btn" data-act="vis-step" ${done ? 'disabled' : ''}>${stepLabel}</button>
+      ${done ? '' : '<button class="btn ghost" data-act="vis-all">Làm hết luôn</button>'}
+      ${n ? '<button class="btn ghost" data-act="vis-reset">↺ Làm lại</button>' : ''}
+    </div>
+  </div>`;
+}
+
+function visStep() {
+  const s = ui.s, v = s.q.vis;
+  if (v.a - s.vis.n * v.b < v.b) return false;
+  s.vis.n++; s.vis.fresh = true;
+  beep('tick');
+  return true;
+}
+
+let visTimer = null;
+function visAll() {
+  clearInterval(visTimer);
+  const s0 = ui.s;
+  visTimer = setInterval(() => {
+    if (ui.s !== s0 || ui.screen !== 'play' || !visStep()) { clearInterval(visTimer); return; }
+    render();
+  }, reduceMotion ? 60 : 380);
 }
 
 function divTable(d) {
@@ -231,6 +343,17 @@ function sidePanel() {
   return `${msg}<div class="pad">${pad}</div>`;
 }
 
+function buddyPlay(p) {
+  const s = ui.s;
+  if (s.phase === 'correct') {
+    const t = s.levelUp ? 'Mình lớn lên rồi nè! ✨' : s.tries > 1 ? 'Đúng rồi! Giỏi lắm!' : s.bonus ? `${s.streak} câu đúng liền, nóng quá! 🔥` : pick(['Hoan hô! 🎉', 'Yeah! 🙌', 'Bạn giỏi ghê!', 'Tuyệt cú mèo!']);
+    return buddy(p, s.levelUp ? 'dance' : 'happy', t);
+  }
+  if (s.phase === 'explain') return buddy(p, 'think', 'Không sao, mình cùng xem cách làm nha!');
+  if (s.msg && s.msg.type === 'hint') return buddy(p, 'sad', 'Chưa đúng rồi, thử lại nhé! 💪');
+  return buddy(p, 'idle', s.cheer);
+}
+
 function playView() {
   const s = ui.s, p = profile();
   const t = topicById(s.q.topic);
@@ -246,7 +369,7 @@ function playView() {
         <div class="tag">${g.name.split('.')[0]} · ${t.name}</div>
         ${questionBody(s.q)}
       </section>
-      <section class="side">${sidePanel()}</section>
+      <section class="side">${buddyPlay(p)}${sidePanel()}</section>
     </main>
   </div>`;
 }
@@ -292,6 +415,7 @@ function check(choiceIdx) {
     }
     record(s.tries === 1, given);
     beep(s.levelUp ? 'up' : 'ok');
+    confetti(s.levelUp ? 120 : s.bonus ? 70 : 30);
   } else {
     beep('no');
     s.streak = 0;
@@ -301,6 +425,7 @@ function check(choiceIdx) {
       if (q.choices) s.wrongChoices.push(choiceIdx); else s.bad = true;
     } else {
       s.phase = 'explain'; s.msg = null; s.bad = false;
+      if (q.vis) s.vis = { open: true, n: Math.floor(q.vis.a / q.vis.b), fresh: false };
       record(false, given);
     }
   }
@@ -311,7 +436,11 @@ function goNext() {
   const s = ui.s;
   if (!s || (s.phase !== 'correct' && s.phase !== 'explain')) return;
   s.i++;
-  if (s.i >= ROUND_SIZE) { ui.screen = 'result'; render(); return; }
+  if (s.i >= ROUND_SIZE) {
+    ui.screen = 'result'; render();
+    if (s.correct >= 7) { confetti(120); beep('up'); }
+    return;
+  }
   nextQuestion();
   render();
 }
@@ -323,7 +452,7 @@ function resultView() {
   const up = L.level > s.startLevel ? `<div class="levelup big">🎉 Lên cấp ${L.level}: ${L.icon} ${L.title}</div>` : '';
   const face = s.correct >= 9 ? '🏆' : s.correct >= 7 ? '🥳' : s.correct >= 5 ? '😊' : '💪';
   return `<div class="screen result">
-    <div class="res-face">${face}</div>
+    <div class="res-face">${buddy(p, s.correct >= 5 ? 'dance' : 'happy', s.correct >= 9 ? `${face} Quá xuất sắc!` : s.correct >= 7 ? `${face} Giỏi lắm!` : s.correct >= 5 ? `${face} Khá lắm!` : `${face} Lượt sau sẽ tốt hơn!`, 'lg')}</div>
     <h2>Xong lượt rồi!</h2>
     <p class="res-score">Đúng ngay lần đầu <b>${s.correct}/${ROUND_SIZE}</b> câu</p>
     <p class="res-stars">+${s.earned} ⭐</p>
@@ -473,7 +602,11 @@ document.addEventListener('click', (e) => {
     case 'key': pressKey(el.dataset.k); return;
     case 'check': check(); return;
     case 'choose': check(Number(el.dataset.i)); return;
-    case 'next': goNext(); return;
+    case 'next': clearInterval(visTimer); goNext(); return;
+    case 'vis-open': s.vis.open = true; break;
+    case 'vis-step': if (!visStep()) return; break;
+    case 'vis-all': visAll(); return;
+    case 'vis-reset': clearInterval(visTimer); s.vis.n = 0; s.vis.fresh = false; break;
     case 'add-profile': ui.modal = { id: null, name: '', avatar: AVATARS[state.profiles.length % AVATARS.length] }; break;
     case 'edit-profile': { const p = state.profiles.find((x) => x.id === el.dataset.id); ui.modal = { id: p.id, name: p.name, avatar: p.avatar }; break; }
     case 'avatar': readModalName(); ui.modal.avatar = el.dataset.a; break;

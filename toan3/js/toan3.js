@@ -5,6 +5,8 @@
 //   - fields: các ô cần điền [{id, label, unit}]
 //   - choices: các lựa chọn (bấm nút), answer là chỉ số lựa chọn đúng
 //   - explain: { final, lines[], div? (bảng đặt tính), check? }
+//   - vis: hình minh hoạ để bé tự chia đồ vật (chỉ khi thương có 1 chữ số)
+//       { a, b, mode: 'share' (chia đều vào b hộp) | 'group' (mỗi hộp b cái), item, box, who? }
 
 const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -17,6 +19,10 @@ const shuffle = (arr) => {
   return a;
 };
 const NAMES = ['Nam', 'Mai', 'An', 'Lan', 'Minh', 'Hoa', 'Bình', 'Thảo', 'Khoa', 'Vy'];
+
+// Đồ vật dùng cho hình minh hoạ phép chia không có lời văn
+const ITEMS = ['🍎', '🍓', '🍬', '🍪', '🍊', '🍌', '⚽', '🌟', '🧁', '🍒'];
+const shareVis = (a, b) => ({ a, b, mode: 'share', item: pick(ITEMS), box: 'đĩa' });
 
 const divText = (a, b, q, r) => `${a} : ${b} = ${q}` + (r ? ` (dư ${r})` : '');
 
@@ -95,16 +101,16 @@ function pickPair(list) {
 
 const LV_DU = [
   { s: (a, b) => `Có ${a} quả cam, xếp vào mỗi đĩa ${b} quả. Xếp được nhiều nhất bao nhiêu đĩa và còn thừa mấy quả cam?`,
-    f: [['Số đĩa', 'đĩa'], ['Còn thừa', 'quả cam']],
+    f: [['Số đĩa', 'đĩa'], ['Còn thừa', 'quả cam']], vis: { mode: 'group', item: '🍊', box: 'đĩa' },
     ans: (q, r) => `Xếp được nhiều nhất ${q} đĩa, còn thừa ${r} quả cam.` },
   { s: (a, b) => `Cô có ${a} cái kẹo, chia đều cho ${b} bạn. Mỗi bạn được nhiều nhất mấy cái kẹo và còn thừa mấy cái kẹo?`,
-    f: [['Mỗi bạn', 'cái kẹo'], ['Còn thừa', 'cái kẹo']],
+    f: [['Mỗi bạn', 'cái kẹo'], ['Còn thừa', 'cái kẹo']], vis: { mode: 'share', item: '🍬', box: 'bạn', who: true },
     ans: (q, r) => `Mỗi bạn được nhiều nhất ${q} cái kẹo, còn thừa ${r} cái kẹo.` },
   { s: (a, b) => `Có ${a} bông hoa, cắm vào mỗi lọ ${b} bông. Cắm được nhiều nhất bao nhiêu lọ hoa và còn thừa mấy bông hoa?`,
-    f: [['Số lọ', 'lọ'], ['Còn thừa', 'bông hoa']],
+    f: [['Số lọ', 'lọ'], ['Còn thừa', 'bông hoa']], vis: { mode: 'group', item: '🌸', box: 'lọ' },
     ans: (q, r) => `Cắm được nhiều nhất ${q} lọ hoa, còn thừa ${r} bông hoa.` },
   { s: (a, b) => `Có ${a} quả trứng, xếp vào mỗi khay ${b} quả. Xếp được nhiều nhất bao nhiêu khay và còn thừa mấy quả trứng?`,
-    f: [['Số khay', 'khay'], ['Còn thừa', 'quả trứng']],
+    f: [['Số khay', 'khay'], ['Còn thừa', 'quả trứng']], vis: { mode: 'group', item: '🥚', box: 'khay' },
     ans: (q, r) => `Xếp được nhiều nhất ${q} khay, còn thừa ${r} quả trứng.` },
   { s: (a, b) => `Có ${a} m vải, mỗi bộ quần áo may hết ${b} m. May được nhiều nhất bao nhiêu bộ quần áo và còn thừa mấy mét vải?`,
     f: [['Số bộ', 'bộ'], ['Còn thừa', 'm vải']], maxB: 4,
@@ -137,6 +143,7 @@ function qrQuestion(topic, a, b) {
     eq: [`${a} : ${b} = `, { f: 'q' }, ' (dư ', { f: 'r' }, ')'],
     fields: [{ id: 'q', label: 'Thương' }, { id: 'r', label: 'Số dư' }],
     answer: { q, r },
+    vis: two ? null : shareVis(a, b),
     hint: (g) => hintQR(a, b, g, false),
     explain: {
       final: divText(a, b, q, r),
@@ -174,6 +181,7 @@ function lvDuQuestion(topic, a, b) {
     text: t.s(a, b),
     fields: [{ id: 'q', label: t.f[0][0], unit: t.f[0][1] }, { id: 'r', label: t.f[1][0], unit: t.f[1][1] }],
     answer: { q, r },
+    vis: !two && t.vis ? { a, b, ...t.vis } : null,
     hint: (g) => hintQR(a, b, g, true),
     explain: {
       final: t.ans(q, r),
@@ -223,6 +231,7 @@ function genB25HetDu(topic) {
     text: `Phép chia ${a} : ${b} là phép chia hết hay phép chia có dư?`,
     choices: ['Chia hết', 'Chia có dư'],
     answer: het ? 0 : 1,
+    vis: shareVis(a, b),
     hint: () => '',
     explain: {
       final: divText(a, b, q, r),
@@ -278,6 +287,7 @@ function genB25SoDu(topic) {
     text: `Bạn ${name} tính: ${a} : ${b} = ${shownQ} (dư ${shownR}). Bạn ${name} làm đúng hay sai?`,
     choices: ['Đúng', 'Sai'],
     answer: wrong ? 1 : 0,
+    vis: shareVis(a, b),
     hint: () => '',
     explain: {
       final: divText(a, b, q, r), title: wrong ? `Bạn ${name} làm sai` : `Bạn ${name} làm đúng`,

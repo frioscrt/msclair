@@ -1,6 +1,6 @@
 // Cho app chạy được cả khi mất mạng.
 // Có mạng: lấy bản mới nhất rồi cất vào bộ nhớ. Mất mạng: dùng bản đã cất.
-const CACHE = 'toan3-v1';
+const CACHE = 'toan3-v2';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './css/app.css',
   './js/app.js', './js/storage.js', './js/toan3.js',
