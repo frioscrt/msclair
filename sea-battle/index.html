@@ -263,6 +263,152 @@ details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5
 #confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 40; width: 100%; height: 100%; }
 .confirm-tip { color: var(--bad); font-weight: 900; }
 
+/* ---------- New in v2: teacher tools, sink animation, prize wheel, how-to-play ---------- */
+html .tool.teacher { background: #ffd23f; color: #2b2340; border-color: #2b2340; }
+html .tool.endg { background: var(--ink); color: #fff; border-color: var(--ink); }
+html .tool.endg.warn { background: var(--signal); border-color: var(--signal); }
+.team .nm .bdg { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 6px; font-size: .62rem; letter-spacing: .06em; vertical-align: 2px; background: #ffd23f; color: #2b2340; }
+.team .nm .bdg.sk { background: #e8452c; color: #fff; }
+.team .nm .bdg.fs { background: #2ecc71; color: #fff; }
+
+/* Sink animation (full screen) */
+.fxlayer { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 35; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 16px; cursor: pointer; }
+#sinkFx { background: radial-gradient(circle at 50% 45%, rgba(60,20,10,.85), rgba(6,16,28,.94) 70%); }
+#sinkFx svg { width: min(760px, 94vw); height: auto; max-height: 58vh; overflow: hidden; }
+#sinkFx h2 { font-size: clamp(3.2rem, 11vw, 7.5rem); line-height: 1; color: #ffd23f; text-shadow: 0 6px 0 #b3261e, 0 0 34px rgba(255,120,60,.85); animation: sunkIn .55s .55s both cubic-bezier(.2,1.7,.5,1); }
+#sinkFx p { color: #fff; font-size: clamp(1.3rem, 3.2vw, 2.4rem); font-weight: 900; margin: 0; text-align: center; animation: fadeUp .4s .9s both; }
+#sinkFx p small { display: block; color: #ffd23f; font-size: .78em; margin-top: 4px; }
+@keyframes sunkIn { from { transform: scale(.2) rotate(-10deg); opacity: 0; } }
+@keyframes fadeUp { from { transform: translateY(20px); opacity: 0; } }
+.sk-bob { animation: skBob .5s ease-in-out 2 alternate; }
+@keyframes skBob { to { transform: translateY(-5px); } }
+.sk-l { animation: skL 2.6s .45s both cubic-bezier(.55,0,.85,.55); }
+.sk-r { animation: skR 2.6s .45s both cubic-bezier(.55,0,.85,.55); }
+@keyframes skL { 0% { transform: none; } 22% { transform: translate(-22px,-10px) rotate(-16deg); } 100% { transform: translate(-60px,170px) rotate(-42deg); } }
+@keyframes skR { 0% { transform: none; } 22% { transform: translate(22px,-10px) rotate(16deg); } 100% { transform: translate(60px,170px) rotate(42deg); } }
+.sk-flash { transform-box: fill-box; transform-origin: center; animation: skFlash .8s .3s both ease-out; }
+@keyframes skFlash { 0% { transform: scale(.1); opacity: 0; } 15% { opacity: 1; } 100% { transform: scale(2.6); opacity: 0; } }
+.sk-smoke { transform-box: fill-box; transform-origin: center; opacity: 0; animation: skSmoke 2.2s ease-out infinite; }
+@keyframes skSmoke { 0% { transform: translateY(0) scale(.6); opacity: .85; } 100% { transform: translateY(-120px) scale(2.4); opacity: 0; } }
+.sk-spark { transform-box: fill-box; transform-origin: center; opacity: 0; animation: skSpark .9s .35s both ease-out; }
+@keyframes skSpark { 0% { transform: translate(0,0) rotate(0); opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) rotate(260deg); opacity: 0; } }
+.sk-bub { transform-box: fill-box; transform-origin: center; opacity: 0; animation: skBub 1.4s ease-out infinite; }
+@keyframes skBub { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: .9; } 100% { transform: translateY(-70px); opacity: 0; } }
+.sk-wave { animation: skWave 1.6s linear infinite; }
+@keyframes skWave { to { transform: translateX(-80px); } }
+
+/* Prize wheel */
+.spinbox { width: min(1080px, 100%); }
+.spin-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: center; }
+.wheel-wrap { position: relative; width: 100%; max-width: min(58vh, 480px); margin: 14px auto 0; }
+#wheel { display: block; width: 100%; height: auto; transition: transform 4.8s cubic-bezier(.12,.75,.12,1); filter: drop-shadow(0 6px 0 rgba(0,0,0,.25)); }
+.wheel-wrap .pointer { position: absolute; left: 50%; top: -18px; width: 44px; height: 54px; margin-left: -22px; z-index: 2; transform-origin: 50% 20%; }
+.wheel-wrap .pointer.wob { animation: wob .12s; }
+@keyframes wob { 50% { transform: rotate(-14deg); } }
+.hub { position: absolute; left: 50%; top: 50%; width: 30%; height: 30%; transform: translate(-50%, -50%); border-radius: 50%; border: 5px solid var(--ink); background: #fff; font-family: var(--display); font-size: clamp(1.2rem, 3vw, 2.2rem); color: var(--ink); box-shadow: 0 5px 0 var(--ink); z-index: 2; }
+.hub:disabled { cursor: default; color: var(--ink-soft); }
+.hub:not(:disabled) { animation: hubPulse 1s ease-in-out infinite alternate; }
+@keyframes hubPulse { to { transform: translate(-50%, -50%) scale(1.08); } }
+.sp-side { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; min-width: 0; }
+.sp-side h2 { font-size: clamp(1.8rem, 3.6vw, 3rem); }
+.sp-help { color: var(--ink-soft); font-size: clamp(1rem, 1.6vw, 1.3rem); margin: 0; line-height: 1.4; }
+.sp-res { display: flex; flex-direction: column; gap: 8px; animation: sunkIn .45s cubic-bezier(.2,1.7,.5,1); }
+.sp-res .prize { display: inline-block; align-self: flex-start; font-family: var(--display); font-size: clamp(3rem, 8vw, 6rem); line-height: 1; padding: 8px 26px; border-radius: 20px; border: 4px solid var(--ink); background: #2ecc71; color: #fff; box-shadow: 0 6px 0 var(--ink); }
+.sp-res .prize.bad { background: #2d2d3a; color: #ff6b6b; }
+.sp-res .prize.gold { background: #ffd23f; color: #2b2340; }
+.sp-res .what { font-size: clamp(1.3rem, 2.6vw, 2.1rem); font-weight: 900; }
+.sp-res .chg { font-size: clamp(1.1rem, 2vw, 1.6rem); color: var(--ink-soft); }
+.steal-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.steal-row button { font-family: var(--display); font-size: 1.4rem; padding: 8px 18px; border-radius: 14px; border: 3px solid var(--ink); background: var(--tc); color: #fff; box-shadow: 0 4px 0 var(--ink); }
+
+/* Teacher panel + cards */
+.tbox { width: min(980px, 100%); }
+.tbox h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+.trow { display: grid; grid-template-columns: minmax(130px, 1.1fr) auto auto; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 16px; background: var(--tc-l, #f4f4f8); border: 3px solid var(--tc-m, #ddd); }
+.trow .tn { font-family: var(--display); font-size: 1.5rem; color: var(--tc-d, var(--ink)); min-width: 0; overflow-wrap: anywhere; }
+.trow .tn small { display: block; font-family: var(--body); font-size: .8rem; color: var(--ink-soft); font-weight: 800; }
+.trow .tb { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.tbtn { border: 3px solid var(--ink); border-radius: 14px; padding: 10px 14px; font-weight: 900; font-size: 1.1rem; background: #fff; box-shadow: 0 4px 0 var(--ink); line-height: 1.1; }
+.tbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.tbtn small { display: block; font-size: .7rem; font-weight: 800; opacity: .8; }
+.tbtn.noisy { background: #ffd23f; color: #2b2340; }
+.tbtn.good { background: #2ecc71; color: #fff; }
+.tbtn.sm { padding: 6px 10px; font-size: .95rem; box-shadow: 0 3px 0 var(--ink); }
+.tmore { display: flex; gap: 6px; flex-wrap: wrap; grid-column: 1 / -1; justify-content: flex-end; }
+.tmore span { align-self: center; font-size: .8rem; color: var(--ink-soft); font-weight: 800; margin-right: 4px; }
+.tladder { margin: 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.45; }
+.tladder b { color: var(--ink); }
+.tfoot { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; align-items: center; }
+#cardFx { z-index: 36; background: rgba(10,15,30,.55); }
+.tcard { width: min(420px, 80vw); padding: 28px 24px 30px; border-radius: 26px; border: 6px solid #fff; box-shadow: 0 18px 40px rgba(0,0,0,.4); text-align: center; color: #2b2340; animation: cardIn .6s cubic-bezier(.2,1.5,.5,1); }
+.tcard .ct { font-family: var(--display); font-size: clamp(1rem, 2vw, 1.4rem); letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.tcard .cn { font-family: var(--display); font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin: 10px 0; overflow-wrap: anywhere; }
+.tcard .cw { font-size: clamp(1.4rem, 3.4vw, 2.4rem); font-weight: 900; }
+.tcard.warn { background: #ffd23f; }
+.tcard.minus { background: #ff9f43; }
+.tcard.skip { background: #e8452c; color: #fff; }
+.tcard.praise { background: #2ecc71; color: #fff; }
+@keyframes cardIn { from { transform: translateY(-60vh) rotate(-25deg); } 70% { transform: rotate(4deg); } }
+
+/* How to play slides */
+#intro { z-index: 25; }
+.ibox { width: min(1120px, 100%); min-height: min(640px, 100%); }
+.ihead { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ihead .step { font-weight: 900; color: var(--ink-soft); letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; }
+#iSlides { flex: 1; display: flex; align-items: center; }
+#iSlides .slide.on { width: 100%; }
+.slide { display: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; flex: 1; }
+.slide.on { display: grid; }
+.slide h2 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.02; color: var(--signal); margin-bottom: 14px; }
+.slide .say { font-size: clamp(1.4rem, 2.8vw, 2.3rem); font-weight: 900; line-height: 1.3; margin: 0; }
+.slide .say + .say { margin-top: 12px; color: var(--ink-soft); font-size: clamp(1.15rem, 2.2vw, 1.8rem); }
+.slide .art { background: var(--paper); border-radius: 22px; padding: 14px; display: flex; align-items: center; justify-content: center; min-height: 260px; }
+.slide .art svg { width: 100%; height: auto; max-height: 50vh; overflow: visible; }
+.slide.on .txt { animation: fadeUp .45s both; }
+.slide.on .art { animation: pop .4s .1s both; }
+.idots { display: flex; gap: 8px; justify-content: center; }
+.idots i { width: 14px; height: 14px; border-radius: 50%; background: var(--line); display: block; }
+.idots i.on { background: var(--signal); width: 34px; border-radius: 8px; }
+.inav { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pts-list { display: grid; gap: 10px; }
+.pts-list div { display: flex; justify-content: space-between; gap: 12px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 16px; font-size: clamp(1.1rem, 2.2vw, 1.7rem); font-weight: 900; border: 3px solid var(--line); }
+.pts-list div b { font-family: var(--display); color: var(--good); font-size: 1.3em; white-space: nowrap; }
+.slide.on .pts-list div { animation: fadeUp .4s both; }
+.slide.on .pts-list div:nth-child(2) { animation-delay: .25s; }
+.slide.on .pts-list div:nth-child(3) { animation-delay: .5s; }
+.slide.on .pts-list div:nth-child(4) { animation-delay: .75s; }
+.cards-art { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.cards-art div { border-radius: 16px; padding: 14px 10px; text-align: center; font-weight: 900; font-size: clamp(1rem, 1.9vw, 1.45rem); border: 4px solid #fff; box-shadow: 0 6px 14px rgba(0,0,0,.18); color: #2b2340; line-height: 1.2; }
+.cards-art div small { display: block; font-size: .7em; opacity: .8; letter-spacing: .08em; text-transform: uppercase; }
+.cards-art .c1 { background: #ffd23f; } .cards-art .c2 { background: #ff9f43; } .cards-art .c3 { background: #e8452c; color: #fff; } .cards-art .c4 { background: #2ecc71; color: #fff; }
+.slide.on .cards-art div { animation: cardIn .6s both cubic-bezier(.2,1.5,.5,1); }
+.slide.on .cards-art div:nth-child(2) { animation-delay: .35s; }
+.slide.on .cards-art div:nth-child(3) { animation-delay: .7s; }
+.slide.on .cards-art div:nth-child(4) { animation-delay: 1.05s; }
+/* little animations inside the slide pictures */
+.a-peek { animation: aPeek 2.6s ease-in-out infinite; }
+@keyframes aPeek { 0%, 100% { opacity: 0; } 35%, 65% { opacity: .9; } }
+.a-q { animation: aQ 1.4s ease-in-out infinite alternate; }
+@keyframes aQ { to { opacity: .35; } }
+.a-aim { animation: aAim 3.6s infinite; }
+@keyframes aAim { 0%, 15% { fill: #cfe5ee; } 20%, 100% { fill: #ffd23f; } }
+.a-card { transform-box: fill-box; transform-origin: center; animation: aCard 3.6s infinite; }
+@keyframes aCard { 0%, 30% { transform: scale(0); opacity: 0; } 40%, 92% { transform: scale(1); opacity: 1; } 100% { opacity: 0; } }
+.a-right { animation: aRight 3.6s infinite; }
+@keyframes aRight { 0%, 60% { fill: #fff; } 65%, 100% { fill: #2ecc71; } }
+.a-boom { transform-box: fill-box; transform-origin: center; animation: aBoom 2s infinite; }
+@keyframes aBoom { 0%, 30% { transform: scale(0); opacity: 0; } 40% { transform: scale(1.2); opacity: 1; } 80%, 100% { transform: scale(2); opacity: 0; } }
+.a-hit { animation: aHit 2s infinite; }
+@keyframes aHit { 0%, 38% { opacity: 0; } 45%, 100% { opacity: 1; } }
+.a-spin { transform-box: fill-box; transform-origin: center; animation: aSpin 3s cubic-bezier(.2,.7,.2,1) infinite; }
+@keyframes aSpin { from { transform: rotate(0); } to { transform: rotate(1080deg); } }
+@media (max-width: 860px) {
+  .spin-grid, .slide { grid-template-columns: minmax(0, 1fr); }
+  .trow { grid-template-columns: minmax(0, 1fr); }
+  .trow .tb { justify-content: flex-start; }
+  .slide .art { min-height: 0; }
+}
+
 /* ---------- Looks: E pastel notebook · F sticker book · G math notebook ----------
    The look is set on <html data-look="e|f|g">. Team tints (--tc-l, --tc-m, --tc-d) are worked out
    in the script, so old classroom TV browsers without color-mix() still show the right colours. */
@@ -551,7 +697,8 @@ html[data-look="g"] {
         <li>The teacher's ships are <b>hidden</b> on the sea.</li>
         <li>Pick a square. Answer the question <b>correctly</b> to fire!</li>
         <li>Wrong answer? No shot this time.</li>
-        <li><b>Sink every ship</b> to win.</li>
+        <li>Sink a ship? <b>Spin the prize wheel!</b></li>
+        <li>The team with the <b>most points</b> wins.</li>
       </ol>
     </section>
     <section class="settings">
@@ -561,6 +708,7 @@ html[data-look="g"] {
       <div class="field"><span class="label">Time to answer</span><div class="seg" id="segTimer"></div></div>
       <div class="field"><span class="label">Questions</span><div class="seg" id="segSet"></div></div>
       <div class="field"><span class="label">Look</span><div class="seg" id="segLook"></div></div>
+      <div class="field"><span class="label">How to play</span><div class="seg" id="segIntro"></div></div>
       <details class="custom" id="customBox">
         <summary>Write my own questions</summary>
         <p>One question per line: <code>question | right answer | wrong answer | wrong answer</code>. You can add 1 to 3 wrong answers. Saved on this computer only.</p>
@@ -578,16 +726,19 @@ html[data-look="g"] {
 <div id="game" hidden>
   <header class="topbar">
     <h2><span class="setname">Triangle</span><span class="sb">Sea Battle</span><span class="grade"></span></h2>
+    <button class="tool teacher" id="btnTeacher">Teacher</button>
+    <button class="tool" id="btnHow">How to play</button>
     <button class="tool" id="btnSound">Sound: on</button>
     <button class="tool" id="btnFull">Full screen</button>
     <button class="tool" id="btnReveal">Reveal ships</button>
+    <button class="tool endg" id="btnEnd">End game</button>
     <button class="tool" id="btnNew">New game</button>
   </header>
   <div class="play">
     <div class="board-wrap"><div class="board" id="board"></div></div>
     <aside class="side">
       <div class="panel" id="teamsPanel"><h3>Score</h3><div class="teams" id="teams"></div>
-        <p class="legend">Correct answer +1 · Hit +1 · Sink a ship +2</p></div>
+        <p class="legend">Correct answer +1 · Hit +1 · Sink a ship +2 and spin the wheel</p></div>
       <div class="panel"><h3>Teacher's fleet <small id="shipsLeft"></small></h3><div class="fleet" id="fleet"></div></div>
       <div class="panel"><div class="stats">
         <div><b id="stShots">0</b><span>Shots</span></div>
@@ -631,6 +782,52 @@ html[data-look="g"] {
       <button class="btn-big" id="btnAgain">Play again</button>
       <button class="btn-big alt" id="btnSetup">Settings</button>
       <button class="btn-big alt" id="btnLook">See the sea</button>
+    </div>
+  </div>
+</div>
+<div class="fxlayer" id="sinkFx" hidden></div>
+
+<div class="overlay" id="spinOverlay" hidden>
+  <div class="qbox spinbox" role="dialog" aria-modal="true" aria-labelledby="spTitle">
+    <div class="spin-grid">
+      <div class="wheel-wrap">
+        <svg class="pointer" id="wheelPtr" viewBox="0 0 44 54" aria-hidden="true"><path d="M4 4 H40 L22 50 Z" fill="#e8452c" stroke="#0f2a3d" stroke-width="4" stroke-linejoin="round"/><circle cx="22" cy="14" r="5" fill="#fff"/></svg>
+        <svg id="wheel" viewBox="-104 -104 208 208" aria-hidden="true"></svg>
+        <button class="hub" id="btnSpin">SPIN</button>
+      </div>
+      <div class="sp-side">
+        <span class="qteam" id="spTeam"></span>
+        <h2 id="spTitle">Spin the wheel!</h2>
+        <p class="sp-help" id="spHelp">Press SPIN. Most prizes are good. A few are bad. Good luck!</p>
+        <div id="spResult"></div>
+        <button class="btn-big" id="btnSpinOk" hidden>Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="teacherOverlay" hidden>
+  <div class="qbox tbox" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+    <h2 id="tTitle">Teacher's tools</h2>
+    <p class="tladder"><b>Too noisy</b> (each time): 1st = yellow card (warning) · 2nd = −2 points · 3rd and more = skip a turn. <b>Quiet +1</b> = a reward for a calm, kind team.</p>
+    <div class="teams" id="tRows"></div>
+    <div class="tfoot">
+      <button class="link" id="btnUndo" disabled>Undo last action</button>
+      <button class="btn-big" id="btnTClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="fxlayer" id="cardFx" hidden></div>
+
+<div class="overlay" id="intro" hidden>
+  <div class="qbox ibox" role="dialog" aria-modal="true" aria-label="How to play">
+    <div class="ihead"><span class="step" id="iStep"></span><button class="link" id="btnISkip">Skip</button></div>
+    <div id="iSlides"></div>
+    <div class="idots" id="iDots"></div>
+    <div class="inav">
+      <button class="btn-big alt" id="btnIBack">Back</button>
+      <button class="btn-big" id="btnINext">Next</button>
     </div>
   </div>
 </div>
@@ -1065,9 +1262,9 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
 
-let prefs = Object.assign({ teams: 2, size: "S", timer: 0, set: "tri", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true, looks: {} }, store.get(STORE + "-prefs") || {});
+let prefs = Object.assign({ teams: 2, size: "S", timer: 0, set: "tri", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true, looks: {}, intro: 1 }, store.get(STORE + "-prefs") || {});
 let S = null; // game state
-let aim = null, curQ = null, locked = false, timerId = null, revealArm = 0, newArm = 0;
+let aim = null, curQ = null, locked = false, timerId = null, revealArm = 0, newArm = 0, endArm = 0;
 
 const $ = (id) => document.getElementById(id);
 // Team colour plus light and dark tints, worked out here so old TV browsers do not need color-mix()
@@ -1106,7 +1303,8 @@ function newGame() {
     n: cfg.n, set: prefs.set, timer: prefs.timer,
     ships: cells.map((c, i) => ({ name: names[i], cells: c, hits: 0 })),
     shots: {}, turn: 0, q: 0, over: false, revealed: false,
-    teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, hits: 0, right: 0, wrong: 0 })),
+    teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, hits: 0, right: 0, wrong: 0, noise: 0, skip: 0 })),
+    free: false,
   };
   customDeck = []; bankDeck = []; angBankDeck = [];
   save();
@@ -1138,7 +1336,7 @@ function renderBoard() {
 function renderSide() {
   const solo = S.teams.length === 1;
   $("teams").innerHTML = S.teams.map((t, i) => `<div class="team${!solo && i === S.turn && !S.over ? " now" : ""}" style="${teamStyle(t.color)}">
-    <span class="dot"></span><span class="nm">${esc(t.name)}<small>${t.right} right · ${t.wrong} wrong · ${t.hits} hits</small></span><span class="pts">${t.pts}</span></div>`).join("");
+    <span class="dot"></span><span class="nm">${esc(t.name)}<small>${t.right} right · ${t.wrong} wrong · ${t.hits} hits${t.noise ? `<span class="bdg">NOISY ×${t.noise}</span>` : ""}${t.skip ? `<span class="bdg sk">SKIP NEXT</span>` : ""}${S.free && i === S.turn && !S.over ? `<span class="bdg fs">FREE SHOT</span>` : ""}</small></span><span class="pts">${t.pts}</span></div>`).join("");
   const left = S.ships.filter(s => s.hits < s.cells.length).length;
   $("shipsLeft").textContent = `${left} of ${S.ships.length} left`;
   $("fleet").innerHTML = S.ships.map(s => {
@@ -1148,7 +1346,7 @@ function renderSide() {
   }).join("");
   const shots = Object.keys(S.shots).length, hits = Object.values(S.shots).filter(v => v === "hit").length;
   $("stShots").textContent = shots; $("stHits").textContent = hits; $("stQ").textContent = S.q;
-  $("hint").textContent = S.over ? "Game over. Press New game to play again." : solo ? "Pick a square to aim." : `${S.teams[S.turn].name}: pick a square to aim.`;
+  $("hint").textContent = S.over ? "Game over. Press New game to play again." : S.free ? `${solo ? "Class" : S.teams[S.turn].name}: FREE SHOT! Pick any square.` : solo ? "Pick a square to aim." : `${S.teams[S.turn].name}: pick a square to aim.`;
 }
 function render() { renderBoard(); renderSide(); }
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -1157,7 +1355,10 @@ function showGame() {
   setTitle(S.set);
   $("setup").hidden = true; $("game").hidden = false;
   $("winOverlay").hidden = true; $("qOverlay").hidden = true;
-  aim = null; revealArm = newArm = 0;
+  $("spinOverlay").hidden = true; $("teacherOverlay").hidden = true; $("sinkFx").hidden = true; $("cardFx").hidden = true;
+  clearTimeout(sinkT); spinCtx = null; undoSnap = null;
+  aim = null; revealArm = newArm = endArm = 0;
+  $("btnEnd").textContent = "End game"; $("btnEnd").classList.remove("warn");
   $("btnReveal").textContent = "Reveal ships"; $("btnNew").textContent = "New game";
   $("btnReveal").classList.remove("warn"); $("btnNew").classList.remove("warn");
   $("btnSound").textContent = "Sound: " + (prefs.sound ? "on" : "off");
@@ -1261,12 +1462,24 @@ function fire() {
   if (cell) { const fx = document.createElement("span"); fx.className = "fx " + (hit ? "boom" : "splash"); cell.appendChild(fx); }
   if (hit) { const b = $("board"); b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); }
   sfx(hit ? "boom" : "splash");
-  banner(msg, sub, !hit);
   const won = S.ships.every(s => s.hits === s.cells.length);
-  if (won) { S.over = true; save(); setTimeout(win, 1800); renderSide(); return; }
+  if (sunk) { save(); renderSide(); const ti = S.turn, nm = S.ships[idx].name; setTimeout(() => sinkShow(nm, ti, won), 700); return; }
+  banner(msg, sub, !hit);
   nextTurn();
 }
-function nextTurn() { if (S.teams.length > 1) S.turn = (S.turn + 1) % S.teams.length; save(); render(); }
+function nextTurn() {
+  if (S.teams.length > 1) {
+    const skipped = [];
+    S.turn = (S.turn + 1) % S.teams.length;
+    // a team with a "skip" card loses this turn
+    for (let k = 0; k < S.teams.length && S.teams[S.turn].skip > 0; k++) {
+      S.teams[S.turn].skip--; skipped.push(S.teams[S.turn].name);
+      S.turn = (S.turn + 1) % S.teams.length;
+    }
+    if (skipped.length) { const now = S.teams[S.turn].name; setTimeout(() => banner(`${skipped.join(", ")}: skip!`, `Now it's ${now}'s turn`, true), 1500); }
+  }
+  save(); render();
+}
 
 let bannerT;
 function banner(msg, sub, miss) {
@@ -1277,16 +1490,317 @@ function banner(msg, sub, miss) {
   document.body.appendChild(d);
   clearTimeout(bannerT); bannerT = setTimeout(() => d.remove(), 1700);
 }
-function win() {
+function win(early) {
+  if (!S.over) S.early = !!early;
+  early = S.early;
+  S.over = true; S.free = false; save(); render();
   const solo = S.teams.length === 1;
-  const ranked = S.teams.slice().sort((a, b) => b.pts - a.pts);
+  // most points wins; if points are equal, more hits wins
+  const ranked = S.teams.slice().sort((a, b) => b.pts - a.pts || b.hits - a.hits);
+  const tie = !solo && ranked[0].pts === ranked[1].pts && ranked[0].hits === ranked[1].hits;
   const right = S.teams.reduce((s, t) => s + t.right, 0), total = S.teams.reduce((s, t) => s + t.right + t.wrong, 0);
-  $("winTitle").textContent = solo ? "You sank the whole fleet!" : `${ranked[0].pts === (ranked[1] || {}).pts ? "It's a tie!" : ranked[0].name + " win!"}`;
-  $("winSub").textContent = `Fleet destroyed · ${right} of ${total} answers correct`;
+  const sunkN = S.ships.filter(s => s.hits === s.cells.length).length;
+  if (early) {
+    $("winTitle").textContent = solo ? "Time's up! Great job!" : tie ? "Time's up! It's a tie!" : `Time's up! ${ranked[0].name} win!`;
+    $("winSub").textContent = `${sunkN} of ${S.ships.length} ships sunk · ${right} of ${total} answers correct`;
+  } else {
+    $("winTitle").textContent = solo ? "You sank the whole fleet!" : tie ? "It's a tie!" : ranked[0].name + " win!";
+    $("winSub").textContent = `Fleet destroyed · ${right} of ${total} answers correct`;
+  }
   $("winRank").innerHTML = solo ? "" : ranked.map(t => `<div class="team" style="${teamStyle(t.color)}"><span class="dot"></span><span class="nm">${esc(t.name)}<small>${t.right} right · ${t.hits} hits</small></span><span class="pts">${t.pts}</span></div>`).join("");
   $("winOverlay").hidden = false;
   sfx("win"); confetti();
 }
+
+/* ----- Sink animation ----- */
+function sinkSVG() {
+  const hullL = `<polygon points="-150,-42 6,-42 -6,-28 8,-14 -4,0 -2,14 -128,14" fill="#2f4858" stroke="#10222e" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="-140" y="-27" width="134" height="8" fill="#e8452c"/>
+    <circle cx="-110" cy="-6" r="5" fill="#cfe5ee"/><circle cx="-80" cy="-6" r="5" fill="#cfe5ee"/><circle cx="-50" cy="-6" r="5" fill="#cfe5ee"/>
+    <line x1="-62" y1="-80" x2="-62" y2="-128" stroke="#10222e" stroke-width="4"/>
+    <polygon points="-60,-128 -28,-120 -60,-112" fill="#e8452c" stroke="#10222e" stroke-width="3" stroke-linejoin="round"/>
+    <rect x="-104" y="-80" width="80" height="38" rx="5" fill="#fff" stroke="#10222e" stroke-width="4"/>
+    <rect x="-94" y="-70" width="14" height="12" rx="2" fill="#5b8def"/><rect x="-72" y="-70" width="14" height="12" rx="2" fill="#5b8def"/><rect x="-50" y="-70" width="14" height="12" rx="2" fill="#5b8def"/>`;
+  const hullR = `<polygon points="6,-42 150,-42 128,14 -2,14 -4,0 8,-14 -6,-28" fill="#2f4858" stroke="#10222e" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="0" y="-27" width="140" height="8" fill="#e8452c"/>
+    <circle cx="40" cy="-6" r="5" fill="#cfe5ee"/><circle cx="70" cy="-6" r="5" fill="#cfe5ee"/><circle cx="100" cy="-6" r="5" fill="#cfe5ee"/>
+    <rect x="52" y="-106" width="30" height="44" fill="#f2b233" stroke="#10222e" stroke-width="4"/>
+    <rect x="52" y="-106" width="30" height="10" fill="#10222e"/>
+    <rect x="16" y="-66" width="98" height="24" rx="5" fill="#fff" stroke="#10222e" stroke-width="4"/>`;
+  let wave = "M-120 178";
+  for (let i = 0; i < 18; i++) wave += " q20 -10 40 0 t40 0";
+  wave += " V320 H-120 Z";
+  const sparks = [[-120, -90], [110, -100], [-160, -20], [150, -30], [-60, -130], [70, -140], [-20, -150], [30, 40]]
+    .map(([dx, dy], i) => `<polygon class="sk-spark" style="--dx:${dx}px;--dy:${dy}px" points="200,132 210,140 200,148 192,140" fill="${i % 2 ? "#ffd23f" : "#ff7b54"}"/>`).join("");
+  const smoke = [[196, 128, 0], [210, 120, .5], [186, 124, 1], [204, 132, 1.5]]
+    .map(([x, y, d]) => `<circle class="sk-smoke" cx="${x}" cy="${y}" r="14" fill="#5d5d6a" style="animation-delay:${.6 + d}s"/>`).join("");
+  const bubbles = [[150, 0], [185, .3], [215, .15], [250, .45], [200, .6], [170, .8], [232, .9]]
+    .map(([x, d]) => `<circle class="sk-bub" cx="${x}" cy="236" r="${4 + (x % 4)}" fill="none" stroke="#cfe5ee" stroke-width="2.5" style="animation-delay:${1.5 + d}s"/>`).join("");
+  return `<svg viewBox="0 0 400 260" aria-hidden="true">
+    <defs><linearGradient id="skf"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".18" stop-color="#fff"/><stop offset=".82" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <mask id="skm"><rect x="0" y="-50" width="400" height="360" fill="url(#skf)"/></mask><radialGradient id="skg"><stop offset="0" stop-color="#fff6c2"/><stop offset=".35" stop-color="#ffd23f"/><stop offset=".7" stop-color="#e8452c"/><stop offset="1" stop-color="#e8452c" stop-opacity="0"/></radialGradient></defs>
+    <g mask="url(#skm)"><rect x="-200" y="172" width="800" height="200" fill="#0e4a73"/>
+    <g class="sk-bob">
+      <g transform="translate(200 170)"><g class="sk-l">${hullL}</g></g>
+      <g transform="translate(200 170)"><g class="sk-r">${hullR}</g></g>
+    </g>
+    ${smoke}
+    <circle class="sk-flash" cx="200" cy="140" r="70" fill="url(#skg)"/>
+    ${sparks}
+    <path class="sk-wave" d="${wave}" fill="#1b6fa8" opacity=".93"/></g>
+    ${bubbles}
+  </svg>`;
+}
+let sinkT = null;
+function sinkShow(shipName, ti, won) {
+  const t = S.teams[ti], solo = S.teams.length === 1, fx = $("sinkFx");
+  fx.innerHTML = `${sinkSVG()}<h2>SUNK!</h2><p>You sank the ${esc(shipName)}!<small>${esc(solo ? "Class" : t.name)} +2 · Now spin the wheel!</small></p>`;
+  fx.hidden = false;
+  sfx("sink");
+  const t0 = Date.now();
+  const go = () => { clearTimeout(sinkT); fx.onclick = null; fx.hidden = true; fx.innerHTML = ""; openSpin(ti, won); };
+  fx.onclick = () => { if (Date.now() - t0 > 1000) go(); };
+  sinkT = setTimeout(go, 3400);
+}
+
+/* ----- Prize wheel (bad prizes add up to 10%) ----- */
+const PRIZES = [
+  { l: "+3", w: 13, k: "add", v: 3 }, { l: "×2", w: 8, k: "mul" }, { l: "Steal 3", w: 10, k: "steal", v: 3 },
+  { l: "+5", w: 10, k: "add", v: 5 }, { l: "−2", w: 5, k: "add", v: -2, bad: 1 }, { l: "+2", w: 12, k: "add", v: 2 },
+  { l: "Free shot", w: 10, k: "free" }, { l: "+4", w: 10, k: "add", v: 4 }, { l: "+10", w: 5, k: "add", v: 10, gold: 1 },
+  { l: "÷2", w: 5, k: "div", bad: 1 }, { l: "+3", w: 12, k: "add", v: 3 },
+];
+const WCOL = [["#ff6b6b", "#fff"], ["#4ecdc4", "#173a44"], ["#5b8def", "#fff"], ["#ffd23f", "#2b2340"], ["#b06bff", "#fff"], ["#ff9f43", "#2b2340"], ["#2ecc71", "#0e3b25"], ["#ff7eb6", "#fff"]];
+let wheelRot = 0, wheelSegs = null, spinCtx = null;
+const polar = (deg, r) => [(Math.sin(deg * Math.PI / 180) * r).toFixed(2), (-Math.cos(deg * Math.PI / 180) * r).toFixed(2)];
+function buildWheel() {
+  let a = 0, ci = 0, h = `<circle r="104" fill="#0f2a3d"/>`;
+  wheelSegs = PRIZES.map(p => { const sg = { p, a0: a, a1: a + p.w * 3.6 }; a = sg.a1; return sg; });
+  wheelSegs.forEach(sg => {
+    const [fill, ink] = sg.p.bad ? ["#2d2d3a", "#ff6b6b"] : sg.p.gold ? ["#ffd700", "#2b2340"] : WCOL[ci++ % WCOL.length];
+    const [x0, y0] = polar(sg.a0, 98), [x1, y1] = polar(sg.a1, 98);
+    h += `<path d="M0 0 L${x0} ${y0} A98 98 0 ${sg.a1 - sg.a0 > 180 ? 1 : 0} 1 ${x1} ${y1} Z" fill="${fill}" stroke="#0f2a3d" stroke-width="2"/>`;
+    const m = (sg.a0 + sg.a1) / 2, radial = sg.p.l.length > 3 || sg.p.w <= 5;
+    const fs = sg.p.l.length > 3 ? 12.5 : radial ? 16 : 21;
+    h += `<g transform="rotate(${m.toFixed(1)})"><text transform="translate(0 ${radial ? -62 : -70}) rotate(${radial ? 90 : 0})" text-anchor="middle" dominant-baseline="central" font-family="Fredoka, Nunito, sans-serif" font-weight="700" font-size="${fs}" fill="${ink}">${sg.p.l}</text></g>`;
+  });
+  for (let i = 0; i < 24; i++) { const [x, y] = polar(i * 15, 101); h += `<circle cx="${x}" cy="${y}" r="2" fill="#ffd23f"/>`; }
+  $("wheel").innerHTML = h;
+}
+function openSpin(ti, won) {
+  if (!wheelSegs) buildWheel();
+  spinCtx = { ti, won, free: false, busy: false };
+  const t = S.teams[ti];
+  $("spinOverlay").style.setProperty("--tc", t.color);
+  $("spTeam").textContent = S.teams.length > 1 ? t.name : "Class";
+  $("spTeam").style.setProperty("--tc", t.color);
+  $("spTitle").textContent = "Spin the wheel!";
+  $("spHelp").hidden = false;
+  $("spResult").innerHTML = "";
+  $("btnSpinOk").hidden = true;
+  $("btnSpin").disabled = false; $("btnSpin").textContent = "SPIN";
+  $("spinOverlay").hidden = false;
+  $("btnSpin").focus();
+}
+function doSpin() {
+  if (!spinCtx || spinCtx.busy) return;
+  spinCtx.busy = true;
+  $("btnSpin").disabled = true; $("btnSpin").textContent = "…";
+  let r = Math.random() * 100, sg = wheelSegs[wheelSegs.length - 1];
+  for (const s of wheelSegs) { if (r < s.p.w) { sg = s; break; } r -= s.p.w; }
+  const theta = sg.a0 + (sg.a1 - sg.a0) * (.2 + .6 * Math.random());
+  const delta = ((360 - theta) - (wheelRot % 360) + 720) % 360;
+  wheelRot += 360 * 5 + delta;
+  const wheel = $("wheel");
+  wheel.style.transform = `rotate(${wheelRot}deg)`;
+  const t0 = performance.now(), ptr = $("wheelPtr");
+  let last = null;
+  (function loop() {
+    const m = getComputedStyle(wheel).transform, v = m && m.match(/matrix\(([^)]+)\)/);
+    if (v) {
+      const [a, b] = v[1].split(",").map(Number);
+      const under = ((-Math.atan2(b, a) * 180 / Math.PI) % 360 + 360) % 360;
+      const idx = wheelSegs.findIndex(s => under >= s.a0 && under < s.a1);
+      if (last !== null && idx !== last) { sfx("tick"); ptr.classList.remove("wob"); void ptr.getBoundingClientRect(); ptr.classList.add("wob"); }
+      last = idx;
+    }
+    if (performance.now() - t0 < 4800) requestAnimationFrame(loop);
+  })();
+  setTimeout(() => showPrize(sg.p), 5000);
+}
+function showPrize(p) {
+  const t = S.teams[spinCtx.ti], solo = S.teams.length === 1, nm = solo ? "Class" : t.name, before = t.pts;
+  let what = "", chg = "";
+  const others = S.teams.map((o, i) => i).filter(i => i !== spinCtx.ti);
+  if (p.k === "add") { t.pts = Math.max(0, t.pts + p.v); what = p.v > 0 ? `+${p.v} points!` : `Oh no! ${p.v} points.`; }
+  else if (p.k === "mul") { t.pts *= 2; what = "Double points!"; }
+  else if (p.k === "div") { t.pts = Math.ceil(t.pts / 2); what = "Oh no! Your points are cut in half."; }
+  else if (p.k === "free") { spinCtx.free = !spinCtx.won; what = spinCtx.won ? "Free shot! (No ships left, so +2 points.)" : "Fire one more shot. No question!"; if (spinCtx.won) t.pts += 2; }
+  else if (p.k === "steal") {
+    if (!others.length) { t.pts += p.v; what = "No other team, so +3 points!"; }
+    else if (others.length === 1) { what = stealFrom(others[0], p.v); }
+    else {
+      what = "Take 3 points from another team! Choose a team:";
+      $("spResult").innerHTML = prizeHTML(p, what, "") + `<div class="steal-row">${others.map(i => `<button data-i="${i}" style="${teamStyle(S.teams[i].color)}">${esc(S.teams[i].name)}</button>`).join("")}</div>`;
+      $("spResult").querySelector(".steal-row").onclick = (e) => {
+        const b = e.target.closest("button"); if (!b) return;
+        const msg = stealFrom(+b.dataset.i, p.v);
+        $("spResult").innerHTML = prizeHTML(p, msg, `${esc(nm)}: ${before} → ${t.pts}`);
+        finishPrize(p);
+      };
+      $("spTitle").textContent = "You got…"; $("spHelp").hidden = true;
+      sfx("prize");
+      return;
+    }
+  }
+  if (t.pts !== before) chg = `${esc(nm)}: ${before} → ${t.pts}`;
+  $("spTitle").textContent = "You got…"; $("spHelp").hidden = true;
+  $("spResult").innerHTML = prizeHTML(p, what, chg);
+  sfx(p.bad ? "oops" : p.gold ? "win" : "prize");
+  if (p.gold) confetti();
+  finishPrize(p);
+}
+function stealFrom(i, v) {
+  const o = S.teams[i], take = Math.min(v, o.pts), t = S.teams[spinCtx.ti];
+  o.pts -= take; t.pts += take;
+  return take ? `You took ${take} point${take > 1 ? "s" : ""} from ${esc(o.name)}!` : `${esc(o.name)} has no points to take!`;
+}
+function prizeHTML(p, what, chg) {
+  return `<div class="sp-res"><span class="prize${p.bad ? " bad" : p.gold ? " gold" : ""}">${p.l}</span><span class="what">${what}</span>${chg ? `<span class="chg">${chg}</span>` : ""}</div>`;
+}
+function finishPrize() {
+  save(); renderSide();
+  $("btnSpinOk").hidden = false; $("btnSpinOk").focus();
+}
+function closeSpin() {
+  if (!spinCtx) return;
+  const ctx = spinCtx; spinCtx = null;
+  $("spinOverlay").hidden = true;
+  if (ctx.won) { win(false); return; }
+  if (ctx.free) { S.free = true; save(); render(); banner("Free shot!", "Pick any square. No question!"); return; }
+  nextTurn();
+}
+
+/* ----- Teacher's tools ----- */
+let undoSnap = null, cardT = null;
+function noiseNext(t) {
+  const n = (t.noise || 0) + 1;
+  return n === 1 ? "warning" : (n === 2 || S.teams.length === 1) ? "−2 points" : "skip a turn";
+}
+function openTeacher() { if (!S) return; renderTeacher(); $("teacherOverlay").hidden = false; }
+function renderTeacher() {
+  const solo = S.teams.length === 1;
+  $("tRows").innerHTML = S.teams.map((t, i) => `<div class="trow" style="${teamStyle(t.color)}">
+    <span class="tn">${esc(solo ? "Whole class" : t.name)}<small>${t.pts} points · noisy: ${t.noise || 0}${t.skip ? " · skips next turn" : ""}</small></span>
+    <button class="tbtn noisy" data-a="noisy" data-i="${i}">Too noisy!<small>next: ${noiseNext(t)}</small></button>
+    <button class="tbtn good" data-a="quiet" data-i="${i}">Quiet +1<small>reward</small></button>
+    <div class="tmore"><span>Or pick one:</span>
+      <button class="tbtn sm" data-a="warn" data-i="${i}">Warning</button>
+      <button class="tbtn sm" data-a="m1" data-i="${i}">−1</button>
+      <button class="tbtn sm" data-a="m3" data-i="${i}">−3</button>
+      ${solo ? "" : `<button class="tbtn sm" data-a="skip" data-i="${i}">Skip turn</button>`}
+      <button class="tbtn sm" data-a="p2" data-i="${i}">+2</button>
+    </div></div>`).join("");
+  $("btnUndo").disabled = !undoSnap;
+}
+function teacherAct(a, i) {
+  undoSnap = JSON.stringify({ teams: S.teams, turn: S.turn, free: S.free });
+  const t = S.teams[i], solo = S.teams.length === 1, nm = solo ? "Whole class" : t.name;
+  let kind, title, what;
+  if (a === "noisy") { t.noise = (t.noise || 0) + 1; a = t.noise === 1 ? "warn" : (t.noise === 2 || solo) ? "m2" : "skip"; }
+  if (a === "warn") { kind = "warn"; title = "Yellow card"; what = "Too noisy! This is a warning."; }
+  else if (a === "m1" || a === "m2" || a === "m3") { const v = +a[1]; t.pts = Math.max(0, t.pts - v); kind = "minus"; title = "Too noisy"; what = `−${v} point${v > 1 ? "s" : ""}`; }
+  else if (a === "skip") { kind = "skip"; title = "Red card"; what = skipTeam(i) ? "Skip this turn!" : "Skip the next turn!"; }
+  else if (a === "quiet") { t.pts += 1; kind = "praise"; title = "Great team!"; what = "Quiet and kind: +1 point"; }
+  else if (a === "p2") { t.pts += 2; kind = "praise"; title = "Great team!"; what = "+2 points"; }
+  save(); $("teacherOverlay").hidden = true; render();
+  showCard(kind, title, nm, what);
+}
+// returns true when the team loses the turn it is playing right now
+function skipTeam(i) {
+  const busy = !$("qOverlay").hidden || !$("spinOverlay").hidden || !$("sinkFx").hidden;
+  if (i === S.turn && !busy && !S.over) { S.free = false; aim = null; nextTurn(); return true; }
+  S.teams[i].skip = (S.teams[i].skip || 0) + 1; return false;
+}
+function undoTeacher() {
+  if (!undoSnap) return;
+  const u = JSON.parse(undoSnap); undoSnap = null;
+  S.teams = u.teams; S.turn = u.turn; S.free = u.free;
+  save(); render(); renderTeacher();
+}
+function showCard(kind, title, name, what) {
+  const fx = $("cardFx");
+  fx.innerHTML = `<div class="tcard ${kind}"><div class="ct">${title}</div><div class="cn">${esc(name)}</div><div class="cw">${what}</div></div>`;
+  fx.hidden = false;
+  sfx(kind === "praise" ? "praise" : "card");
+  clearTimeout(cardT);
+  const hide = () => { clearTimeout(cardT); fx.hidden = true; fx.innerHTML = ""; };
+  fx.onclick = hide; cardT = setTimeout(hide, 2800);
+}
+
+/* ----- How to play (slides) ----- */
+function introSlides() {
+  const sea = "#cfe5ee", hull = "#34495a";
+  const grid = (n, x0, y0, s, g, extra = () => "") => { let h = ""; for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) h += `<rect x="${x0 + c * (s + g)}" y="${y0 + r * (s + g)}" width="${s}" height="${s}" rx="7" fill="${sea}" ${extra(r, c)}/>`; return h; };
+  const art1 = `<svg viewBox="0 0 300 300">${grid(5, 14, 14, 50, 6)}
+    <rect class="a-peek" x="70" y="70" width="162" height="50" rx="14" fill="${hull}"/>
+    <rect class="a-peek" x="14" y="182" width="50" height="106" rx="14" fill="${hull}" style="animation-delay:.8s"/>
+    <rect class="a-peek" x="182" y="182" width="106" height="50" rx="14" fill="${hull}" style="animation-delay:1.5s"/>
+    ${[[1, 0], [3, 1], [0, 4], [4, 3], [2, 2]].map(([r, c], i) => `<text class="a-q" x="${39 + c * 56}" y="${41 + r * 56}" text-anchor="middle" dominant-baseline="central" font-family="Fredoka, sans-serif" font-size="30" font-weight="700" fill="#4b6678" style="animation-delay:${i * .3}s">?</text>`).join("")}</svg>`;
+  const art2 = `<svg viewBox="0 0 400 260">${grid(3, 10, 40, 56, 6, (r, c) => r === 1 && c === 1 ? 'class="a-aim"' : "")}
+    <rect class="a-card" x="200" y="20" width="190" height="220" rx="18" fill="#fff" stroke="#0f2a3d" stroke-width="4"/>
+    <g class="a-card"><text x="295" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="34" font-weight="700" fill="#0f2a3d">?</text>
+    ${[0, 1, 2, 3].map(i => `<rect ${i === 2 ? 'class="a-right"' : ""} x="${216 + (i % 2) * 84}" y="${96 + Math.floor(i / 2) * 64}" width="74" height="52" rx="10" fill="#fff" stroke="#0f2a3d" stroke-width="3"/><text x="${253 + (i % 2) * 84}" y="${123 + Math.floor(i / 2) * 64}" text-anchor="middle" dominant-baseline="central" font-family="Fredoka, sans-serif" font-size="24" font-weight="700" fill="#0f2a3d">${"ABCD"[i]}</text>`).join("")}</g></svg>`;
+  const art3 = `<svg viewBox="0 0 400 240">
+    <rect x="40" y="50" width="130" height="130" rx="14" fill="${hull}"/>
+    <circle class="a-boom" cx="105" cy="115" r="60" fill="#ffd23f" opacity=".9"/>
+    <circle class="a-boom" cx="105" cy="115" r="38" fill="#e8452c" style="animation-delay:.08s"/>
+    <text class="a-hit" x="105" y="215" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="32" font-weight="700" fill="#e8452c">HIT! +1</text>
+    <rect x="230" y="50" width="130" height="130" rx="14" fill="#e3f0f4"/>
+    <circle cx="295" cy="115" r="16" fill="#9cc2d2"/>
+    <circle class="a-boom" cx="295" cy="115" r="40" fill="none" stroke="#fff" stroke-width="6" style="animation-delay:1s"/>
+    <text x="295" y="215" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="28" font-weight="700" fill="#4b6678">Splash = miss</text></svg>`;
+  let wheel = "", a = 0;
+  const lab = ["+5", "×2", "Steal", "+3", "Free", "+2", "÷2", "+4"], col = ["#ff6b6b", "#4ecdc4", "#5b8def", "#ffd23f", "#b06bff", "#ff9f43", "#2d2d3a", "#2ecc71"];
+  lab.forEach((l, i) => { const [x0, y0] = polar(a, 98), [x1, y1] = polar(a + 45, 98);
+    wheel += `<path d="M0 0 L${x0} ${y0} A98 98 0 0 1 ${x1} ${y1} Z" fill="${col[i]}" stroke="#0f2a3d" stroke-width="2"/><g transform="rotate(${a + 22.5})"><text y="-66" text-anchor="middle" dominant-baseline="central" font-family="Fredoka, sans-serif" font-size="17" font-weight="700" fill="${i === 6 ? "#ff6b6b" : "#fff"}">${l}</text></g>`; a += 45; });
+  const art4 = `<svg viewBox="-120 -130 240 250"><g class="a-spin"><circle r="104" fill="#0f2a3d"/>${wheel}</g><circle r="26" fill="#fff" stroke="#0f2a3d" stroke-width="5"/><path d="M-16 -126 H16 L0 -92 Z" fill="#e8452c" stroke="#0f2a3d" stroke-width="4" stroke-linejoin="round"/></svg>`;
+  const art5 = `<div class="cards-art"><div class="c1"><small>1st time</small>Warning</div><div class="c2"><small>2nd time</small>−2 points</div><div class="c3"><small>3rd time</small>Skip a turn</div><div class="c4"><small>Quiet &amp; kind</small>+1 point</div></div>`;
+  const art6 = `<div class="pts-list"><div>Correct answer <b>+1</b></div><div>Hit a ship <b>+1</b></div><div>Sink a ship <b>+2</b></div><div>Prize wheel <b>?</b></div></div>`;
+  return [
+    ["Find the hidden ships!", ["The teacher hid some ships on the sea.", "Your team must find them and sink them."], art1],
+    ["Pick a square", ["On your turn, pick a square.", "Then answer a question."], art2],
+    ["Right answer? FIRE!", ["Correct: you fire at your square. Boom!", "Wrong: no shot. Next team!"], art3],
+    ["Sink a ship, spin the wheel!", ["Hit every part of a ship to sink it.", "Then spin for a prize. Most prizes are good. A few are bad!"], art4],
+    ["Teacher's cards", ["Too noisy? The teacher gives your team a card.", "Quiet and kind teams get +1 point!"], art5],
+    ["How to win", ["The team with the most points wins!", "Talk quietly with your team, then answer."], art6],
+  ];
+}
+let iIdx = 0, iAfter = null, iBuilt = false;
+function openIntro(after) {
+  if (!iBuilt) {
+    const sl = introSlides();
+    $("iSlides").innerHTML = sl.map(([h, says, art]) => `<div class="slide"><div class="txt"><h2>${h}</h2>${says.map(x => `<p class="say">${x}</p>`).join("")}</div><div class="art">${art}</div></div>`).join("");
+    $("iDots").innerHTML = sl.map(() => "<i></i>").join("");
+    iBuilt = true;
+  }
+  iAfter = after || null;
+  $("intro").hidden = false;
+  showSlide(0);
+}
+function showSlide(i) {
+  const slides = $("iSlides").children, n = slides.length;
+  iIdx = Math.max(0, Math.min(n - 1, i));
+  Array.from(slides).forEach(s => s.classList.remove("on"));
+  void $("iSlides").offsetWidth;
+  slides[iIdx].classList.add("on");
+  Array.from($("iDots").children).forEach((d, j) => d.classList.toggle("on", j === iIdx));
+  $("iStep").textContent = `How to play · ${iIdx + 1} of ${n}`;
+  $("btnIBack").style.visibility = iIdx ? "visible" : "hidden";
+  $("btnINext").textContent = iIdx === n - 1 ? "Let's play!" : "Next";
+  $("btnINext").focus();
+}
+function closeIntro() { $("intro").hidden = true; const f = iAfter; iAfter = null; if (f) f(); }
 
 /* ----- Sound (made in the browser, no files) ----- */
 let AC = null;
@@ -1311,6 +1825,12 @@ function sfx(kind) {
     else if (kind === "bad") { tone(220, 0, .25, "square", .12); tone(165, .18, .35, "square", .12); }
     else if (kind === "boom") { noise(.9, 500, "lowpass", 1.2); tone(70, 0, .6, "sine", .5); }
     else if (kind === "splash") { noise(.6, 1500, "highpass", .5); }
+    else if (kind === "sink") { noise(1.6, 260, "lowpass", 1.6); tone(55, 0, 1.4, "sine", .6); tone(90, .05, .8, "sawtooth", .12); [0, 1, 2, 3, 4, 5].forEach(i => tone(280 + Math.random() * 380, 1.1 + i * .12, .08, "sine", .12)); }
+    else if (kind === "tick") { tone(1500, 0, .03, "square", .05); }
+    else if (kind === "prize") { [784, 988, 1175, 1568].forEach((f, i) => tone(f, i * .09, .25, "triangle", .2)); }
+    else if (kind === "oops") { tone(392, 0, .22, "sawtooth", .1); tone(330, .2, .22, "sawtooth", .1); tone(247, .4, .5, "sawtooth", .1); }
+    else if (kind === "card") { tone(2100, 0, .14, "sine", .18); tone(2100, .2, .4, "sine", .18); }
+    else if (kind === "praise") { [1047, 1319, 1568, 2093].forEach((f, i) => tone(f, i * .08, .3, "sine", .16)); }
     else if (kind === "win") { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .14, .35, "triangle", .22)); }
   } catch {}
 }
@@ -1343,6 +1863,7 @@ function renderSetup() {
   seg("segTimer", TIMERS.map(t => [t, t ? t + " seconds" : "No timer"]), prefs.timer, v => { prefs.timer = +v; savePrefs(); renderSetup(); });
   seg("segSet", [["tri", "Triangles", "Grade 5"], ["ang", "Angles", "Grade 3"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
   seg("segLook", Object.entries(LOOKS).map(([k, name]) => [k, `<span class="look-sw ${k}"></span>${name}`]), lookFor(prefs.set), v => { prefs.looks = Object.assign({}, prefs.looks, { [prefs.set]: v }); savePrefs(); renderSetup(); });
+  seg("segIntro", [[1, "Show before the game"], [0, "Skip"]], prefs.intro, v => { prefs.intro = +v; savePrefs(); renderSetup(); });
   $("teamNamesField").hidden = prefs.teams === 1;
   $("teamNames").innerHTML = Array.from({ length: prefs.teams }, (_, i) => `<input id="tn${i}" maxlength="18" style="--tc:${TEAM_DEFAULT[i][1]}" value="${esc(prefs.names[i] || TEAM_DEFAULT[i][0])}" aria-label="Team ${i + 1} name">`).join("");
   $("teamNames").querySelectorAll("input").forEach((inp, i) => inp.oninput = () => { prefs.names[i] = inp.value.trim() || TEAM_DEFAULT[i][0]; savePrefs(); });
@@ -1361,12 +1882,13 @@ function savePrefs() { store.set(STORE + "-prefs", prefs); }
 
 /* ----- Events ----- */
 $("customText").addEventListener("input", (e) => { prefs.custom = e.target.value; savePrefs(); customStatus(); });
-$("btnStart").onclick = () => { sfx("none"); newGame(); };
+$("btnStart").onclick = () => { sfx("none"); newGame(); if (prefs.intro) openIntro(); };
 $("btnResume").onclick = () => { const g = store.get(STORE + "-game"); if (g) { S = g; showGame(); } };
 $("board").addEventListener("click", (e) => {
   const b = e.target.closest(".cell"); if (!b || !S || S.over || b.dataset.s) return;
   if (!$("qOverlay").hidden) return;
   aim = [+b.dataset.r, +b.dataset.c];
+  if (S.free) { S.free = false; renderBoard(); setTimeout(fire, 250); return; }
   renderBoard();
   setTimeout(openQuestion, 250);
 });
@@ -1374,6 +1896,13 @@ $("qOpts").addEventListener("click", (e) => { const b = e.target.closest(".opt")
 $("btnCancel").onclick = cancelQuestion;
 $("btnSwap").onclick = swapQuestion;
 document.addEventListener("keydown", (e) => {
+  if (!$("intro").hidden) {
+    if (e.key === "ArrowRight") { e.preventDefault(); iIdx === $("iSlides").children.length - 1 ? closeIntro() : showSlide(iIdx + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); showSlide(iIdx - 1); }
+    else if (e.key === "Escape") closeIntro();
+    return;
+  }
+  if (!$("teacherOverlay").hidden) { if (e.key === "Escape") $("teacherOverlay").hidden = true; return; }
   if ($("qOverlay").hidden || !curQ) return;
   if (!locked) {
     const i = "12345".indexOf(e.key) >= 0 ? "12345".indexOf(e.key) : "abcde".indexOf(e.key.toLowerCase());
@@ -1402,6 +1931,24 @@ $("btnNew").onclick = () => {
   $("game").hidden = true; $("setup").hidden = false; renderSetup();
 };
 $("btnAgain").onclick = () => newGame();
+$("btnEnd").onclick = () => {
+  const btn = $("btnEnd");
+  if (!S) return;
+  if (S.over) { win(); return; }
+  if (!endArm) { endArm = 1; btn.textContent = "Click again: end now"; btn.classList.add("warn"); setTimeout(() => { if (endArm) { endArm = 0; btn.textContent = "End game"; btn.classList.remove("warn"); } }, 3000); return; }
+  endArm = 0; btn.textContent = "End game"; btn.classList.remove("warn");
+  win(true);
+};
+$("btnTeacher").onclick = openTeacher;
+$("btnTClose").onclick = () => { $("teacherOverlay").hidden = true; };
+$("btnUndo").onclick = undoTeacher;
+$("tRows").addEventListener("click", (e) => { const b = e.target.closest("[data-a]"); if (b) teacherAct(b.dataset.a, +b.dataset.i); });
+$("btnSpin").onclick = doSpin;
+$("btnSpinOk").onclick = closeSpin;
+$("btnHow").onclick = () => openIntro();
+$("btnISkip").onclick = closeIntro;
+$("btnIBack").onclick = () => showSlide(iIdx - 1);
+$("btnINext").onclick = () => { iIdx === $("iSlides").children.length - 1 ? closeIntro() : showSlide(iIdx + 1); };
 $("btnSetup").onclick = () => { $("winOverlay").hidden = true; $("game").hidden = true; $("setup").hidden = false; renderSetup(); };
 $("btnLook").onclick = () => { $("winOverlay").hidden = true; S.revealed = true; render(); };
 
