@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Triangle Sea Battle</title>
+<meta name="description" content="Classroom sea battle: answer a question correctly to fire at the teacher's hidden fleet.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: one screen for a projector. Sea chart on the left, scoreboard + fleet log on the right.
+   Single committed light look (projectors wash out dark themes). */
+:root {
+  color-scheme: light;
+  --paper: #eaf3f6;
+  --sea: #cfe5ee;
+  --sea-deep: #a9d0df;
+  --ink: #0f2a3d;
+  --ink-soft: #4b6678;
+  --line: #9cc2d2;
+  --card: #ffffff;
+  --brass: #f2b233;
+  --signal: #e8452c;
+  --hull: #34495a;
+  --good: #188f61;
+  --bad: #cf3446;
+  --display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-weight: 700;
+  font-size: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(255,255,255,.7), transparent 40%),
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(15,42,61,.035) 39px 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, rgba(15,42,61,.035) 39px 40px);
+}
+*, *::before, *::after { box-sizing: border-box; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 4px solid var(--brass); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; letter-spacing: .01em; text-wrap: balance; }
+
+/* ---------- Setup ---------- */
+#setup { min-height: 100%; display: flex; align-items: center; justify-content: center; padding-block: 24px; }
+.setup-card {
+  width: min(980px, 100%);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px;
+  background: var(--card); border: 3px solid var(--ink); border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--ink); padding: clamp(18px, 3vw, 36px);
+}
+.hero { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.hero h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); line-height: .95; color: var(--ink); }
+.hero h1 span { color: var(--signal); display: block; }
+.hero svg { width: 100%; max-width: 340px; height: auto; }
+.howto { margin: 0; padding-left: 1.2em; color: var(--ink-soft); line-height: 1.5; font-size: 1.05rem; }
+.howto b { color: var(--ink); }
+.settings { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field > .label { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); font-weight: 900; }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button {
+  border: 2.5px solid var(--ink); background: var(--card); border-radius: 12px;
+  padding: 8px 14px; font-weight: 800; font-size: 1rem;
+}
+.seg button small { display: block; font-size: .72rem; color: var(--ink-soft); font-weight: 700; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.seg button[aria-pressed="true"] small { color: #cfe5ee; }
+.team-names { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.team-names input {
+  width: 100%; font: inherit; font-weight: 800; padding: 8px 10px; border-radius: 10px;
+  border: 2.5px solid var(--tc, var(--ink)); background: #fff; color: var(--ink);
+}
+details.custom { border: 2px dashed var(--line); border-radius: 12px; padding: 10px 12px; }
+details.custom summary { cursor: pointer; font-weight: 800; }
+details.custom p { margin: 8px 0; color: var(--ink-soft); font-size: .92rem; line-height: 1.45; }
+details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5px; font-size: .88rem; }
+#customText {
+  width: 100%; min-height: 130px; font: 600 .95rem/1.45 ui-monospace, Menlo, Consolas, monospace;
+  border: 2px solid var(--line); border-radius: 10px; padding: 8px; color: var(--ink); background: #fff;
+}
+#customStatus { font-size: .9rem; font-weight: 800; }
+.start-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.btn-big {
+  font-family: var(--display); font-size: 1.6rem; letter-spacing: .02em;
+  padding: 12px 26px; border-radius: 16px; border: 3px solid var(--ink);
+  background: var(--signal); color: #fff; box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .08s, box-shadow .08s;
+}
+.btn-big:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.btn-big.alt { background: var(--card); color: var(--ink); }
+
+/* ---------- Game ---------- */
+#game { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; padding-block: 10px; }
+.topbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.topbar h2 { font-size: clamp(1.3rem, 2.2vw, 1.9rem); margin-right: auto; }
+.topbar h2 span { color: var(--signal); }
+.tool {
+  border: 2.5px solid var(--ink); background: var(--card); border-radius: 10px;
+  padding: 6px 12px; font-weight: 800; font-size: .95rem;
+}
+.tool.warn { background: var(--signal); color: #fff; }
+.play { display: grid; grid-template-columns: minmax(0, 1fr) clamp(250px, 25vw, 360px); gap: 18px; min-height: 0; }
+.board-wrap { display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0; }
+.board {
+  --n: 8;
+  width: min(100%, calc(100dvh - 110px)); aspect-ratio: 1; max-width: 100%;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: .55fr repeat(var(--n), 1fr);
+  grid-template-rows: .55fr repeat(var(--n), 1fr);
+  gap: 3px;
+}
+.board.shake { animation: shake .45s; }
+@keyframes shake { 20% { transform: translate(-6px, 2px); } 40% { transform: translate(5px, -3px); } 60% { transform: translate(-3px, 2px); } 80% { transform: translate(2px, -1px); } }
+.lbl {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); color: var(--ink-soft);
+  font-size: calc(100cqi / (var(--n) + .55) * .36);
+}
+.cell {
+  position: relative; border: none; padding: 0; border-radius: 6px;
+  background: var(--sea);
+  background-image: radial-gradient(circle at 30% 25%, rgba(255,255,255,.55), transparent 55%);
+  box-shadow: inset 0 -3px 0 var(--sea-deep);
+  transition: background-color .15s, transform .1s;
+  font-family: var(--display); font-size: calc(100cqi / (var(--n) + .55) * .42);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.cell:hover:not([data-s]) { background-color: #b8dceb; transform: scale(1.04); }
+.cell.aim { background-color: var(--brass); box-shadow: inset 0 0 0 4px var(--ink); }
+.cell.aim::after { content: "+"; color: var(--ink); font-size: 1.6em; line-height: 1; }
+.cell[data-s] { cursor: default; }
+.cell[data-s="miss"] { background: #e3f0f4; box-shadow: none; }
+.cell[data-s="miss"]::after {
+  content: ""; width: 26%; height: 26%; border-radius: 50%; background: var(--line);
+}
+.cell[data-s="hit"] { background: var(--hull); box-shadow: inset 0 0 0 3px var(--signal); }
+.cell[data-s="hit"]::after { content: "✕"; color: var(--signal); font-size: 1.15em; font-family: var(--body); font-weight: 900; }
+.cell[data-s="sunk"] { background: var(--hull); box-shadow: inset 0 -4px 0 #1d2b36; }
+.cell[data-s="sunk"]::after { content: "✕"; color: #ff9a85; font-size: .95em; font-family: var(--body); font-weight: 900; opacity: .9; }
+.cell[data-s="reveal"] { background: #7f97a8; box-shadow: inset 0 0 0 2px var(--hull); }
+.fx { position: absolute; inset: 0; pointer-events: none; }
+.fx.boom { background: radial-gradient(circle, #fff6c2 0 15%, var(--brass) 30%, var(--signal) 55%, transparent 70%); animation: boom .6s ease-out forwards; }
+.fx.splash { border-radius: 50%; border: 4px solid #fff; animation: splash .7s ease-out forwards; }
+@keyframes boom { from { transform: scale(.2); opacity: 1; } to { transform: scale(2.2); opacity: 0; } }
+@keyframes splash { from { transform: scale(.1); opacity: 1; } to { transform: scale(1.3); opacity: 0; } }
+
+.side { display: flex; flex-direction: column; gap: 14px; min-height: 0; overflow-y: auto; padding-right: 2px; }
+.panel { background: var(--card); border: 3px solid var(--ink); border-radius: 16px; padding: 12px 14px; }
+.panel h3 { font-size: 1.15rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.panel h3 small { font-family: var(--body); font-weight: 800; font-size: .85rem; color: var(--ink-soft); }
+.teams { display: flex; flex-direction: column; gap: 8px; }
+.team {
+  display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 12px; border: 2.5px solid transparent;
+}
+.team .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--tc); }
+.team .nm { font-weight: 900; font-size: 1.15rem; min-width: 0; overflow-wrap: anywhere; }
+.team .nm small { display: block; font-size: .78rem; color: var(--ink-soft); font-weight: 700; }
+.team .pts { font-family: var(--display); font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--tc); }
+.team.now { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 12%, #fff); }
+.team.now .nm::after {
+  content: "YOUR TURN"; display: inline-block; margin-left: 6px; vertical-align: 2px;
+  font-size: .62rem; letter-spacing: .1em; background: var(--tc); color: #fff; padding: 2px 6px; border-radius: 6px;
+}
+.legend { font-size: .78rem; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.4; }
+.fleet { display: flex; flex-direction: column; gap: 7px; }
+.ship { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-weight: 800; }
+.ship .segs { display: flex; gap: 3px; flex-shrink: 0; }
+.ship .segs i { width: 16px; height: 16px; border-radius: 4px; background: var(--hull); display: block; }
+.ship .segs i.h { background: var(--signal); }
+.ship.sunk .nm { text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: var(--signal); color: var(--ink-soft); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; }
+.stats div { background: var(--paper); border-radius: 10px; padding: 6px 2px; }
+.stats b { display: block; font-family: var(--display); font-size: 1.5rem; font-weight: 400; font-variant-numeric: tabular-nums; }
+.stats span { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); }
+.hint { color: var(--ink-soft); font-size: .95rem; text-align: center; margin: 0; }
+
+/* ---------- Question ---------- */
+.overlay {
+  position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  background: rgba(15, 42, 61, .55);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.qbox {
+  width: min(1180px, 100%); max-height: 100%; overflow-y: auto;
+  background: var(--card); border: 4px solid var(--ink); border-radius: 24px; box-shadow: 10px 10px 0 var(--ink);
+  padding: clamp(16px, 2.6vw, 34px); display: flex; flex-direction: column; gap: 18px;
+  animation: pop .22s ease-out;
+}
+@keyframes pop { from { transform: scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+.qhead { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.qteam { font-family: var(--display); font-size: clamp(1.2rem, 2vw, 1.7rem); color: #fff; background: var(--tc); padding: 4px 14px; border-radius: 12px; }
+.qcoord { font-family: var(--display); font-size: clamp(1.2rem, 2vw, 1.7rem); background: var(--brass); padding: 4px 14px; border-radius: 12px; }
+.qnum { color: var(--ink-soft); margin-right: auto; }
+.timer { width: 100%; height: 10px; border-radius: 6px; background: var(--paper); overflow: hidden; }
+.timer i { display: block; height: 100%; width: 100%; background: var(--good); transform-origin: left; }
+.qbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: center; }
+.qbody.has-fig { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.fig { background: var(--paper); border-radius: 18px; padding: 10px; display: flex; justify-content: center; }
+.fig svg { width: 100%; height: auto; max-height: 46vh; }
+.qmain { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.qtext { font-size: clamp(1.6rem, 3.1vw, 2.7rem); line-height: 1.2; font-weight: 900; margin: 0; text-wrap: balance; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.opt {
+  display: flex; align-items: center; gap: 14px; text-align: left;
+  border: 3px solid var(--ink); background: #fff; border-radius: 16px; padding: 12px 16px;
+  font-size: clamp(1.25rem, 2.3vw, 2rem); font-weight: 900; line-height: 1.15; min-height: 3.2em;
+  box-shadow: 0 4px 0 var(--ink); transition: transform .08s, box-shadow .08s, background .15s;
+}
+.opt:hover:not(:disabled) { background: #fff6dd; }
+.opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.opt .k {
+  flex-shrink: 0; width: 1.7em; height: 1.7em; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  background: var(--ink); color: #fff; font-family: var(--display); font-weight: 400; font-size: .8em;
+}
+.opt:disabled { cursor: default; }
+.opt.right { background: #d8f5e7; border-color: var(--good); box-shadow: 0 4px 0 var(--good); }
+.opt.right .k { background: var(--good); }
+.opt.wrong { background: #fde0e3; border-color: var(--bad); box-shadow: 0 4px 0 var(--bad); }
+.opt.wrong .k { background: var(--bad); }
+.opt.dim { opacity: .45; }
+.feedback { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 14px 18px; border-radius: 16px; }
+.feedback.ok { background: #d8f5e7; color: #0d5a3c; }
+.feedback.no { background: #fde0e3; color: #8a1c2a; }
+.feedback .big { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.4rem); }
+.feedback .why { font-size: clamp(1.05rem, 1.7vw, 1.4rem); flex: 1 1 260px; min-width: 0; }
+.feedback .btn-big { font-size: 1.3rem; padding: 8px 18px; }
+.qfoot { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.link { background: none; border: none; color: var(--ink-soft); text-decoration: underline; font-weight: 800; padding: 4px; }
+
+/* ---------- Banner + win ---------- */
+.banner {
+  position: fixed; left: 50%; top: 38%; z-index: 30; transform: translate(-50%, -50%);
+  font-family: var(--display); font-size: clamp(2rem, 6vw, 5rem); color: #fff; text-align: center;
+  background: var(--signal); border: 5px solid var(--ink); border-radius: 22px; padding: 14px 34px;
+  box-shadow: 8px 8px 0 var(--ink); pointer-events: none; max-width: calc(100% - 32px);
+  animation: bannerIn .35s cubic-bezier(.2, 1.6, .5, 1);
+}
+.banner.miss { background: #fff; color: var(--ink); }
+.banner small { display: block; font-size: .4em; font-family: var(--body); font-weight: 900; }
+@keyframes bannerIn { from { transform: translate(-50%, -50%) scale(.3) rotate(-6deg); opacity: 0; } }
+.winbox { text-align: center; align-items: center; }
+.winbox h2 { font-size: clamp(2.4rem, 6vw, 4.6rem); color: var(--signal); }
+.rank { display: flex; flex-direction: column; gap: 8px; width: min(520px, 100%); }
+.rank .team { font-size: 1.2rem; text-align: left; }
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 40; width: 100%; height: 100%; }
+.confirm-tip { color: var(--bad); font-weight: 900; }
+
+@media (max-width: 860px) {
+  .setup-card { grid-template-columns: minmax(0, 1fr); }
+  #game { height: auto; }
+  .play { grid-template-columns: minmax(0, 1fr); }
+  .board { width: 100%; }
+  .qbody.has-fig { grid-template-columns: minmax(0, 1fr); }
+  .fig svg { max-height: 34vh; }
+}
+@media (max-width: 520px) { .opts { grid-template-columns: minmax(0, 1fr); } .team-names { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="setup">
+  <div class="setup-card">
+    <section class="hero">
+      <h1>Triangle<span>Sea Battle</span></h1>
+      <svg viewBox="0 0 340 170" role="img" aria-label="A sailboat made of triangles">
+        <path d="M0 150 Q 42 138 85 150 T 170 150 T 255 150 T 340 150 V170 H0Z" fill="#cfe5ee"/>
+        <polygon points="160,20 160,118 92,118" fill="#e8452c" stroke="#0f2a3d" stroke-width="4" stroke-linejoin="round"/>
+        <rect x="160" y="104" width="14" height="14" fill="none" stroke="#0f2a3d" stroke-width="3" transform="translate(-14 0)"/>
+        <polygon points="168,34 236,118 168,118" fill="#f2b233" stroke="#0f2a3d" stroke-width="4" stroke-linejoin="round"/>
+        <polygon points="168,10 196,18 168,26" fill="#2563c9" stroke="#0f2a3d" stroke-width="3" stroke-linejoin="round"/>
+        <line x1="164" y1="10" x2="164" y2="124" stroke="#0f2a3d" stroke-width="5" stroke-linecap="round"/>
+        <path d="M70 126 H262 L236 152 H96 Z" fill="#34495a" stroke="#0f2a3d" stroke-width="4" stroke-linejoin="round"/>
+      </svg>
+      <ol class="howto">
+        <li>The teacher's ships are <b>hidden</b> on the sea.</li>
+        <li>Pick a square. Answer the question <b>correctly</b> to fire!</li>
+        <li>Wrong answer? No shot this time.</li>
+        <li><b>Sink every ship</b> to win.</li>
+      </ol>
+    </section>
+    <section class="settings">
+      <div class="field"><span class="label">Teams</span><div class="seg" id="segTeams"></div></div>
+      <div class="field" id="teamNamesField"><span class="label">Team names</span><div class="team-names" id="teamNames"></div></div>
+      <div class="field"><span class="label">Sea size</span><div class="seg" id="segSize"></div></div>
+      <div class="field"><span class="label">Time to answer</span><div class="seg" id="segTimer"></div></div>
+      <div class="field"><span class="label">Questions</span><div class="seg" id="segSet"></div></div>
+      <details class="custom" id="customBox">
+        <summary>Write my own questions</summary>
+        <p>One question per line: <code>question | right answer | wrong answer | wrong answer</code>. You can add 1 to 3 wrong answers. Saved on this computer only.</p>
+        <textarea id="customText" spellcheck="false" placeholder="What is 7 × 8? | 56 | 54 | 64 | 48&#10;What is the past tense of &quot;go&quot;? | went | goed | gone"></textarea>
+        <div id="customStatus"></div>
+      </details>
+      <div class="start-row">
+        <button class="btn-big" id="btnStart">Start game</button>
+        <button class="btn-big alt" id="btnResume" hidden>Continue last game</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="game" hidden>
+  <header class="topbar">
+    <h2>Triangle <span>Sea Battle</span></h2>
+    <button class="tool" id="btnSound">Sound: on</button>
+    <button class="tool" id="btnFull">Full screen</button>
+    <button class="tool" id="btnReveal">Reveal ships</button>
+    <button class="tool" id="btnNew">New game</button>
+  </header>
+  <div class="play">
+    <div class="board-wrap"><div class="board" id="board"></div></div>
+    <aside class="side">
+      <div class="panel" id="teamsPanel"><h3>Score</h3><div class="teams" id="teams"></div>
+        <p class="legend">Correct answer +1 · Hit +1 · Sink a ship +2</p></div>
+      <div class="panel"><h3>Teacher's fleet <small id="shipsLeft"></small></h3><div class="fleet" id="fleet"></div></div>
+      <div class="panel"><div class="stats">
+        <div><b id="stShots">0</b><span>Shots</span></div>
+        <div><b id="stHits">0</b><span>Hits</span></div>
+        <div><b id="stQ">0</b><span>Questions</span></div>
+      </div></div>
+      <p class="hint" id="hint">Pick a square to aim.</p>
+    </aside>
+  </div>
+</div>
+
+<div class="overlay" id="qOverlay" hidden>
+  <div class="qbox" role="dialog" aria-modal="true" aria-labelledby="qText">
+    <div class="qhead">
+      <span class="qteam" id="qTeam"></span>
+      <span class="qcoord" id="qCoord"></span>
+      <span class="qnum" id="qNum"></span>
+    </div>
+    <div class="timer" id="qTimer" hidden><i id="qTimerBar"></i></div>
+    <div class="qbody" id="qBody">
+      <div class="fig" id="qFig" hidden></div>
+      <div class="qmain">
+        <p class="qtext" id="qText"></p>
+        <div class="opts" id="qOpts"></div>
+      </div>
+    </div>
+    <div class="feedback" id="qFeedback" hidden></div>
+    <div class="qfoot" id="qFoot">
+      <button class="link" id="btnSwap">Different question</button>
+      <button class="link" id="btnCancel">Choose another square</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="winOverlay" hidden>
+  <div class="qbox winbox">
+    <h2 id="winTitle">Fleet destroyed!</h2>
+    <p class="qtext" id="winSub" style="font-size:clamp(1.2rem,2.2vw,1.8rem)"></p>
+    <div class="rank" id="winRank"></div>
+    <div class="start-row" style="justify-content:center">
+      <button class="btn-big" id="btnAgain">Play again</button>
+      <button class="btn-big alt" id="btnSetup">Settings</button>
+      <button class="btn-big alt" id="btnLook">See the sea</button>
+    </div>
+  </div>
+</div>
+<canvas id="confetti" hidden></canvas>
+
+<script>
+"use strict";
+/* =====================================================================
+   PART 1 · CONTENT (swap this part to make a game about another topic)
+   ===================================================================== */
+const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const DEG = "°";
+
+// Fixed questions about words and rules. a = right answer, w = wrong answers, e = short reason.
+const BANK = [
+  { q: "A triangle has three equal sides. What kind of triangle is it?", a: "Equilateral", w: ["Isosceles", "Scalene", "Obtuse"], e: "Equi- means equal: all three sides are equal." },
+  { q: "A triangle has two equal sides. What kind of triangle is it?", a: "Isosceles", w: ["Equilateral", "Scalene", "Acute"], e: "Isosceles triangles have two equal sides." },
+  { q: "A triangle has no equal sides. What kind of triangle is it?", a: "Scalene", w: ["Equilateral", "Isosceles", "Right"], e: "Scalene triangles have three different sides." },
+  { q: "A triangle has one right angle. What kind of triangle is it?", a: "Right", w: ["Acute", "Obtuse", "Equilateral"], e: "One 90° angle makes a right triangle." },
+  { q: "A triangle has one obtuse angle. What kind of triangle is it?", a: "Obtuse", w: ["Acute", "Right", "Equilateral"], e: "One angle bigger than 90° makes an obtuse triangle." },
+  { q: "All three angles of a triangle are acute. What kind of triangle is it?", a: "Acute", w: ["Obtuse", "Right", "Scalene"], e: "Three angles smaller than 90° make an acute triangle." },
+  { q: "How many degrees is a right angle?", a: "90°", w: ["45°", "100°", "180°"], e: "A right angle is a square corner: 90°." },
+  { q: "An acute angle is…", a: "less than 90°", w: ["exactly 90°", "more than 90°", "exactly 180°"], e: "Acute angles are smaller than a right angle." },
+  { q: "An obtuse angle is…", a: "more than 90° but less than 180°", w: ["less than 90°", "exactly 90°", "exactly 180°"], e: "Obtuse angles are bigger than a right angle." },
+  { q: "The three angles of a triangle add up to…", a: "180°", w: ["90°", "270°", "360°"], e: "Angle A + angle B + angle C = 180°." },
+  { q: "What is the formula for the area of a triangle?", a: "A = (b × h) ÷ 2", w: ["A = b × h", "A = b + h", "A = (b + h) × 2"], e: "Area = base times height, divided by 2." },
+  { q: "In the formula A = (b × h) ÷ 2, what does b stand for?", a: "base", w: ["angle", "area", "degree"], e: "b is the base." },
+  { q: "In the formula A = (b × h) ÷ 2, what does h stand for?", a: "height", w: ["half", "hundred", "side"], e: "h is the height." },
+  { q: "Which unit can we use for area?", a: "cm²", w: ["cm", "°", "kg"], e: "Area uses square units like cm² or m²." },
+  { q: "Each angle of an equilateral triangle is…", a: "60°", w: ["30°", "90°", "180°"], e: "180° ÷ 3 = 60°." },
+  { q: "Can a triangle have two right angles?", a: "No", w: ["Yes"], e: "90° + 90° = 180°, so there is nothing left for the third angle." },
+  { q: "Can a triangle have two obtuse angles?", a: "No", w: ["Yes"], e: "Two obtuse angles add up to more than 180°." },
+  { q: "Can a right triangle also be isosceles?", a: "Yes", w: ["No"], e: "Angles 90°, 45°, 45° make a right isosceles triangle." },
+  { q: "An equilateral triangle is always…", a: "acute", w: ["right", "obtuse", "scalene"], e: "All its angles are 60°, so they are all acute." },
+  { q: "The perimeter of a triangle is…", a: "the sum of its three sides", w: ["base × height", "(b × h) ÷ 2", "its longest side"], e: "Perimeter = side + side + side." },
+  { q: "The height of a triangle makes a ___ angle with the base.", a: "right", w: ["acute", "obtuse", "straight"], e: "The height is perpendicular to the base: 90°." },
+  { q: "In an isosceles triangle, the two base angles are…", a: "equal", w: ["different", "both 90°", "both obtuse"], e: "Equal sides face equal angles." },
+  { q: "In a right triangle, the other two angles add up to…", a: "90°", w: ["180°", "45°", "100°"], e: "180° − 90° = 90°." },
+  { q: "The corner where two sides meet is called a…", a: "vertex", w: ["base", "height", "side"], e: "A triangle has 3 vertices." },
+  { q: "How many vertices does a triangle have?", a: "3", w: ["2", "4", "6"], e: "Tri- means three: 3 sides, 3 angles, 3 vertices." },
+  { q: "Which word is spelled correctly?", a: "isosceles", w: ["isoceles", "isoscelese", "issosceles"], e: "i-s-o-s-c-e-l-e-s" },
+  { q: "Which word is spelled correctly?", a: "equilateral", w: ["equalateral", "equilaterral", "eqilateral"], e: "e-q-u-i-l-a-t-e-r-a-l" },
+  { q: "Which word is spelled correctly?", a: "scalene", w: ["scaline", "skalene", "scalen"], e: "s-c-a-l-e-n-e" },
+  { q: "Which word is spelled correctly?", a: "obtuse", w: ["optuse", "obtouse", "obtuce"], e: "o-b-t-u-s-e" },
+  { q: "\"Equi-\" in the word \"equilateral\" means…", a: "equal", w: ["three", "angle", "side"], e: "Equi- = equal, lateral = side." },
+  { q: "\"Tri-\" in the word \"triangle\" means…", a: "three", w: ["two", "four", "corner"], e: "Tri- = three: tricycle, triangle." },
+  { q: "Which triangle has a \"square corner\"?", a: "Right", w: ["Acute", "Obtuse", "Equilateral"], e: "A square corner is a right angle." },
+  { q: "A triangle has angles of 60°, 60° and 60°. Which names fit?", a: "Equilateral and acute", w: ["Scalene and right", "Isosceles and obtuse", "Equilateral and right"], e: "Equal angles mean equal sides, and 60° is acute." },
+  { q: "A triangle is half of a ___ with the same base and height.", a: "rectangle", w: ["circle", "cube", "line"], e: "That is why we divide by 2 in the area formula." },
+  { q: "An angle of 90° is called…", a: "a right angle", w: ["an acute angle", "an obtuse angle", "a straight angle"], e: "90° = right angle." },
+];
+
+// ----- Triangle drawing -----
+function figureSVG(P, o = {}) {
+  // P: three points [x,y] in math coordinates (y up). o: sideLabels[ab,bc,ca], angleLabels[A,B,C], rightAt, height, hl
+  const W = 340, H = 250, pad = 46;
+  const xs = P.map(p => p[0]), ys = P.map(p => p[1]);
+  const minx = Math.min(...xs), maxx = Math.max(...xs), miny = Math.min(...ys), maxy = Math.max(...ys);
+  const k = Math.min((W - 2 * pad) / (maxx - minx || 1), (H - 2 * pad) / (maxy - miny || 1));
+  const offx = (W - (maxx - minx) * k) / 2, offy = (H - (maxy - miny) * k) / 2;
+  const T = ([x, y]) => [offx + (x - minx) * k, H - offy - (y - miny) * k];
+  const Q = P.map(T);
+  const G = [(Q[0][0] + Q[1][0] + Q[2][0]) / 3, (Q[0][1] + Q[1][1] + Q[2][1]) / 3];
+  const ink = "#0f2a3d", sig = "#e8452c";
+  const txt = (x, y, s, c = ink, size = 20) => `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" fill="${c}" font-size="${size}" font-family="Nunito, sans-serif" font-weight="900" text-anchor="middle" dominant-baseline="central">${s}</text>`;
+  let out = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="triangle">`;
+  out += `<polygon points="${Q.map(q => q.join(",")).join(" ")}" fill="#ffffff" stroke="${ink}" stroke-width="4" stroke-linejoin="round"/>`;
+  const unit = (a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1; return [dx / L, dy / L]; };
+  if (o.height) {
+    // apex C (index 2) down to base AB (y equal)
+    const C = Q[2], foot = [C[0], Q[0][1]];
+    out += `<line x1="${C[0]}" y1="${C[1]}" x2="${foot[0]}" y2="${foot[1]}" stroke="${sig}" stroke-width="3" stroke-dasharray="8 6"/>`;
+    out += `<polyline points="${foot[0]},${foot[1] - 13} ${foot[0] + 13},${foot[1] - 13} ${foot[0] + 13},${foot[1]}" fill="none" stroke="${sig}" stroke-width="2.5"/>`;
+    const mid = (C[1] + foot[1]) / 2;
+    out += txt(foot[0] - 8, mid, o.height, sig, 19).replace('text-anchor="middle"', 'text-anchor="end"');
+  }
+  if (o.rightAt != null) {
+    const v = Q[o.rightAt], a = Q[(o.rightAt + 1) % 3], b = Q[(o.rightAt + 2) % 3];
+    const u1 = unit(v, a), u2 = unit(v, b), s = 16;
+    const p1 = [v[0] + u1[0] * s, v[1] + u1[1] * s], p3 = [v[0] + u2[0] * s, v[1] + u2[1] * s], p2 = [p1[0] + u2[0] * s, p1[1] + u2[1] * s];
+    out += `<polyline points="${p1.join(",")} ${p2.join(",")} ${p3.join(",")}" fill="none" stroke="${ink}" stroke-width="2.5"/>`;
+  }
+  if (o.sideLabels) {
+    [[0, 1], [1, 2], [2, 0]].forEach(([i, j], n) => {
+      const lab = o.sideLabels[n]; if (!lab) return;
+      const m = [(Q[i][0] + Q[j][0]) / 2, (Q[i][1] + Q[j][1]) / 2];
+      const d = unit(G, m);
+      const anchor = d[0] < -.35 ? "end" : d[0] > .35 ? "start" : "middle";
+      out += txt(m[0] + d[0] * 14, m[1] + d[1] * 20, lab, ink, 19).replace('text-anchor="middle"', `text-anchor="${anchor}"`);
+    });
+  }
+  if (o.angleLabels) {
+    o.angleLabels.forEach((lab, i) => {
+      if (!lab) return;
+      const v = Q[i], u1 = unit(v, Q[(i + 1) % 3]), u2 = unit(v, Q[(i + 2) % 3]);
+      let b = [u1[0] + u2[0], u1[1] + u2[1]]; const L = Math.hypot(b[0], b[1]) || 1; b = [b[0] / L, b[1] / L];
+      const ang = Math.acos(Math.max(-1, Math.min(1, u1[0] * u2[0] + u1[1] * u2[1])));
+      const d = Math.max(36, Math.min(64, 22 / Math.sin(ang / 2)));
+      const isQ = lab === "?";
+      out += txt(v[0] + b[0] * d, v[1] + b[1] * d, lab, isQ ? sig : ink, isQ ? 26 : 18);
+    });
+  }
+  return out + "</svg>";
+}
+// Points from side lengths: base AB = c, AC = b, BC = a
+function ptsFromSides(c, b, a) {
+  const x = (b * b + c * c - a * a) / (2 * c), y = Math.sqrt(Math.max(0, b * b - x * x));
+  return [[0, 0], [c, 0], [x, y]];
+}
+// Points from angles at A, B, C
+function ptsFromAngles(A, B, C) {
+  const r = Math.PI / 180, a = Math.sin(A * r), b = Math.sin(B * r), c = Math.sin(C * r);
+  return ptsFromSides(c, b, a);
+}
+
+// ----- Generated questions -----
+function numOpts(correct, cands, fmt) {
+  const set = new Set([correct]);
+  for (const c of shuffle(cands)) { if (set.size >= 4) break; if (c > 0 && Number.isInteger(c) && !set.has(c)) set.add(c); }
+  let step = 1; while (set.size < 4) { const c = correct + (Math.random() < .5 ? -1 : 1) * step * rand(1, 3); if (c > 0) set.add(c); step++; }
+  const arr = [...set].sort((x, y) => x - y);
+  return { options: arr.map(fmt), answer: arr.indexOf(correct) };
+}
+function randAngles(type) {
+  let A, B, C;
+  if (type === "right") { A = 90; B = rand(5, 13) * 5; C = 90 - B; }
+  else if (type === "obtuse") { A = rand(20, 25) * 5; const rest = 180 - A; B = rand(5, rest / 5 - 5) * 5; C = rest - B; }
+  else { do { A = rand(9, 17) * 5; B = rand(9, 17) * 5; C = 180 - A - B; } while (C < 40 || C > 85); }
+  return [A, B, C];
+}
+function arrangeAngles(ang) {
+  // big angle goes on top (C) or at bottom-left (A) so the picture stays readable
+  const [big, x, y] = ang;
+  return big > 90 || Math.random() < .5 ? [x, y, big] : [big, x, y];
+}
+const SIDE_TYPES = ["Equilateral", "Isosceles", "Scalene"];
+const ANGLE_TYPES = ["Acute", "Right", "Obtuse"];
+
+const GEN = {
+  sides(pic) {
+    const t = pick(SIDE_TYPES); let s;
+    if (t === "Equilateral") { const a = rand(3, 12); s = [a, a, a]; }
+    else if (t === "Isosceles") { let a, b; do { a = rand(4, 12); b = rand(3, 14); } while (b === a || b >= 2 * a - 1); s = [b, a, a]; }
+    else { do { s = shuffle([rand(3, 12), rand(3, 12), rand(3, 12)]); } while (new Set(s).size < 3 || Math.max(...s) * 2 >= s[0] + s[1] + s[2] - 1); }
+    const u = pick(["cm", "cm", "m", "dm"]);
+    const why = t === "Equilateral" ? `All three sides are ${s[0]} ${u}.` : t === "Isosceles" ? `Two sides are equal (${s[1]} ${u} and ${s[2]} ${u}).` : "All three sides are different.";
+    const q = { options: SIDE_TYPES.slice(), answer: SIDE_TYPES.indexOf(t), explain: why };
+    if (pic) {
+      const [c, b, a] = s; // base, AC, BC
+      q.text = "Look at the sides. What kind of triangle is this?";
+      q.figure = figureSVG(ptsFromSides(c, b, a), { sideLabels: [`${c} ${u}`, `${a} ${u}`, `${b} ${u}`] });
+    } else {
+      const o = shuffle(s);
+      q.text = `A triangle has sides of ${o[0]} ${u}, ${o[1]} ${u} and ${o[2]} ${u}. What kind of triangle is it?`;
+    }
+    return q;
+  },
+  angles(pic) {
+    const t = pick(ANGLE_TYPES), ang = randAngles(t.toLowerCase());
+    const big = ang[0];
+    const why = t === "Right" ? "One angle is 90°." : t === "Obtuse" ? `${big}° is more than 90°.` : "All three angles are less than 90°.";
+    const q = { options: ANGLE_TYPES.slice(), answer: ANGLE_TYPES.indexOf(t), explain: why };
+    if (pic) {
+      const arr = arrangeAngles(ang);
+      q.text = "Look at the angles. What kind of triangle is this?";
+      q.figure = figureSVG(ptsFromAngles(...arr), { angleLabels: arr.map(a => a + DEG), rightAt: arr.indexOf(90) >= 0 ? arr.indexOf(90) : null });
+    } else {
+      const o = shuffle(ang);
+      q.text = `A triangle has angles of ${o[0]}°, ${o[1]}° and ${o[2]}°. What kind of triangle is it?`;
+    }
+    return q;
+  },
+  missing(pic) {
+    const ang = arrangeAngles(randAngles(pick(["acute", "right", "obtuse"])));
+    const hide = rand(0, 2), ans = ang[hide], others = ang.filter((_, i) => i !== hide);
+    const q = numOpts(ans, [ans + 10, ans - 10, others[0] + others[1], 180 - others[0], ans + 20, 90 - others[0]], v => v + DEG);
+    q.explain = `180° − ${others[0]}° − ${others[1]}° = ${ans}°`;
+    if (pic) {
+      q.text = "What is the missing angle?";
+      q.figure = figureSVG(ptsFromAngles(...ang), { angleLabels: ang.map((a, i) => i === hide ? "?" : a + DEG), rightAt: ang[hide] !== 90 && ang.indexOf(90) >= 0 ? ang.indexOf(90) : null });
+    } else {
+      q.text = `Two angles of a triangle are ${others[0]}° and ${others[1]}°. What is the third angle?`;
+    }
+    return q;
+  },
+  area(pic) {
+    let b, h; do { b = rand(4, 20); h = rand(3, 14); } while ((b * h) % 2);
+    const u = pick(["cm", "cm", "m", "dm"]), A = b * h / 2;
+    const right = Math.random() < .3;
+    const q = numOpts(A, [b * h, b + h, A + b, A - h, (b + h) * 2, A * 2 + 2], v => `${v} ${u}²`);
+    q.explain = `A = (${b} × ${h}) ÷ 2 = ${A} ${u}²`;
+    if (pic) {
+      q.text = "What is the area of this triangle?";
+      const ratio = Math.max(.35, Math.min(1.1, h / b));
+      if (right) {
+        q.figure = figureSVG([[0, 0], [10, 0], [0, 10 * ratio]], { sideLabels: [`${b} ${u}`, null, `${h} ${u}`], rightAt: 0 });
+        q.text = "The two sides that make the right angle are the base and the height. What is the area?";
+      } else {
+        const apex = 10 * (rand(58, 78) / 100);
+        q.figure = figureSVG([[0, 0], [10, 0], [apex, 10 * ratio]], { sideLabels: [`${b} ${u}`, null, null], height: `${h} ${u}` });
+      }
+    } else {
+      q.text = right
+        ? `A right triangle has two shorter sides of ${b} ${u} and ${h} ${u}. What is its area?`
+        : `A triangle has a base of ${b} ${u} and a height of ${h} ${u}. What is its area?`;
+    }
+    return q;
+  },
+  findSide() {
+    let b, h; do { b = rand(4, 16); h = rand(3, 12); } while ((b * h) % 2 || b === h);
+    const A = b * h / 2, u = pick(["cm", "m", "dm"]), askBase = Math.random() < .5;
+    const ans = askBase ? b : h, given = askBase ? h : b;
+    const q = numOpts(ans, [A / given, A - given, ans + 2, ans * 2, ans - 2], v => `${v} ${u}`);
+    q.text = askBase
+      ? `The area of a triangle is ${A} ${u}². Its height is ${h} ${u}. What is its base?`
+      : `The area of a triangle is ${A} ${u}². Its base is ${b} ${u}. What is its height?`;
+    q.explain = `${askBase ? "base" : "height"} = (${A} × 2) ÷ ${given} = ${ans} ${u}`;
+    return q;
+  },
+  perimeter(pic) {
+    const kind = pick(["any", "any", "equi", "iso"]), u = pick(["cm", "m", "dm"]);
+    let q;
+    if (kind === "equi") {
+      const a = rand(3, 15), P = a * 3;
+      q = numOpts(P, [a, a * 2, a * a, P + 3], v => `${v} ${u}`);
+      q.text = `An equilateral triangle has one side of ${a} ${u}. What is its perimeter?`;
+      q.explain = `All sides are equal: ${a} × 3 = ${P} ${u}`;
+    } else if (kind === "iso") {
+      let a, b; do { a = rand(4, 12); b = rand(3, 12); } while (a === b || b >= 2 * a);
+      const P = a * 2 + b;
+      q = numOpts(P, [a + b, b * 2 + a, P + 2, P - 2], v => `${v} ${u}`);
+      q.text = `An isosceles triangle has two equal sides of ${a} ${u} and a third side of ${b} ${u}. What is its perimeter?`;
+      q.explain = `${a} + ${a} + ${b} = ${P} ${u}`;
+    } else {
+      let s; do { s = [rand(3, 15), rand(3, 15), rand(3, 15)]; } while (Math.max(...s) * 2 >= s[0] + s[1] + s[2] - 1);
+      const P = s[0] + s[1] + s[2];
+      q = numOpts(P, [P + 1, P - 1, P + 2, P - 2, s[0] + s[1]], v => `${v} ${u}`);
+      q.explain = `${s[0]} + ${s[1]} + ${s[2]} = ${P} ${u}`;
+      if (pic) {
+        q.text = "What is the perimeter of this triangle?";
+        q.figure = figureSVG(ptsFromSides(s[0], s[1], s[2]), { sideLabels: [`${s[0]} ${u}`, `${s[2]} ${u}`, `${s[1]} ${u}`] });
+      } else q.text = `The sides of a triangle are ${s[0]} ${u}, ${s[1]} ${u} and ${s[2]} ${u}. What is its perimeter?`;
+    }
+    return q;
+  },
+  angleWord() {
+    const t = pick(["acute", "right", "obtuse"]);
+    const x = t === "right" ? 90 : t === "acute" ? rand(2, 17) * 5 : rand(19, 34) * 5;
+    const opts = ["acute", "right", "obtuse"];
+    return { text: `An angle of ${x}° is…`, options: opts.map(o => (o === "acute" ? "an " : "a ") + o + " angle"), answer: opts.indexOf(t), explain: t === "right" ? "90° is a right angle." : t === "acute" ? `${x}° is less than 90°.` : `${x}° is more than 90°.` };
+  },
+};
+
+let bankDeck = [];
+function bankQuestion() {
+  if (!bankDeck.length) bankDeck = shuffle(BANK);
+  const it = bankDeck.pop();
+  const opts = shuffle([it.a, ...it.w]);
+  return { text: it.q, options: opts, answer: opts.indexOf(it.a), explain: it.e ? `${it.a}. ${it.e}` : it.a };
+}
+const KINDS = [["bank", 30], ["sides", 12], ["angles", 12], ["missing", 12], ["area", 16], ["perimeter", 8], ["findSide", 5], ["angleWord", 5]];
+let lastKind = "";
+function triangleQuestion() {
+  let kind;
+  do {
+    let r = Math.random() * KINDS.reduce((s, k) => s + k[1], 0);
+    kind = KINDS.find(k => (r -= k[1]) < 0)[0];
+  } while (kind === lastKind && kind !== "bank");
+  lastKind = kind;
+  return kind === "bank" ? bankQuestion() : GEN[kind](Math.random() < .6);
+}
+
+// Custom questions from the teacher's textarea
+function parseCustom(text) {
+  return text.split("\n").map(l => l.split("|").map(s => s.trim())).filter(p => p.length >= 3 && p[0] && p[1] && p.slice(2).some(Boolean))
+    .map(p => ({ q: p[0], a: p[1], w: p.slice(2, 5).filter(Boolean) }));
+}
+let customDeck = [];
+function customQuestion(list) {
+  if (!customDeck.length) customDeck = shuffle(list);
+  const it = customDeck.pop(), opts = shuffle([it.a, ...it.w]);
+  return { text: it.q, options: opts, answer: opts.indexOf(it.a), explain: it.a };
+}
+
+/* =====================================================================
+   PART 2 · GAME
+   ===================================================================== */
+const SIZES = {
+  S: { n: 6, ships: [3, 2, 2], label: "Small", note: "6 × 6 · about 30 questions" },
+  M: { n: 8, ships: [4, 3, 3, 2], label: "Medium", note: "8 × 8 · about 50 questions" },
+  L: { n: 10, ships: [5, 4, 3, 3, 2], label: "Large", note: "10 × 10 · 70+ questions" },
+};
+const SHIP_NAMES = { tri: ["Equilateral", "Isosceles", "Scalene", "Obtuse", "Right Angle"], custom: ["Flagship", "Cruiser", "Destroyer", "Submarine", "Patrol Boat"] };
+const TEAM_DEFAULT = [["Sharks", "#2563c9"], ["Dolphins", "#e0661b"], ["Turtles", "#178a5c"], ["Octopus", "#8a43c9"]];
+const TIMERS = [0, 20, 30, 45];
+const COLS = "ABCDEFGHIJ";
+const STORE = "triangle-sea-battle-v1";
+
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+
+let prefs = Object.assign({ teams: 2, size: "S", timer: 0, set: "tri", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true }, store.get(STORE + "-prefs") || {});
+let S = null; // game state
+let aim = null, curQ = null, locked = false, timerId = null, revealArm = 0, newArm = 0;
+
+const $ = (id) => document.getElementById(id);
+const key = (r, c) => r + "," + c;
+
+function placeShips(n, lens) {
+  for (let attempt = 0; attempt < 400; attempt++) {
+    const occ = new Set(), ships = []; let ok = true;
+    for (const len of lens) {
+      let done = false;
+      for (let t = 0; t < 300 && !done; t++) {
+        const hor = Math.random() < .5;
+        const r = rand(0, hor ? n - 1 : n - len), c = rand(0, hor ? n - len : n - 1);
+        const cells = Array.from({ length: len }, (_, i) => hor ? [r, c + i] : [r + i, c]);
+        const free = cells.every(([y, x]) => { for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (occ.has(key(y + dy, x + dx))) return false; return true; });
+        if (free) { cells.forEach(([y, x]) => occ.add(key(y, x))); ships.push(cells); done = true; }
+      }
+      if (!done) { ok = false; break; }
+    }
+    if (ok) return ships;
+  }
+  return null;
+}
+
+function newGame() {
+  const cfg = SIZES[prefs.size];
+  const names = SHIP_NAMES[prefs.set === "custom" ? "custom" : "tri"];
+  const cells = placeShips(cfg.n, cfg.ships);
+  S = {
+    n: cfg.n, set: prefs.set, timer: prefs.timer,
+    ships: cells.map((c, i) => ({ name: names[i], cells: c, hits: 0 })),
+    shots: {}, turn: 0, q: 0, over: false, revealed: false,
+    teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, hits: 0, right: 0, wrong: 0 })),
+  };
+  customDeck = []; bankDeck = [];
+  save();
+  showGame();
+}
+function save() { if (S) store.set(STORE + "-game", S); }
+function shipAt(r, c) { return S.ships.findIndex(s => s.cells.some(([y, x]) => y === r && x === c)); }
+
+/* ----- Rendering ----- */
+function renderBoard() {
+  const b = $("board");
+  b.style.setProperty("--n", S.n);
+  let h = `<div class="lbl"></div>`;
+  for (let c = 0; c < S.n; c++) h += `<div class="lbl">${COLS[c]}</div>`;
+  for (let r = 0; r < S.n; r++) {
+    h += `<div class="lbl">${r + 1}</div>`;
+    for (let c = 0; c < S.n; c++) {
+      const shot = S.shots[key(r, c)];
+      let st = "";
+      if (shot === "hit") st = S.ships[shipAt(r, c)].hits === S.ships[shipAt(r, c)].cells.length ? "sunk" : "hit";
+      else if (shot === "miss") st = "miss";
+      else if (S.revealed && shipAt(r, c) >= 0) st = "reveal";
+      const isAim = aim && aim[0] === r && aim[1] === c;
+      h += `<button class="cell${isAim ? " aim" : ""}" data-r="${r}" data-c="${c}"${st ? ` data-s="${st}"` : ""} aria-label="${COLS[c]}${r + 1}${st ? " " + st : ""}"></button>`;
+    }
+  }
+  b.innerHTML = h;
+}
+function renderSide() {
+  const solo = S.teams.length === 1;
+  $("teams").innerHTML = S.teams.map((t, i) => `<div class="team${!solo && i === S.turn && !S.over ? " now" : ""}" style="--tc:${t.color}">
+    <span class="dot"></span><span class="nm">${esc(t.name)}<small>${t.right} right · ${t.wrong} wrong · ${t.hits} hits</small></span><span class="pts">${t.pts}</span></div>`).join("");
+  const left = S.ships.filter(s => s.hits < s.cells.length).length;
+  $("shipsLeft").textContent = `${left} of ${S.ships.length} left`;
+  $("fleet").innerHTML = S.ships.map(s => {
+    const sunk = s.hits === s.cells.length;
+    // only show which segments are hit once the ship is sunk, so the panel does not give away positions
+    return `<div class="ship${sunk ? " sunk" : ""}"><span class="nm">${s.name}</span><span class="segs">${s.cells.map(() => `<i class="${sunk ? "h" : ""}"></i>`).join("")}</span></div>`;
+  }).join("");
+  const shots = Object.keys(S.shots).length, hits = Object.values(S.shots).filter(v => v === "hit").length;
+  $("stShots").textContent = shots; $("stHits").textContent = hits; $("stQ").textContent = S.q;
+  $("hint").textContent = S.over ? "Game over. Press New game to play again." : solo ? "Pick a square to aim." : `${S.teams[S.turn].name}: pick a square to aim.`;
+}
+function render() { renderBoard(); renderSide(); }
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function showGame() {
+  $("setup").hidden = true; $("game").hidden = false;
+  $("winOverlay").hidden = true; $("qOverlay").hidden = true;
+  aim = null; revealArm = newArm = 0;
+  $("btnReveal").textContent = "Reveal ships"; $("btnNew").textContent = "New game";
+  $("btnReveal").classList.remove("warn"); $("btnNew").classList.remove("warn");
+  $("btnSound").textContent = "Sound: " + (prefs.sound ? "on" : "off");
+  $("teamsPanel").hidden = false;
+  render();
+}
+
+/* ----- Question flow ----- */
+function nextQuestion() {
+  if (S.set === "custom") {
+    const list = parseCustom(prefs.custom);
+    if (list.length) return customQuestion(list);
+  }
+  return triangleQuestion();
+}
+function openQuestion() {
+  curQ = nextQuestion(); locked = false;
+  S.q++;
+  const t = S.teams[S.turn];
+  const box = $("qOverlay");
+  box.style.setProperty("--tc", t.color);
+  $("qTeam").textContent = S.teams.length > 1 ? t.name : "Class";
+  $("qTeam").style.setProperty("--tc", t.color);
+  $("qCoord").textContent = "Aim: " + COLS[aim[1]] + (aim[0] + 1);
+  $("qNum").textContent = "Question " + S.q;
+  $("qText").textContent = curQ.text;
+  const fig = $("qFig");
+  if (curQ.figure) { fig.innerHTML = curQ.figure; fig.hidden = false; $("qBody").classList.add("has-fig"); }
+  else { fig.innerHTML = ""; fig.hidden = true; $("qBody").classList.remove("has-fig"); }
+  const letters = "ABCD";
+  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${letters[i]}</span><span>${esc(o)}</span></button>`).join("");
+  $("qFeedback").hidden = true; $("qFoot").hidden = false;
+  box.hidden = false;
+  startTimer();
+  renderSide();
+  save();
+}
+function startTimer() {
+  clearInterval(timerId);
+  const bar = $("qTimerBar"), wrap = $("qTimer");
+  if (!S.timer) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  const end = Date.now() + S.timer * 1000;
+  bar.style.transform = "scaleX(1)"; bar.style.background = "var(--good)";
+  timerId = setInterval(() => {
+    const left = Math.max(0, end - Date.now()) / (S.timer * 1000);
+    bar.style.transform = `scaleX(${left})`;
+    bar.style.background = left < .25 ? "var(--bad)" : left < .5 ? "var(--brass)" : "var(--good)";
+    if (left <= 0) { clearInterval(timerId); answer(-1); }
+  }, 100);
+}
+function answer(i) {
+  if (locked || !curQ) return;
+  locked = true; clearInterval(timerId);
+  const ok = i === curQ.answer, t = S.teams[S.turn];
+  document.querySelectorAll(".opt").forEach((b, j) => {
+    b.disabled = true;
+    if (j === curQ.answer) b.classList.add("right");
+    else if (j === i) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  $("qFoot").hidden = true;
+  const fb = $("qFeedback");
+  fb.hidden = false;
+  if (ok) {
+    t.right++; t.pts++;
+    fb.className = "feedback ok";
+    fb.innerHTML = `<span class="big">Correct! Fire!</span><span class="why">Firing at ${COLS[aim[1]]}${aim[0] + 1}…</span>`;
+    sfx("good");
+    save();
+    setTimeout(() => { $("qOverlay").hidden = true; fire(); }, 1100);
+  } else {
+    t.wrong++;
+    fb.className = "feedback no";
+    fb.innerHTML = `<span class="big">${i < 0 ? "Time's up!" : "Not this time!"}</span><span class="why">Answer: ${esc(curQ.explain)}</span><button class="btn-big" id="btnNext">${S.teams.length > 1 ? "Next team" : "Continue"}</button>`;
+    sfx("bad");
+    save();
+    $("btnNext").focus();
+    $("btnNext").onclick = () => { $("qOverlay").hidden = true; aim = null; nextTurn(); };
+  }
+}
+function cancelQuestion() {
+  clearInterval(timerId); S.q = Math.max(0, S.q - 1);
+  $("qOverlay").hidden = true; aim = null; curQ = null; render(); save();
+}
+function swapQuestion() { S.q = Math.max(0, S.q - 1); openQuestion(); }
+
+function fire() {
+  const [r, c] = aim, k = key(r, c), idx = shipAt(r, c), t = S.teams[S.turn];
+  let msg, sub = "", hit = idx >= 0, sunk = false;
+  if (hit) {
+    S.shots[k] = "hit"; const s = S.ships[idx]; s.hits++; t.hits++; t.pts++;
+    sunk = s.hits === s.cells.length;
+    if (sunk) { t.pts += 2; msg = `You sank the ${s.name}!`; sub = "+2 bonus"; }
+    else { msg = "HIT!"; sub = "+1"; }
+  } else { S.shots[k] = "miss"; msg = "Splash! Miss."; }
+  aim = null; curQ = null;
+  render();
+  const cell = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+  if (cell) { const fx = document.createElement("span"); fx.className = "fx " + (hit ? "boom" : "splash"); cell.appendChild(fx); }
+  if (hit) { const b = $("board"); b.classList.remove("shake"); void b.offsetWidth; b.classList.add("shake"); }
+  sfx(hit ? "boom" : "splash");
+  banner(msg, sub, !hit);
+  const won = S.ships.every(s => s.hits === s.cells.length);
+  if (won) { S.over = true; save(); setTimeout(win, 1800); renderSide(); return; }
+  nextTurn();
+}
+function nextTurn() { if (S.teams.length > 1) S.turn = (S.turn + 1) % S.teams.length; save(); render(); }
+
+let bannerT;
+function banner(msg, sub, miss) {
+  document.querySelectorAll(".banner").forEach(b => b.remove());
+  const d = document.createElement("div");
+  d.className = "banner" + (miss ? " miss" : "");
+  d.innerHTML = esc(msg) + (sub ? `<small>${esc(sub)}</small>` : "");
+  document.body.appendChild(d);
+  clearTimeout(bannerT); bannerT = setTimeout(() => d.remove(), 1700);
+}
+function win() {
+  const solo = S.teams.length === 1;
+  const ranked = S.teams.slice().sort((a, b) => b.pts - a.pts);
+  const right = S.teams.reduce((s, t) => s + t.right, 0), total = S.teams.reduce((s, t) => s + t.right + t.wrong, 0);
+  $("winTitle").textContent = solo ? "You sank the whole fleet!" : `${ranked[0].pts === (ranked[1] || {}).pts ? "It's a tie!" : ranked[0].name + " win!"}`;
+  $("winSub").textContent = `Fleet destroyed · ${right} of ${total} answers correct`;
+  $("winRank").innerHTML = solo ? "" : ranked.map(t => `<div class="team" style="--tc:${t.color}"><span class="dot"></span><span class="nm">${esc(t.name)}<small>${t.right} right · ${t.hits} hits</small></span><span class="pts">${t.pts}</span></div>`).join("");
+  $("winOverlay").hidden = false;
+  sfx("win"); confetti();
+}
+
+/* ----- Sound (made in the browser, no files) ----- */
+let AC = null;
+function sfx(kind) {
+  if (!prefs.sound) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const now = AC.currentTime;
+    const tone = (f, t0, d, type = "sine", vol = .25) => {
+      const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(vol, now + t0); g.gain.exponentialRampToValueAtTime(.001, now + t0 + d);
+      o.connect(g).connect(AC.destination); o.start(now + t0); o.stop(now + t0 + d);
+    };
+    const noise = (d, freq, type, vol) => {
+      const buf = AC.createBuffer(1, AC.sampleRate * d, AC.sampleRate), ch = buf.getChannelData(0);
+      for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length);
+      const src = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain();
+      src.buffer = buf; f.type = type; f.frequency.value = freq; g.gain.value = vol;
+      src.connect(f).connect(g).connect(AC.destination); src.start();
+    };
+    if (kind === "good") { tone(660, 0, .15, "triangle"); tone(990, .12, .25, "triangle"); }
+    else if (kind === "bad") { tone(220, 0, .25, "square", .12); tone(165, .18, .35, "square", .12); }
+    else if (kind === "boom") { noise(.9, 500, "lowpass", 1.2); tone(70, 0, .6, "sine", .5); }
+    else if (kind === "splash") { noise(.6, 1500, "highpass", .5); }
+    else if (kind === "win") { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .14, .35, "triangle", .22)); }
+  } catch {}
+}
+
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv = $("confetti"), ctx = cv.getContext("2d");
+  cv.hidden = false; cv.width = innerWidth; cv.height = innerHeight;
+  const cols = ["#e8452c", "#f2b233", "#2563c9", "#178a5c", "#8a43c9"];
+  const ps = Array.from({ length: 160 }, () => ({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * .5, vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4, s: 6 + Math.random() * 8, r: Math.random() * 6, c: pick(cols) }));
+  let f = 0;
+  (function step() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ps.forEach(p => { p.x += p.vx; p.y += p.vy; p.r += .1; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c;
+      ctx.beginPath(); ctx.moveTo(0, -p.s / 2); ctx.lineTo(p.s / 2, p.s / 2); ctx.lineTo(-p.s / 2, p.s / 2); ctx.fill(); ctx.restore(); });
+    if (++f < 260) requestAnimationFrame(step); else { cv.hidden = true; }
+  })();
+}
+
+/* ----- Setup screen ----- */
+function seg(id, items, cur, onPick) {
+  const el = $(id);
+  el.innerHTML = items.map(([v, label, note]) => `<button data-v="${v}" aria-pressed="${String(v) === String(cur)}">${label}${note ? `<small>${note}</small>` : ""}</button>`).join("");
+  el.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; onPick(b.dataset.v); };
+}
+function renderSetup() {
+  seg("segTeams", [[1, "Whole class"], [2, "2 teams"], [3, "3 teams"], [4, "4 teams"]], prefs.teams, v => { prefs.teams = +v; savePrefs(); renderSetup(); });
+  seg("segSize", Object.entries(SIZES).map(([k, s]) => [k, s.label, s.note]), prefs.size, v => { prefs.size = v; savePrefs(); renderSetup(); });
+  seg("segTimer", TIMERS.map(t => [t, t ? t + " seconds" : "No timer"]), prefs.timer, v => { prefs.timer = +v; savePrefs(); renderSetup(); });
+  seg("segSet", [["tri", "Triangles", "made for today"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
+  $("teamNamesField").hidden = prefs.teams === 1;
+  $("teamNames").innerHTML = Array.from({ length: prefs.teams }, (_, i) => `<input id="tn${i}" maxlength="18" style="--tc:${TEAM_DEFAULT[i][1]}" value="${esc(prefs.names[i] || TEAM_DEFAULT[i][0])}" aria-label="Team ${i + 1} name">`).join("");
+  $("teamNames").querySelectorAll("input").forEach((inp, i) => inp.oninput = () => { prefs.names[i] = inp.value.trim() || TEAM_DEFAULT[i][0]; savePrefs(); });
+  if ($("customText").value !== prefs.custom) $("customText").value = prefs.custom;
+  customStatus();
+  const g = store.get(STORE + "-game");
+  $("btnResume").hidden = !(g && !g.over && g.ships);
+}
+function customStatus() {
+  const n = parseCustom(prefs.custom).length, el = $("customStatus");
+  el.textContent = n ? `${n} question${n > 1 ? "s" : ""} ready.` : "No questions yet.";
+  el.style.color = n ? "var(--good)" : "var(--ink-soft)";
+  if (prefs.set === "custom" && !n) { el.textContent = "Add at least one question, or the game will use the triangle questions."; el.style.color = "var(--bad)"; }
+}
+function savePrefs() { store.set(STORE + "-prefs", prefs); }
+
+/* ----- Events ----- */
+$("customText").addEventListener("input", (e) => { prefs.custom = e.target.value; savePrefs(); customStatus(); });
+$("btnStart").onclick = () => { sfx("none"); newGame(); };
+$("btnResume").onclick = () => { const g = store.get(STORE + "-game"); if (g) { S = g; showGame(); } };
+$("board").addEventListener("click", (e) => {
+  const b = e.target.closest(".cell"); if (!b || !S || S.over || b.dataset.s) return;
+  if (!$("qOverlay").hidden) return;
+  aim = [+b.dataset.r, +b.dataset.c];
+  renderBoard();
+  setTimeout(openQuestion, 250);
+});
+$("qOpts").addEventListener("click", (e) => { const b = e.target.closest(".opt"); if (b) answer(+b.dataset.i); });
+$("btnCancel").onclick = cancelQuestion;
+$("btnSwap").onclick = swapQuestion;
+document.addEventListener("keydown", (e) => {
+  if ($("qOverlay").hidden || !curQ) return;
+  if (!locked) {
+    const i = "1234".indexOf(e.key) >= 0 ? "1234".indexOf(e.key) : "abcd".indexOf(e.key.toLowerCase());
+    if (i >= 0 && i < curQ.options.length) { e.preventDefault(); answer(i); }
+    if (e.key === "Escape") cancelQuestion();
+  }
+});
+$("btnSound").onclick = () => { prefs.sound = !prefs.sound; savePrefs(); $("btnSound").textContent = "Sound: " + (prefs.sound ? "on" : "off"); };
+$("btnFull").onclick = () => {
+  try {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  } catch {}
+};
+$("btnReveal").onclick = () => {
+  const btn = $("btnReveal");
+  if (S.revealed) { S.revealed = false; btn.textContent = "Reveal ships"; save(); render(); return; }
+  if (!revealArm) { revealArm = 1; btn.textContent = "Click again to reveal"; btn.classList.add("warn"); setTimeout(() => { if (revealArm) { revealArm = 0; btn.textContent = "Reveal ships"; btn.classList.remove("warn"); } }, 3000); return; }
+  revealArm = 0; btn.classList.remove("warn"); S.revealed = true; btn.textContent = "Hide ships"; save(); render();
+};
+$("btnNew").onclick = () => {
+  const btn = $("btnNew");
+  if (!newArm && !S.over) { newArm = 1; btn.textContent = "Click again: end this game"; btn.classList.add("warn"); setTimeout(() => { if (newArm) { newArm = 0; btn.textContent = "New game"; btn.classList.remove("warn"); } }, 3000); return; }
+  newArm = 0; btn.classList.remove("warn"); btn.textContent = "New game";
+  store.set(STORE + "-game", null); S = null;
+  $("game").hidden = true; $("setup").hidden = false; renderSetup();
+};
+$("btnAgain").onclick = () => newGame();
+$("btnSetup").onclick = () => { $("winOverlay").hidden = true; $("game").hidden = true; $("setup").hidden = false; renderSetup(); };
+$("btnLook").onclick = () => { $("winOverlay").hidden = true; S.revealed = true; render(); };
+
+/* ----- Boot (keeps a running game when the page is updated) ----- */
+window.claude?.hot?.snapshot?.(() => ({ S, prefs }));
+function start(data) {
+  if (data && data.prefs) prefs = Object.assign(prefs, data.prefs);
+  renderSetup();
+  if (data && data.S) { S = data.S; showGame(); }
+}
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+</script>
+</body>
+</html>
