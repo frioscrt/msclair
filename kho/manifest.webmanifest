@@ -1,0 +1,10 @@
+{
+  "name": "Kho game của cô Clair",
+  "short_name": "Kho game",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff8ec",
+  "theme_color": "#fff8ec",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

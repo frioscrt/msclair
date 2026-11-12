@@ -89,6 +89,13 @@ details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5
   border: 2px solid var(--line); border-radius: 10px; padding: 8px; color: var(--ink); background: #fff;
 }
 #customStatus { font-size: .9rem; font-weight: 800; }
+.btn-big:disabled { opacity: .45; cursor: default; }
+.settings.tight { gap: 10px; }
+.lib-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#libSel { font: inherit; font-weight: 800; padding: 8px 10px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); max-width: 100%; }
+#libStatus { font-size: .9rem; font-weight: 800; color: var(--ink-soft); }
+.to-kho { font-size: .9rem; font-weight: 800; color: var(--ink-soft); text-decoration: none; align-self: center; }
+.fig img { max-width: 100%; max-height: 40vh; border-radius: 12px; display: block; margin: 0 auto; }
 .start-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
 .btn-big {
   font-family: var(--display); font-size: 1.6rem; letter-spacing: .02em;
@@ -706,7 +713,8 @@ html[data-look="g"] {
       <div class="field" id="teamNamesField"><span class="label">Team names</span><div class="team-names" id="teamNames"></div></div>
       <div class="field"><span class="label">Sea size</span><div class="seg" id="segSize"></div></div>
       <div class="field"><span class="label">Time to answer</span><div class="seg" id="segTimer"></div></div>
-      <div class="field"><span class="label">Questions</span><div class="seg" id="segSet"></div></div>
+      <div class="field"><span class="label">Questions</span><div class="seg" id="segSet"></div>
+        <div class="lib-row" id="libRow" hidden><select id="libSel" aria-label="Question set from the library"></select><span id="libStatus"></span></div></div>
       <div class="field"><span class="label">Look</span><div class="seg" id="segLook"></div></div>
       <div class="field"><span class="label">How to play</span><div class="seg" id="segIntro"></div></div>
       <details class="custom" id="customBox">
@@ -718,6 +726,7 @@ html[data-look="g"] {
       <div class="start-row">
         <button class="btn-big" id="btnStart">Start game</button>
         <button class="btn-big alt" id="btnResume" hidden>Continue last game</button>
+        <a class="to-kho" href="../kho/">← Game library</a>
       </div>
     </section>
   </div>
@@ -833,6 +842,7 @@ html[data-look="g"] {
 </div>
 <canvas id="confetti" hidden></canvas>
 
+<script src="../kho/kho.js"></script>
 <script>
 "use strict";
 /* =====================================================================
@@ -1237,11 +1247,31 @@ const SETS = {
   tri: { title: "Triangle", grade: "Grade 5", accent: "#ff5a36", ships: ["Equilateral", "Isosceles", "Scalene", "Obtuse", "Right Angle"], make: () => triangleQuestion() },
   ang: { title: "Angle", grade: "Grade 3", accent: "#8b5cf6", ships: ["Acute", "Right", "Obtuse", "Straight", "Reflex"], make: () => angleQuestion() },
   custom: { title: "Quiz", grade: "", accent: "#0b9bbf", ships: ["Flagship", "Cruiser", "Destroyer", "Submarine", "Patrol Boat"], make: null },
+  lib: { title: "Quiz", grade: "", accent: "#0b9bbf", ships: ["Flagship", "Cruiser", "Destroyer", "Submarine", "Patrol Boat"], make: () => LIB.deck && LIB.deck.next() },
 };
+
+// Question sets from the shared game library (kho/bo/), read by kho/kho.js
+const LIB = { list: null, id: "", set: null, deck: null, err: "" };
+async function loadLibList() {
+  if (!window.KHO) { LIB.list = []; return; }
+  try { LIB.list = await KHO.list(); } catch (e) { LIB.list = []; LIB.err = "Can't load the library. Check the internet."; }
+}
+async function loadLib(id) {
+  if (!id || !window.KHO) return false;
+  if (LIB.id === id && LIB.deck && LIB.deck.size) return true;
+  try {
+    const set = await KHO.load(id), deck = KHO.deck(set);
+    if (!deck.size) throw new Error("empty");
+    Object.assign(LIB, { id, set, deck, err: "" });
+    SETS.lib.title = set.short || "Quiz";
+    SETS.lib.grade = set.grade ? "Grade " + set.grade : "";
+    return true;
+  } catch (e) { Object.assign(LIB, { id, set: null, deck: null, err: "Can't load this question set. Check the internet." }); return false; }
+}
 
 // Looks the teacher can pick on the setup screen. Each question set starts with its own look.
 const LOOKS = { e: "Pastel notebook", f: "Sticker book", g: "Math notebook" };
-const LOOK_DEFAULT = { tri: "g", ang: "e", custom: "e" };
+const LOOK_DEFAULT = { tri: "g", ang: "e", custom: "e", lib: "e" };
 const lookFor = (set) => (prefs.looks && LOOKS[prefs.looks[set]]) ? prefs.looks[set] : (LOOK_DEFAULT[set] || "e");
 
 /* =====================================================================
@@ -1262,7 +1292,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
 
-let prefs = Object.assign({ teams: 2, size: "S", timer: 0, set: "tri", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true, looks: {}, intro: 1 }, store.get(STORE + "-prefs") || {});
+let prefs = Object.assign({ teams: 2, size: "S", timer: 0, set: "tri", names: TEAM_DEFAULT.map(t => t[0]), custom: "", lib: "", sound: true, looks: {}, intro: 1 }, store.get(STORE + "-prefs") || {});
 let S = null; // game state
 let aim = null, curQ = null, locked = false, timerId = null, revealArm = 0, newArm = 0, endArm = 0;
 
@@ -1300,7 +1330,7 @@ function newGame() {
   const names = (SETS[prefs.set] || SETS.tri).ships;
   const cells = placeShips(cfg.n, cfg.ships);
   S = {
-    n: cfg.n, set: prefs.set, timer: prefs.timer,
+    n: cfg.n, set: prefs.set, lib: prefs.lib, timer: prefs.timer,
     ships: cells.map((c, i) => ({ name: names[i], cells: c, hits: 0 })),
     shots: {}, turn: 0, q: 0, over: false, revealed: false,
     teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, hits: 0, right: 0, wrong: 0, noise: 0, skip: 0 })),
@@ -1368,6 +1398,7 @@ function showGame() {
 
 /* ----- Question flow ----- */
 function nextQuestion() {
+  if (S.set === "lib") return SETS.lib.make() || triangleQuestion();
   if (S.set === "custom") {
     const list = parseCustom(prefs.custom);
     if (list.length) return customQuestion(list);
@@ -1861,7 +1892,8 @@ function renderSetup() {
   seg("segTeams", [[1, "Whole class"], [2, "2 teams"], [3, "3 teams"], [4, "4 teams"]], prefs.teams, v => { prefs.teams = +v; savePrefs(); renderSetup(); });
   seg("segSize", Object.entries(SIZES).map(([k, s]) => [k, s.label, s.note]), prefs.size, v => { prefs.size = v; savePrefs(); renderSetup(); });
   seg("segTimer", TIMERS.map(t => [t, t ? t + " seconds" : "No timer"]), prefs.timer, v => { prefs.timer = +v; savePrefs(); renderSetup(); });
-  seg("segSet", [["tri", "Triangles", "Grade 5"], ["ang", "Angles", "Grade 3"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
+  seg("segSet", [["tri", "Triangles", "Grade 5"], ["ang", "Angles", "Grade 3"], ["custom", "My questions", "written below"], ["lib", "Library", "pick a set"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
+  renderLib();
   seg("segLook", Object.entries(LOOKS).map(([k, name]) => [k, `<span class="look-sw ${k}"></span>${name}`]), lookFor(prefs.set), v => { prefs.looks = Object.assign({}, prefs.looks, { [prefs.set]: v }); savePrefs(); renderSetup(); });
   seg("segIntro", [[1, "Show before the game"], [0, "Skip"]], prefs.intro, v => { prefs.intro = +v; savePrefs(); renderSetup(); });
   $("teamNamesField").hidden = prefs.teams === 1;
@@ -1872,6 +1904,24 @@ function renderSetup() {
   const g = store.get(STORE + "-game");
   $("btnResume").hidden = !(g && !g.over && g.ships);
 }
+function renderLib() {
+  const on = prefs.set === "lib";
+  $("libRow").hidden = !on;
+  document.querySelector(".settings").classList.toggle("tight", on);
+  if (!on) { $("btnStart").disabled = false; return; }
+  if (LIB.list === null) { $("libStatus").textContent = "Loading…"; $("btnStart").disabled = true; loadLibList().then(renderLib); return; }
+  const list = LIB.list.slice();
+  if (prefs.lib && LIB.set && !list.some(s => s.id === prefs.lib)) list.unshift({ id: prefs.lib, title: LIB.set.title, n: LIB.set.questions.length });
+  $("libSel").innerHTML = `<option value="">Choose a set…</option>` + list.map(s => `<option value="${esc(s.id)}" ${s.id === prefs.lib ? "selected" : ""}>${esc(s.title)}${s.n ? " · " + s.n : ""}</option>`).join("");
+  const ready = prefs.lib && LIB.id === prefs.lib && LIB.deck;
+  $("btnStart").disabled = !ready;
+  if (!list.length) $("libStatus").textContent = LIB.err || "No sets in the library yet.";
+  else if (!prefs.lib) $("libStatus").textContent = "";
+  else if (ready) $("libStatus").textContent = LIB.deck.size + " questions ready.";
+  else if (LIB.id === prefs.lib && LIB.err) $("libStatus").textContent = LIB.err;
+  else { $("libStatus").textContent = "Loading…"; loadLib(prefs.lib).then(() => { setTitle(prefs.set); renderLib(); }); }
+}
+$("libSel").addEventListener("change", (e) => { prefs.lib = e.target.value; savePrefs(); renderLib(); });
 function customStatus() {
   const n = parseCustom(prefs.custom).length, el = $("customStatus");
   el.textContent = n ? `${n} question${n > 1 ? "s" : ""} ready.` : "No questions yet.";
@@ -1883,7 +1933,11 @@ function savePrefs() { store.set(STORE + "-prefs", prefs); }
 /* ----- Events ----- */
 $("customText").addEventListener("input", (e) => { prefs.custom = e.target.value; savePrefs(); customStatus(); });
 $("btnStart").onclick = () => { sfx("none"); newGame(); if (prefs.intro) openIntro(); };
-$("btnResume").onclick = () => { const g = store.get(STORE + "-game"); if (g) { S = g; showGame(); } };
+$("btnResume").onclick = async () => {
+  const g = store.get(STORE + "-game"); if (!g) return;
+  if (g.set === "lib" && !(await loadLib(g.lib))) { alert("Can't load this game's question set. Check the internet and try again."); return; }
+  S = g; showGame();
+};
 $("board").addEventListener("click", (e) => {
   const b = e.target.closest(".cell"); if (!b || !S || S.over || b.dataset.s) return;
   if (!$("qOverlay").hidden) return;
@@ -1966,7 +2020,9 @@ function start(data) {
   if (data && data.prefs) prefs = Object.assign(prefs, data.prefs);
   // a link ending in #angles or #triangles opens with that question set chosen
   const h = (location.hash || "").slice(1);
-  if (h === "angles") prefs.set = "ang"; else if (h === "triangles") prefs.set = "tri";
+  if (h === "angles") prefs.set = "ang"; else if (h === "triangles") prefs.set = "tri"; else if (h === "custom") prefs.set = "custom";
+  else if (h.startsWith("bo=")) { prefs.set = "lib"; prefs.lib = decodeURIComponent(h.slice(3)); }
+  if (h) { savePrefs(); history.replaceState(null, "", location.pathname + location.search); }
   renderSetup();
   if (data && data.S) { S = data.S; showGame(); }
 }

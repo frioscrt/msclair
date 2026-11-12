@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kho game của cô Clair</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#fff8ec">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #fff8ec; --card: #fff; --ink: #2d2a32; --muted: #7a7380; --line: #eadfce;
+  --orange: #e56b1c; --orange-l: #fde7d6; --good: #188f61; --good-l: #dcf3e8; --bad: #cf3446; --bad-l: #fbe0e4;
+  --blue: #2563c9; --blue-l: #e2ecfb;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 18px; line-height: 1.45; -webkit-text-size-adjust: 100%; }
+main { max-width: 860px; margin: 0 auto; padding: 24px 16px 120px; }
+a { color: var(--blue); }
+h1 { color: var(--orange); margin: 0; font-size: 1.9em; line-height: 1.15; }
+h2 { font-size: 1.15em; margin: 28px 0 12px; }
+.top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.top p { margin: 4px 0 0; color: var(--muted); }
+.back { font-size: .9em; text-decoration: none; color: var(--muted); white-space: nowrap; }
+nav { display: flex; gap: 8px; margin: 20px 0 4px; flex-wrap: wrap; }
+nav button { font: inherit; font-weight: 700; border: 2px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 18px; cursor: pointer; }
+nav button[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: #fff; }
+.badge { display: inline-block; min-width: 1.5em; padding: 0 6px; margin-left: 6px; border-radius: 999px; background: var(--bad); color: #fff; font-size: .8em; text-align: center; }
+nav button[aria-pressed="true"] .badge { background: #fff; color: var(--orange); }
+button { font: inherit; }
+.btn { font-weight: 700; border: 0; border-radius: 14px; padding: 10px 18px; cursor: pointer; background: var(--orange); color: #fff; text-decoration: none; display: inline-block; text-align: center; }
+.btn.alt { background: var(--card); color: var(--ink); border: 2px solid var(--line); }
+.btn.small { padding: 6px 12px; font-size: .9em; border-radius: 10px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.games { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.game { text-align: left; border: 3px solid transparent; background: var(--card); border-radius: 20px; padding: 16px; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.05), 0 8px 22px rgba(80,50,10,.07); color: inherit; display: flex; gap: 12px; align-items: center; }
+.game img, .game .ico { width: 56px; height: 56px; border-radius: 14px; flex: none; }
+.game .ico { display: grid; place-items: center; font-size: 30px; background: var(--orange-l); }
+.game b { display: block; font-size: 1.08em; }
+.game span { color: var(--muted); font-size: .85em; display: block; }
+.game[aria-pressed="true"] { border-color: var(--orange); }
+.game:disabled { opacity: .55; cursor: default; }
+.rows { display: grid; gap: 10px; }
+.row { background: var(--card); border-radius: 16px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; box-shadow: 0 2px 0 rgba(0,0,0,.04); }
+.row .grow { flex: 1; min-width: 0; }
+.row b { display: block; }
+.row small { color: var(--muted); display: block; }
+.tag { display: inline-block; font-size: .72em; font-weight: 800; border-radius: 999px; padding: 1px 9px; margin-right: 6px; vertical-align: 2px; }
+.tag.pending { background: var(--orange-l); color: #a4470d; }
+.tag.approved { background: var(--good-l); color: var(--good); }
+.tag.builtin { background: var(--blue-l); color: var(--blue); }
+.empty { color: var(--muted); background: var(--card); border-radius: 16px; padding: 16px; }
+.note { color: var(--muted); font-size: .9em; }
+.err { color: var(--bad); font-weight: 700; }
+
+/* Duyệt */
+.rv-head { display: grid; gap: 8px; }
+.rv-head input { font: inherit; font-weight: 800; font-size: 1.2em; border: 2px solid var(--line); border-radius: 12px; padding: 6px 10px; width: 100%; background: var(--card); color: var(--ink); }
+.count { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 12px 0; }
+.count span { background: var(--card); border-radius: 999px; padding: 4px 12px; font-weight: 700; font-size: .9em; }
+.qc { background: var(--card); border-radius: 18px; padding: 14px 16px; margin-bottom: 12px; border: 3px solid transparent; }
+.qc.keep { border-color: var(--good); }
+.qc.drop { opacity: .5; border-color: var(--bad); }
+.qc .meta { display: flex; justify-content: space-between; color: var(--muted); font-size: .8em; font-weight: 800; }
+.qc .qt { font-weight: 800; font-size: 1.05em; margin: 6px 0 8px; white-space: pre-wrap; }
+.qc img { max-width: 220px; max-height: 160px; border-radius: 10px; display: block; margin-bottom: 8px; }
+.pill { display: inline-block; border-radius: 10px; padding: 3px 10px; margin: 0 6px 6px 0; font-size: .92em; background: #f3eee6; }
+.pill.ok { background: var(--good-l); color: var(--good); font-weight: 800; }
+.pill.ok::before { content: "✓ "; }
+.why { color: var(--muted); font-style: italic; font-size: .9em; margin-top: 2px; }
+.pairs { border-collapse: collapse; margin-bottom: 6px; }
+.pairs td { padding: 3px 12px 3px 0; }
+.pairs td:first-child { font-weight: 800; }
+.acts { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.acts button { font-weight: 800; border-radius: 12px; padding: 8px 18px; cursor: pointer; border: 2px solid var(--line); background: var(--card); color: var(--ink); min-width: 76px; }
+.acts .k[aria-pressed="true"] { background: var(--good); border-color: var(--good); color: #fff; }
+.acts .d[aria-pressed="true"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+.edited { color: var(--blue); }
+.form { display: grid; gap: 8px; margin-top: 8px; }
+.form label { font-size: .85em; font-weight: 800; color: var(--muted); display: grid; gap: 3px; }
+.form input, .form textarea { font: inherit; font-size: .95em; border: 2px solid var(--line); border-radius: 10px; padding: 6px 9px; width: 100%; color: var(--ink); background: #fffdf9; }
+.form textarea { min-height: 3.2em; resize: vertical; }
+.form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bar { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,248,236,.96); border-top: 2px solid var(--line); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; z-index: 5; }
+.bar .btn { padding: 12px 26px; font-size: 1.05em; }
+
+/* Chìa khoá */
+.panel { background: var(--card); border-radius: 18px; padding: 16px; margin-bottom: 14px; }
+.panel input { font: inherit; border: 2px solid var(--line); border-radius: 10px; padding: 8px 10px; width: 100%; margin: 8px 0; }
+.panel ol { padding-left: 1.3em; margin: 8px 0; }
+.panel li { margin-bottom: 8px; }
+.status { font-weight: 800; }
+.status.ok { color: var(--good); }
+code { background: #f3eee6; border-radius: 6px; padding: 1px 6px; font-size: .9em; }
+
+dialog { border: 0; border-radius: 20px; padding: 20px; max-width: min(560px, calc(100vw - 32px)); width: 100%; color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+dialog::backdrop { background: rgba(40,30,20,.45); }
+dialog h3 { margin: 0 0 8px; }
+dialog textarea { width: 100%; min-height: 160px; font: 13px/1.4 ui-monospace, Menlo, monospace; border: 2px solid var(--line); border-radius: 10px; padding: 8px; }
+.dlg-acts { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 14px; }
+@media (max-width: 520px) { body { font-size: 17px; } .form .two { grid-template-columns: 1fr; } .row { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div><h1>Kho game</h1><p>Chọn game, chọn bộ câu hỏi, rồi chơi trên màn hình lớn.</p></div>
+    <a class="back" href="../">← App học</a>
+  </div>
+  <nav>
+    <button data-tab="play" aria-pressed="true">Chơi</button>
+    <button data-tab="review">Duyệt<span class="badge" id="pendingBadge" hidden>0</span></button>
+    <button data-tab="key">Chìa khoá</button>
+  </nav>
+
+  <!-- CHƠI -->
+  <section id="tab-play">
+    <h2>1. Chọn game</h2>
+    <div class="games" id="games"></div>
+    <div id="pickSet" hidden>
+      <h2>2. Chọn bộ câu hỏi</h2>
+      <div class="rows" id="setRows"></div>
+    </div>
+  </section>
+
+  <!-- DUYỆT: danh sách -->
+  <section id="tab-review" hidden>
+    <h2>Chờ duyệt</h2>
+    <div class="rows" id="pendingRows"></div>
+    <h2>Đã duyệt</h2>
+    <p class="note">Muốn sửa hay bỏ bớt câu của một bộ đã duyệt thì bấm "Sửa lại".</p>
+    <div class="rows" id="approvedRows"></div>
+  </section>
+
+  <!-- DUYỆT: một bộ -->
+  <section id="tab-set" hidden>
+    <p><button class="btn alt small" id="rvBack">← Danh sách</button></p>
+    <div class="rv-head">
+      <label class="note" for="rvTitle">Tên bộ (sửa được)</label>
+      <input id="rvTitle" maxlength="80">
+      <div class="note" id="rvInfo"></div>
+    </div>
+    <div class="count" id="rvCount"></div>
+    <div id="rvList"></div>
+  </section>
+
+  <!-- CHÌA KHOÁ -->
+  <section id="tab-key" hidden>
+    <div class="panel">
+      <h2 style="margin-top:0">Chìa khoá GitHub trên máy này</h2>
+      <p class="status" id="keyStatus"></p>
+      <p class="note">Chỉ máy dùng để <b>duyệt</b> mới cần chìa khoá. Máy chỉ để chơi thì không cần. Chìa khoá chỉ nằm trong trình duyệt của máy này, không gửi đi đâu ngoài GitHub.</p>
+      <div id="keyForm">
+        <label for="keyInput"><b>Dán chìa khoá vào đây</b> (bắt đầu bằng <code>github_pat_</code>)</label>
+        <input id="keyInput" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_...">
+        <button class="btn" id="keySave">Lưu và thử chìa khoá</button>
+      </div>
+      <p><button class="btn alt" id="keyDel" hidden>Xoá chìa khoá khỏi máy này</button></p>
+    </div>
+    <div class="panel">
+      <h2 style="margin-top:0">Cách tạo chìa khoá (làm một lần)</h2>
+      <p class="note">Làm trên máy tính hoặc iPad, mở bằng Safari/Chrome, đã đăng nhập GitHub tài khoản <b>frioscrt</b>. Chìa khoá này chỉ được ghi vào đúng repo <b>msclair</b>, không đụng được repo khác.</p>
+      <ol>
+        <li>Mở trang <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">tạo chìa khoá mới của GitHub</a> (bấm vào chữ xanh này, tớ đã gắn sẵn link). GitHub có thể hỏi lại mật khẩu, cậu cứ nhập.</li>
+        <li>Ô <b>Token name</b>: gõ tên dễ nhớ, ví dụ <code>Kho game iPad</code>.</li>
+        <li>Ô <b>Expiration</b> (hạn dùng): chọn <b>1 year</b> hoặc <b>Custom</b> rồi chọn ngày xa nhất. Hết hạn thì làm lại các bước này.</li>
+        <li>Mục <b>Repository access</b>: chọn <b>Only select repositories</b>, rồi bấm ô <b>Select repositories</b> và chọn <b>frioscrt/msclair</b>.</li>
+        <li>Mục <b>Permissions</b> → <b>Repository permissions</b>: tìm dòng <b>Contents</b>, đổi từ "No access" thành <b>Read and write</b>. Các dòng khác để nguyên (dòng Metadata tự thành Read-only, không sao).</li>
+        <li>Kéo xuống cuối, bấm nút xanh <b>Generate token</b>, rồi bấm <b>Generate token</b> lần nữa nếu GitHub hỏi lại.</li>
+        <li>GitHub hiện một dãy chữ bắt đầu bằng <code>github_pat_</code>. Bấm nút chép (hình hai tờ giấy) cạnh dãy đó. Dãy này chỉ hiện <b>một lần</b>.</li>
+        <li>Quay lại trang kho này, mục <b>Chìa khoá</b>, dán vào ô ở trên (chạm giữ vào ô → Dán), bấm <b>Lưu và thử chìa khoá</b>. Hiện chữ xanh "Chìa khoá dùng được" là xong.</li>
+      </ol>
+      <p class="note">Đừng gửi dãy chữ này cho ai, kể cả dán vào chat với Claude.</p>
+    </div>
+    <div class="panel">
+      <h2 style="margin-top:0">Khi mất máy hoặc lỡ để lộ chìa khoá</h2>
+      <ol>
+        <li>Mở trang <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener">danh sách chìa khoá của GitHub</a>.</li>
+        <li>Bấm vào tên chìa khoá (ví dụ "Kho game iPad"), kéo xuống cuối, bấm <b>Delete</b> rồi xác nhận. Chìa khoá hết tác dụng ngay, kể cả trên máy bị mất.</li>
+        <li>Muốn duyệt tiếp trên máy khác thì tạo chìa khoá mới theo các bước ở trên.</li>
+      </ol>
+      <p class="note">Chỉ thôi dùng một máy (không mất) thì bấm "Xoá chìa khoá khỏi máy này" ở trên là đủ.</p>
+    </div>
+  </section>
+</main>
+
+<div class="bar" id="rvBar" hidden>
+  <button class="btn alt" id="rvKeepAll">Giữ hết câu chưa xem</button>
+  <button class="btn" id="rvDone">Duyệt xong</button>
+</div>
+
+<dialog id="dlg"><div id="dlgBody"></div><div class="dlg-acts" id="dlgActs"></div></dialog>
+
+<script src="kho.js"></script>
+<script>
+"use strict";
+const OWNER = "frioscrt", REPO = "msclair", BRANCH = "main", DIR = "kho/bo/";
+const KEY = "kho-chia-khoa", DRAFT = "kho-duyet:", RECENT = "kho-vua-duyet";
+const $ = (id) => document.getElementById(id);
+const esc = KHO.esc;
+const ls = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+
+/* ---------- Game trong kho ---------- */
+// builtin: bộ câu hỏi có sẵn trong code của game (không nằm ở kho/bo/)
+const GAMES = [
+  { id: "sea", name: "Sea Battle", note: "Bắn tàu, trả lời đúng mới được bắn", icon: "../sea-battle/icon.svg", url: (id) => "../sea-battle/#bo=" + encodeURIComponent(id),
+    builtin: [
+      { title: "Triangles · Grade 5", note: "Tam giác lớp 5, câu tự sinh có hình", url: "../sea-battle/#triangles" },
+      { title: "Angles · Grade 3", note: "Góc lớp 3, có hình góc và đồng hồ", url: "../sea-battle/#angles" },
+      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "../sea-battle/#custom" },
+    ] },
+  { id: "box", name: "Hộp bí ẩn", note: "Sắp có", emoji: "🎁", soon: true },
+  { id: "boat", name: "Đua thuyền", note: "Sắp có", emoji: "⛵", soon: true },
+];
+
+let sets = [], game = null;
+
+/* Bộ vừa duyệt trên máy này: GitHub Pages cần 1–2 phút mới cập nhật, nên tạm hiện bản mới từ máy */
+function mergeRecent(list) {
+  const rec = ls.get(RECENT) || {}, now = Date.now();
+  let changed = false;
+  for (const [id, r] of Object.entries(rec)) {
+    const cur = list.find((s) => s.id === id);
+    if (now - r.at > 30 * 60e3 || (cur && cur.updated === r.entry.updated)) { delete rec[id]; changed = true; continue; }
+    if (cur) Object.assign(cur, r.entry); else list.push(Object.assign({}, r.entry));
+  }
+  if (changed) ls.set(RECENT, rec);
+  return list;
+}
+async function loadSet(id) {
+  const r = (ls.get(RECENT) || {})[id];
+  try {
+    const s = await KHO.load(id);
+    return r && Date.now() - r.at < 30 * 60e3 && r.set.updated !== s.updated ? r.set : s;
+  } catch (e) { if (r) return r.set; throw e; }
+}
+
+async function refresh() {
+  try { sets = mergeRecent(await KHO.list({ all: true })); }
+  catch (e) { sets = []; $("setRows").innerHTML = $("pendingRows").innerHTML = `<p class="err">Không tải được danh sách bộ câu hỏi. Kiểm tra mạng rồi tải lại trang.</p>`; }
+  const n = sets.filter((s) => s.status === "pending").length;
+  $("pendingBadge").hidden = !n; $("pendingBadge").textContent = n;
+  renderGames(); renderReviewList();
+}
+const fmtDate = (iso) => { if (!iso) return ""; const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("vi-VN"); };
+const setLine = (s) => [s.subject, s.grade ? "lớp " + s.grade : "", s.book, s.n ? s.n + " câu" : ""].filter(Boolean).join(" · ");
+
+function renderGames() {
+  $("games").innerHTML = GAMES.map((g) => `<button class="game" data-g="${g.id}" aria-pressed="${game === g.id}" ${g.soon ? "disabled" : ""}>
+    ${g.icon ? `<img src="${g.icon}" alt="">` : `<span class="ico">${g.emoji}</span>`}<div><b>${esc(g.name)}</b><span>${esc(g.note)}</span></div></button>`).join("");
+  const g = GAMES.find((x) => x.id === game);
+  $("pickSet").hidden = !g;
+  if (!g) return;
+  const lib = sets.filter((s) => s.status === "approved");
+  $("setRows").innerHTML =
+    lib.map((s) => `<div class="row"><div class="grow"><b><span class="tag approved">kho</span>${esc(s.title)}</b><small>${esc(setLine(s))}</small></div><a class="btn" href="${g.url(s.id)}">Chơi</a></div>`).join("") +
+    (lib.length ? "" : `<div class="empty">Kho chưa có bộ nào đã duyệt. Bộ mới Claude soạn nằm ở mục <b>Duyệt</b>; duyệt xong sẽ hiện ở đây.</div>`) +
+    (g.builtin || []).map((b) => `<div class="row"><div class="grow"><b><span class="tag builtin">có sẵn</span>${esc(b.title)}</b><small>${esc(b.note)}</small></div><a class="btn alt" href="${b.url}">Chơi</a></div>`).join("");
+}
+$("games").onclick = (e) => { const b = e.target.closest(".game"); if (!b || b.disabled) return; game = b.dataset.g; renderGames(); $("pickSet").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
+
+/* ---------- Tab ---------- */
+function showTab(t) {
+  ["play", "review", "set", "key"].forEach((x) => $("tab-" + x).hidden = x !== t);
+  document.querySelectorAll("nav button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tab === t || (t === "set" && b.dataset.tab === "review"))));
+  $("rvBar").hidden = t !== "set";
+  if (t === "key") renderKey();
+  window.scrollTo(0, 0);
+}
+document.querySelector("nav").onclick = (e) => { const b = e.target.closest("button"); if (b) { if (b.dataset.tab === "review") refresh(); showTab(b.dataset.tab); } };
+
+/* ---------- Danh sách duyệt ---------- */
+function renderReviewList() {
+  const row = (s, label) => `<div class="row"><div class="grow"><b><span class="tag ${s.status}">${s.status === "pending" ? "chờ duyệt" : "đã duyệt"}</span>${esc(s.title)}</b><small>${esc(setLine(s))}${s.updated ? " · " + fmtDate(s.updated) : ""}${ls.get(DRAFT + s.id) ? " · đang duyệt dở" : ""}</small></div><button class="btn ${s.status === "pending" ? "" : "alt"}" data-open="${esc(s.id)}">${label}</button></div>`;
+  const p = sets.filter((s) => s.status === "pending"), a = sets.filter((s) => s.status === "approved");
+  $("pendingRows").innerHTML = p.length ? p.map((s) => row(s, "Duyệt")).join("") : `<div class="empty">Không có bộ nào chờ duyệt.</div>`;
+  $("approvedRows").innerHTML = a.length ? a.map((s) => row(s, "Sửa lại")).join("") : `<div class="empty">Chưa có bộ nào.</div>`;
+}
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-open]"); if (b) openReview(b.dataset.open); });
+
+/* ---------- Duyệt một bộ ---------- */
+const TYPE_NAME = { mc: "Trắc nghiệm", tf: "Đúng / Sai", fill: "Điền từ", match: "Ghép cặp" };
+let rv = null; // { set, items: [{ orig, q, state, edited, editing }] }
+
+async function openReview(id) {
+  showTab("set");
+  $("rvList").innerHTML = `<p class="note">Đang tải…</p>`; $("rvCount").innerHTML = ""; $("rvInfo").textContent = "";
+  let set;
+  try { set = await loadSet(id); } catch (e) { $("rvList").innerHTML = `<p class="err">Không tải được bộ này. Kiểm tra mạng rồi thử lại.</p>`; return; }
+  const draft = ls.get(DRAFT + id);
+  const fromDraft = draft && draft.updated === set.updated && draft.items.length === set.questions.length;
+  rv = {
+    set, title: fromDraft && draft.title ? draft.title : set.title,
+    items: set.questions.map((q, i) => {
+      const d = fromDraft ? draft.items[i] : null;
+      return { q: d && d.q ? d.q : q, edited: !!(d && d.q), state: d ? d.state : (set.status === "approved" ? "keep" : null), editing: false };
+    }),
+  };
+  $("rvTitle").value = rv.title;
+  $("rvInfo").innerHTML = [esc(setLine(set)), set.source ? "Nguồn: " + esc(set.source) : ""].filter(Boolean).join("<br>");
+  renderReview();
+}
+function saveDraft() {
+  if (!rv) return;
+  ls.set(DRAFT + rv.set.id, { updated: rv.set.updated, title: rv.title, items: rv.items.map((it) => ({ state: it.state, q: it.edited ? it.q : null })) });
+}
+function renderCount() {
+  const k = rv.items.filter((i) => i.state === "keep").length, d = rv.items.filter((i) => i.state === "drop").length, n = rv.items.length - k - d;
+  $("rvCount").innerHTML = `<span style="color:var(--good)">Giữ ${k}</span><span style="color:var(--bad)">Bỏ ${d}</span><span>Chưa xem ${n}</span>`;
+  $("rvKeepAll").hidden = !n;
+}
+function preview(q) {
+  const img = q.img ? `<img src="${esc(KHO.imgURL(q.img))}" alt="">` : "";
+  const why = q.explain ? `<div class="why">${esc(q.explain)}</div>` : "";
+  let body = "";
+  if (q.type === "mc") body = `<span class="pill ok">${esc(q.a)}</span>` + (q.w || []).map((w) => `<span class="pill">${esc(w)}</span>`).join("");
+  else if (q.type === "tf") body = `<span class="pill ok">${q.a ? "Đúng" : "Sai"}</span>`;
+  else if (q.type === "fill") body = `<span class="pill ok">${esc(q.a)}</span>` + (q.alt && q.alt.length ? `<span class="note"> cũng chấp nhận: ${esc(q.alt.join(", "))}</span>` : "") + (q.w && q.w.length ? `<div class="note">Đáp án nhiễu: ${esc(q.w.join(", "))}</div>` : "");
+  else if (q.type === "match") body = `<table class="pairs">${(q.pairs || []).map((p) => `<tr><td>${esc(p[0])}</td><td>↔ ${esc(p[1])}</td></tr>`).join("")}</table>`;
+  return `<div class="qt">${esc(q.q || "")}</div>${img}${body}${why}`;
+}
+const inp = (name, val, ph) => `<input data-f="${name}" value="${esc(val == null ? "" : val)}" placeholder="${esc(ph || "")}">`;
+function editForm(q) {
+  const qbox = `<label>Câu hỏi<textarea data-f="q">${esc(q.q || "")}</textarea></label>`;
+  const why = `<label>Giải thích khi sai (tuỳ chọn)<input data-f="explain" value="${esc(q.explain || "")}"></label>`;
+  let mid = "";
+  if (q.type === "mc") {
+    const w = (q.w || []).concat(["", "", "", ""]).slice(0, 4);
+    mid = `<label>Đáp án đúng${inp("a", q.a)}</label><label>Đáp án sai (để trống ô thừa)<div class="two">${w.map((x, i) => inp("w" + i, x)).join("")}</div></label>`;
+  } else if (q.type === "tf") {
+    mid = `<label>Đáp án<span><label style="display:inline"><input type="radio" name="tf" data-f="tf1" ${q.a ? "checked" : ""} style="width:auto"> Đúng</label> &nbsp; <label style="display:inline"><input type="radio" name="tf" data-f="tf0" ${q.a ? "" : "checked"} style="width:auto"> Sai</label></span></label>`;
+  } else if (q.type === "fill") {
+    mid = `<label>Đáp án đúng${inp("a", q.a)}</label><label>Cách viết khác vẫn tính đúng (cách nhau bằng dấu phẩy)${inp("alt", (q.alt || []).join(", "))}</label><label>Đáp án nhiễu (cách nhau bằng dấu phẩy, tuỳ chọn)${inp("w", (q.w || []).join(", "))}</label>`;
+  } else if (q.type === "match") {
+    const ps = (q.pairs || []).concat([["", ""], ["", ""]]);
+    mid = `<label>Các cặp (để trống cặp thừa, cần ít nhất 3 cặp)${ps.map((p, i) => `<div class="two">${inp("pl" + i, p[0])}${inp("pr" + i, p[1])}</div>`).join("")}</label>`;
+  }
+  return `<div class="form">${qbox}${mid}${why}<div class="acts"><button class="k" data-act="save" aria-pressed="true">Lưu câu này</button><button data-act="cancel">Huỷ</button></div><div class="err" data-f="msg"></div></div>`;
+}
+function readForm(card, q) {
+  const f = (n) => { const el = card.querySelector(`[data-f="${n}"]`); return el ? el.value.trim() : ""; };
+  const list = (s) => s.split(",").map((x) => x.trim()).filter(Boolean);
+  const out = { type: q.type, q: f("q") };
+  if (q.img) out.img = q.img;
+  if (q.type === "mc") { out.a = f("a"); out.w = [0, 1, 2, 3].map((i) => f("w" + i)).filter(Boolean); if (!out.a || !out.w.length) return "Cần đáp án đúng và ít nhất 1 đáp án sai."; }
+  else if (q.type === "tf") out.a = card.querySelector('[data-f="tf1"]').checked;
+  else if (q.type === "fill") { out.a = f("a"); const alt = list(f("alt")), w = list(f("w")); if (alt.length) out.alt = alt; if (w.length) out.w = w; if (!out.a) return "Cần đáp án đúng."; }
+  else if (q.type === "match") {
+    out.pairs = [];
+    for (let i = 0; card.querySelector(`[data-f="pl${i}"]`); i++) { const l = f("pl" + i), r = f("pr" + i); if (l && r) out.pairs.push([l, r]); }
+    if (out.pairs.length < 3) return "Cần ít nhất 3 cặp đủ hai vế.";
+  }
+  if (!out.q && q.type !== "match") return "Câu hỏi đang trống.";
+  if (f("explain")) out.explain = f("explain");
+  return out;
+}
+function renderReview() {
+  renderCount();
+  $("rvList").innerHTML = rv.items.map((it, i) => `<div class="qc ${it.state || ""}" data-i="${i}">
+    <div class="meta"><span>Câu ${i + 1} · ${TYPE_NAME[it.q.type] || it.q.type}${it.edited ? ' · <span class="edited">đã sửa</span>' : ""}</span></div>
+    ${it.editing ? editForm(it.q) : preview(it.q) + `<div class="acts"><button class="k" data-act="keep" aria-pressed="${it.state === "keep"}">Giữ</button><button class="d" data-act="drop" aria-pressed="${it.state === "drop"}">Bỏ</button><button data-act="edit">Sửa</button></div>`}
+  </div>`).join("");
+}
+$("rvList").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const card = b.closest(".qc"), i = +card.dataset.i, it = rv.items[i], act = b.dataset.act;
+  if (act === "keep") it.state = it.state === "keep" ? null : "keep";
+  else if (act === "drop") it.state = it.state === "drop" ? null : "drop";
+  else if (act === "edit") it.editing = true;
+  else if (act === "cancel") it.editing = false;
+  else if (act === "save") {
+    const r = readForm(card, it.q);
+    if (typeof r === "string") { card.querySelector('[data-f="msg"]').textContent = r; return; }
+    it.q = r; it.edited = true; it.editing = false; it.state = "keep";
+  }
+  saveDraft();
+  if (act === "keep" || act === "drop") { card.className = "qc " + (it.state || ""); card.querySelector(".k").setAttribute("aria-pressed", String(it.state === "keep")); card.querySelector(".d").setAttribute("aria-pressed", String(it.state === "drop")); renderCount(); return; }
+  const y = card.getBoundingClientRect().top;
+  renderReview();
+  const nc = $("rvList").querySelector(`[data-i="${i}"]`); window.scrollBy(0, nc.getBoundingClientRect().top - y);
+});
+$("rvTitle").oninput = () => { rv.title = $("rvTitle").value; saveDraft(); };
+$("rvBack").onclick = () => { refresh(); showTab("review"); };
+$("rvKeepAll").onclick = () => { rv.items.forEach((it) => { if (!it.state) it.state = "keep"; }); saveDraft(); renderReview(); };
+
+function resultSet() {
+  const keep = rv.items.filter((it) => it.state === "keep");
+  return Object.assign({}, rv.set, { title: (rv.title || "").trim() || rv.set.title, status: "approved", updated: new Date().toISOString(), questions: keep.map((it) => it.q) });
+}
+const entryOf = (s) => ({ id: s.id, title: s.title, subject: s.subject || "", grade: s.grade || "", book: s.book || "", status: s.status, n: s.questions.length, updated: s.updated });
+
+/* ---------- Hộp thoại ---------- */
+function dialog(html, buttons) {
+  $("dlgBody").innerHTML = html;
+  $("dlgActs").innerHTML = "";
+  buttons.forEach(([label, fn, cls]) => { const b = document.createElement("button"); b.className = "btn " + (cls || ""); b.textContent = label; b.onclick = () => fn(b); $("dlgActs").appendChild(b); });
+  if (!$("dlg").open) $("dlg").showModal();
+}
+const closeDlg = () => $("dlg").close();
+
+$("rvDone").onclick = () => {
+  if (rv.items.some((it) => it.editing)) return dialog(`<h3>Còn câu đang sửa dở</h3><p>Bấm "Lưu câu này" hoặc "Huỷ" ở câu đang sửa trước đã.</p>`, [["Đã hiểu", closeDlg]]);
+  const k = rv.items.filter((i) => i.state === "keep").length, d = rv.items.filter((i) => i.state === "drop").length, n = rv.items.length - k - d;
+  if (!k) return dialog(`<h3>Chưa giữ câu nào</h3><p>Bộ phải còn ít nhất 1 câu.</p>`, [["Đã hiểu", closeDlg]]);
+  const note = n ? `<p><b>${n} câu chưa xem</b> sẽ bị bỏ. Muốn giữ thì bấm "Giữ hết câu chưa xem" trước.</p>` : "";
+  dialog(`<h3>Duyệt xong bộ “${esc(rv.title)}”?</h3><p>Giữ <b>${k}</b> câu, bỏ <b>${d + n}</b> câu. Bộ sẽ lên kho với nhãn <b>đã duyệt</b> và hiện trong mọi game.</p>${note}`,
+    [["Quay lại", closeDlg, "alt"], ["Lên kho", () => ls.get(KEY) ? publish() : noKey()]]);
+};
+function noKey() {
+  dialog(`<h3>Máy này chưa có chìa khoá</h3><p>Cách 1: cài chìa khoá (làm một lần cho máy này), rồi bấm Duyệt xong lần nữa. Phần duyệt nãy giờ vẫn được giữ.</p><p>Cách 2: lấy mã kết quả, dán cho Claude để Claude đưa lên kho hộ.</p>`,
+    [["Lấy mã kết quả", showCode, "alt"], ["Cài chìa khoá", () => { closeDlg(); showTab("key"); }]]);
+}
+function showCode() {
+  const code = JSON.stringify(resultSet());
+  dialog(`<h3>Mã kết quả duyệt</h3><p>Bấm "Chép mã" rồi dán vào chat với Claude, kèm câu "chốt bộ này lên kho".</p><textarea readonly id="codeBox">${esc(code)}</textarea><p class="note" id="copyMsg"></p>`,
+    [["Đóng", closeDlg, "alt"], ["Chép mã", async () => {
+      try { await navigator.clipboard.writeText(code); $("copyMsg").textContent = "Đã chép. Giờ dán vào chat với Claude."; }
+      catch (e) { $("codeBox").select(); $("copyMsg").textContent = "Máy không cho chép tự động: chạm giữ vào ô mã → Chọn tất cả → Chép."; }
+    }]]);
+}
+
+/* ---------- Ghi lên GitHub ---------- */
+async function gh(path, opts) {
+  const res = await fetch("https://api.github.com/repos/" + OWNER + "/" + REPO + path, Object.assign({}, opts, {
+    headers: Object.assign({ Authorization: "Bearer " + ls.get(KEY), Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" }, opts && opts.body ? { "Content-Type": "application/json" } : {}),
+  }));
+  if (!res.ok) { const err = new Error("GitHub " + res.status); err.status = res.status; try { err.detail = (await res.json()).message; } catch (e) {} throw err; }
+  return res.status === 204 ? null : res.json();
+}
+const b64utf8 = (b64) => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, "")), (c) => c.charCodeAt(0)));
+async function commitSet(set) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const ref = await gh(`/git/ref/heads/${BRANCH}`);
+    const head = ref.object.sha;
+    const commit = await gh(`/git/commits/${head}`);
+    let index = { sets: [] };
+    try { const f = await gh(`/contents/${DIR}index.json?ref=${head}`); index = JSON.parse(b64utf8(f.content)); } catch (e) { if (e.status !== 404) throw e; }
+    const entry = entryOf(set), at = index.sets.findIndex((s) => s.id === set.id);
+    if (at >= 0) index.sets[at] = entry; else index.sets.push(entry);
+    const tree = await gh(`/git/trees`, { method: "POST", body: JSON.stringify({ base_tree: commit.tree.sha, tree: [
+      { path: DIR + set.id + ".json", mode: "100644", type: "blob", content: JSON.stringify(set, null, 2) + "\n" },
+      { path: DIR + "index.json", mode: "100644", type: "blob", content: JSON.stringify(index, null, 2) + "\n" },
+    ] }) });
+    const c = await gh(`/git/commits`, { method: "POST", body: JSON.stringify({ message: `Kho: duyệt bộ ${set.title} (${set.questions.length} câu)`, tree: tree.sha, parents: [head] }) });
+    try { await gh(`/git/refs/heads/${BRANCH}`, { method: "PATCH", body: JSON.stringify({ sha: c.sha, force: false }) }); return entry; }
+    catch (e) { if (e.status !== 422 || attempt === 2) throw e; } // có người vừa đẩy bản khác: làm lại từ đầu
+  }
+}
+function ghError(e) {
+  if (e.status === 401) return "Chìa khoá sai hoặc đã hết hạn. Vào mục Chìa khoá, tạo chìa khoá mới.";
+  if (e.status === 403 || e.status === 404) return "Chìa khoá không có quyền ghi vào repo msclair. Kiểm tra bước 4 và 5 ở mục Chìa khoá (chọn đúng repo msclair, Contents: Read and write).";
+  if (!e.status) return "Không kết nối được GitHub. Kiểm tra mạng rồi thử lại.";
+  return "GitHub báo lỗi (" + e.status + (e.detail ? ": " + e.detail : "") + "). Thử lại sau ít phút, hoặc dùng mã kết quả gửi Claude.";
+}
+async function publish() {
+  const set = resultSet();
+  dialog(`<h3>Đang đưa lên kho…</h3><p>Đợi vài giây, đừng tắt trang.</p>`, []);
+  try {
+    const entry = await commitSet(set);
+    const rec = ls.get(RECENT) || {}; rec[set.id] = { entry, set, at: Date.now() }; ls.set(RECENT, rec);
+    ls.del(DRAFT + set.id);
+    dialog(`<h3>Đã lên kho ✓</h3><p>Bộ “${esc(set.title)}” (${set.questions.length} câu) đã duyệt. Máy này thấy ngay; các máy khác thấy sau khoảng 1–2 phút (tải lại trang).</p>`,
+      [["Về danh sách", () => { closeDlg(); refresh(); showTab("review"); }]]);
+  } catch (e) {
+    dialog(`<h3>Chưa lên kho được</h3><p class="err">${esc(ghError(e))}</p><p>Phần duyệt vẫn được giữ trên máy này.</p>`, [["Lấy mã kết quả", showCode, "alt"], ["Thử lại", publish]]);
+  }
+}
+
+/* ---------- Chìa khoá ---------- */
+function renderKey(msg, ok) {
+  const has = !!ls.get(KEY);
+  $("keyStatus").className = "status" + ((ok ?? has) ? " ok" : "");
+  $("keyStatus").textContent = msg || (has ? "Máy này đã có chìa khoá. Duyệt xong là bộ tự lên kho." : "Máy này chưa có chìa khoá.");
+  $("keyDel").hidden = !has;
+}
+$("keySave").onclick = async () => {
+  const v = $("keyInput").value.trim();
+  if (!/^(github_pat_|ghp_)/.test(v)) return renderKey("Dãy này không giống chìa khoá GitHub (phải bắt đầu bằng github_pat_).", false);
+  const old = ls.get(KEY);
+  ls.set(KEY, v);
+  $("keySave").disabled = true; renderKey("Đang thử chìa khoá…", false);
+  try {
+    // Thử quyền ghi mà không đổi gì trong repo: tạo một mẩu dữ liệu rời, GitHub tự dọn sau
+    await gh("/git/blobs", { method: "POST", body: JSON.stringify({ content: "kho-thu-chia-khoa", encoding: "utf-8" }) });
+    $("keyInput").value = "";
+    renderKey("Chìa khoá dùng được ✓ Máy này duyệt xong là bộ tự lên kho.", true);
+  } catch (e) {
+    if (old) ls.set(KEY, old); else ls.del(KEY);
+    renderKey(ghError(e), false);
+  }
+  $("keySave").disabled = false;
+};
+$("keyDel").onclick = () => dialog(`<h3>Xoá chìa khoá khỏi máy này?</h3><p>Máy này sẽ không tự đưa bộ lên kho được nữa (vẫn chơi bình thường). Chìa khoá trên GitHub vẫn còn; muốn huỷ hẳn thì làm theo mục "Khi mất máy".</p>`,
+  [["Thôi", closeDlg, "alt"], ["Xoá", () => { ls.del(KEY); closeDlg(); renderKey(); }]]);
+
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+refresh();
+</script>
+</body>
+</html>

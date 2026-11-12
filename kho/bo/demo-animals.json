@@ -1,0 +1,29 @@
+{
+  "id": "demo-animals",
+  "title": "Bộ thử · Animals",
+  "subject": "English",
+  "grade": "3",
+  "book": "",
+  "lang": "en",
+  "status": "pending",
+  "source": "Bộ thử để Clair tập duyệt. Duyệt thử xong có thể xoá.",
+  "updated": "2026-11-12T04:30:00Z",
+  "questions": [
+    { "type": "mc", "q": "Which animal says “meow”?", "a": "a cat", "w": ["a dog", "a cow", "a duck"] },
+    { "type": "mc", "q": "Which animal can swim and lives in water?", "a": "a fish", "w": ["a rabbit", "a horse", "a bird"] },
+    { "type": "mc", "q": "It is big and grey. It has a long nose. What is it?", "a": "an elephant", "w": ["a monkey", "a tiger", "a parrot"], "explain": "Elephants are big and grey with a long trunk." },
+    { "type": "mc", "q": "How many legs does a bird have?", "a": "two", "w": ["four", "six", "eight"] },
+    { "type": "mc", "q": "Choose the correct spelling.", "a": "rabbit", "w": ["rabit", "rabbitt", "rebbit"] },
+    { "type": "mc", "q": "“Con khỉ” in English is…", "a": "monkey", "w": ["donkey", "money", "mouse"] },
+    { "type": "tf", "q": "A fish can fly.", "a": false, "explain": "Birds can fly. Fish swim." },
+    { "type": "tf", "q": "A tiger has stripes.", "a": true },
+    { "type": "tf", "q": "A cow gives us milk.", "a": true },
+    { "type": "tf", "q": "A snake has four legs.", "a": false, "explain": "A snake has no legs." },
+    { "type": "fill", "q": "I have a ___ . It says “woof”.", "a": "dog", "w": ["cat", "fish", "duck"] },
+    { "type": "fill", "q": "The ___ is the king of the jungle.", "a": "lion", "w": ["mouse", "chicken", "goat"] },
+    { "type": "fill", "q": "A ___ can jump very high. It lives in Australia.", "a": "kangaroo", "alt": ["Kangaroo"] },
+    { "type": "fill", "q": "Look! The ___ is eating a banana.", "a": "monkey" },
+    { "type": "match", "q": "Match the animal and the Vietnamese word.", "pairs": [["dog", "con chó"], ["cat", "con mèo"], ["bird", "con chim"], ["fish", "con cá"], ["duck", "con vịt"]] },
+    { "type": "mc", "q": "Which one is NOT an animal?", "a": "a table", "w": ["a bear", "a frog", "a goat"] }
+  ]
+}
