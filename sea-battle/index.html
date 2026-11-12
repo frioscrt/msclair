@@ -220,6 +220,12 @@ details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5
 }
 .opt:hover:not(:disabled) { background: #fff6dd; }
 .opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.opts.many { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.opts.many .opt { min-height: 2.6em; padding-block: 8px; }
+.opts.pics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.opts.pics .opt { flex-direction: column; align-items: stretch; padding: 8px; }
+.opts.pics .opt .k { align-self: flex-start; }
+.opts.pics .ot svg { width: 100%; height: auto; display: block; }
 .opt .k {
   flex-shrink: 0; width: 1.7em; height: 1.7em; border-radius: 10px; display: flex; align-items: center; justify-content: center;
   background: var(--ink); color: #fff; font-family: var(--display); font-weight: 400; font-size: .8em;
@@ -265,7 +271,8 @@ details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5
   .qbody.has-fig { grid-template-columns: minmax(0, 1fr); }
   .fig svg { max-height: 34vh; }
 }
-@media (max-width: 520px) { .opts { grid-template-columns: minmax(0, 1fr); } .team-names { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) { .opts.pics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .opts, .opts.many { grid-template-columns: minmax(0, 1fr); } .team-names { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition: none !important; }
 }
@@ -275,7 +282,7 @@ details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5
 <main id="setup">
   <div class="setup-card">
     <section class="hero">
-      <h1>Triangle<span>Sea Battle</span></h1>
+      <h1><span class="setname">Triangle</span><span>Sea Battle</span></h1>
       <svg viewBox="0 0 340 170" role="img" aria-label="A sailboat made of triangles">
         <path d="M0 150 Q 42 138 85 150 T 170 150 T 255 150 T 340 150 V170 H0Z" fill="#cfe5ee"/>
         <polygon points="160,20 160,118 92,118" fill="#e8452c" stroke="#0f2a3d" stroke-width="4" stroke-linejoin="round"/>
@@ -314,7 +321,7 @@ details.custom code { background: var(--sea); padding: 1px 5px; border-radius: 5
 
 <div id="game" hidden>
   <header class="topbar">
-    <h2>Triangle <span>Sea Battle</span></h2>
+    <h2><span class="setname" style="color:inherit">Triangle</span> <span>Sea Battle</span></h2>
     <button class="tool" id="btnSound">Sound: on</button>
     <button class="tool" id="btnFull">Full screen</button>
     <button class="tool" id="btnReveal">Reveal ships</button>
@@ -654,6 +661,116 @@ function customQuestion(list) {
   return { text: it.q, options: opts, answer: opts.indexOf(it.a), explain: it.a };
 }
 
+/* ----- ANGLES (Grade 3): right, acute, obtuse, straight, reflex ----- */
+const ANG5 = ["Acute", "Right", "Obtuse", "Straight", "Reflex"];
+const ANG_WHY = {
+  Acute: "It is smaller than a right angle.",
+  Right: "It is a square corner, like the corner of a book.",
+  Obtuse: "It is bigger than a right angle but smaller than a straight angle.",
+  Straight: "The two arms make a straight line.",
+  Reflex: "It is bigger than a straight angle.",
+};
+function angleOf(type) {
+  return type === "Right" ? 90 : type === "Straight" ? 180 : type === "Acute" ? rand(4, 15) * 5 : type === "Obtuse" ? rand(21, 33) * 5 : rand(40, 66) * 5;
+}
+function typeOf(deg) { return deg === 90 ? "Right" : deg === 180 ? "Straight" : deg < 90 ? "Acute" : deg < 180 ? "Obtuse" : "Reflex"; }
+// Marks the angle: a square for 90°, otherwise a shaded slice. start/deg in math degrees (counterclockwise).
+function angleMark(cx, cy, R, start, deg, stroke = "#e8452c") {
+  const r = Math.PI / 180, P = (a, l) => [cx + Math.cos(a * r) * l, cy - Math.sin(a * r) * l];
+  if (deg === 90) {
+    const s = R * .55, a = P(start, s), b = P(start + 90, s), m = [a[0] + b[0] - cx, a[1] + b[1] - cy];
+    return `<polygon points="${cx},${cy} ${a.join(",")} ${m.join(",")} ${b.join(",")}" fill="rgba(242,178,51,.45)" stroke="${stroke}" stroke-width="3"/>`;
+  }
+  const a = P(start, R), b = P(start + deg, R), large = deg > 180 ? 1 : 0;
+  return `<path d="M${cx},${cy} L${a.join(",")} A${R},${R} 0 ${large} 0 ${b.join(",")} Z" fill="rgba(242,178,51,.45)" stroke="none"/>` +
+    `<path d="M${a.join(",")} A${R},${R} 0 ${large} 0 ${b.join(",")}" fill="none" stroke="${stroke}" stroke-width="3"/>`;
+}
+function angleSVG(deg, rot = rand(0, 359)) {
+  const W = 340, H = 250, L = 100, R = deg < 45 ? 44 : 32, r = Math.PI / 180;
+  const ends = [rot, rot + deg].map(a => [Math.cos(a * r) * L, -Math.sin(a * r) * L]);
+  const xs = [0, ...ends.map(e => e[0])], ys = [0, ...ends.map(e => e[1])];
+  if (deg > 90) { xs.push(-R, R); ys.push(-R, R); }
+  const cx = W / 2 - (Math.min(...xs) + Math.max(...xs)) / 2, cy = H / 2 - (Math.min(...ys) + Math.max(...ys)) / 2;
+  const ink = "#0f2a3d";
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="angle">`;
+  s += angleMark(cx, cy, R, rot, deg);
+  ends.forEach(([x, y]) => { s += `<line x1="${cx}" y1="${cy}" x2="${cx + x}" y2="${cy + y}" stroke="${ink}" stroke-width="5" stroke-linecap="round"/>`; });
+  return s + `<circle cx="${cx}" cy="${cy}" r="6" fill="${ink}"/></svg>`;
+}
+function clockSVG(h) {
+  const c = 125, ink = "#0f2a3d", r = Math.PI / 180;
+  const P = (a, l) => [c + Math.cos(a * r) * l, c - Math.sin(a * r) * l];
+  let s = `<svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="clock at ${h} o'clock">`;
+  s += `<circle cx="${c}" cy="${c}" r="112" fill="#fff" stroke="${ink}" stroke-width="6"/>`;
+  const small = Math.min(h * 30, 360 - h * 30), start = h <= 6 ? 90 - h * 30 : 90;
+  s += angleMark(c, c, 38, start, small);
+  for (let i = 1; i <= 12; i++) { const [x, y] = P(90 - i * 30, 90); s += `<text x="${x}" y="${y}" font-size="20" font-family="Nunito, sans-serif" font-weight="900" fill="${ink}" text-anchor="middle" dominant-baseline="central">${i}</text>`; }
+  const [mx, my] = P(90, 78), [hx, hy] = P(90 - h * 30, 58);
+  s += `<line x1="${c}" y1="${c}" x2="${mx}" y2="${my}" stroke="${ink}" stroke-width="6" stroke-linecap="round"/>`;
+  s += `<line x1="${c}" y1="${c}" x2="${hx}" y2="${hy}" stroke="#e8452c" stroke-width="9" stroke-linecap="round"/>`;
+  return s + `<circle cx="${c}" cy="${c}" r="8" fill="${ink}"/></svg>`;
+}
+const ANG_BANK = [
+  { q: "An angle smaller than a right angle is…", a: "acute", w: ["obtuse", "straight", "reflex"], e: "Acute angles are small and sharp." },
+  { q: "An angle bigger than a right angle but smaller than a straight angle is…", a: "obtuse", w: ["acute", "right", "reflex"], e: "Obtuse angles are between a right angle and a straight line." },
+  { q: "An angle bigger than a straight angle is…", a: "reflex", w: ["obtuse", "acute", "right"], e: "Reflex angles are bigger than a straight line." },
+  { q: "An angle that looks like a straight line is…", a: "a straight angle", w: ["a right angle", "an acute angle", "a reflex angle"], e: "A straight angle is a half turn." },
+  { q: "A right angle is a ___ turn.", a: "quarter", w: ["half", "full", "three-quarter"], e: "Four right angles make a full turn." },
+  { q: "A straight angle is a ___ turn.", a: "half", w: ["quarter", "full", "three-quarter"], e: "Two right angles make a straight angle." },
+  { q: "The corner of a book is…", a: "a right angle", w: ["an acute angle", "an obtuse angle", "a reflex angle"], e: "It is a square corner." },
+  { q: "Which angle is the smallest?", a: "acute", w: ["right", "obtuse", "reflex"], e: "Acute angles are smaller than a right angle." },
+  { q: "Which angle is the biggest?", a: "reflex", w: ["straight", "obtuse", "right"], e: "Reflex angles are bigger than a straight angle." },
+  { q: "How many right angles make a straight angle?", a: "2", w: ["1", "3", "4"], e: "Quarter turn + quarter turn = half turn." },
+  { q: "How many right angles does a square have?", a: "4", w: ["2", "3", "0"], e: "A square has 4 square corners." },
+  { q: "How many right angles make a full turn?", a: "4", w: ["2", "3", "1"], e: "4 quarter turns = 1 full turn." },
+  { q: "A right angle is…", a: "90°", w: ["45°", "180°", "360°"], e: "A right angle measures 90 degrees." },
+  { q: "A straight angle is…", a: "180°", w: ["90°", "45°", "360°"], e: "A straight angle measures 180 degrees." },
+  { q: "The tip of a pizza slice is usually…", a: "an acute angle", w: ["a right angle", "a straight angle", "a reflex angle"], e: "It is small and pointy." },
+  { q: "Which capital letter has a right angle?", a: "L", w: ["O", "S", "C"], e: "L has a square corner." },
+  { q: "Which capital letter has an acute angle?", a: "V", w: ["L", "O", "U"], e: "The point of V is smaller than a right angle." },
+  { q: "Which word is spelled correctly?", a: "acute", w: ["accute", "acut", "akute"], e: "a-c-u-t-e" },
+  { q: "Which word is spelled correctly?", a: "obtuse", w: ["optuse", "obtouse", "obtuce"], e: "o-b-t-u-s-e" },
+  { q: "Which word is spelled correctly?", a: "straight", w: ["strait", "streight", "straigt"], e: "s-t-r-a-i-g-h-t" },
+  { q: "Which word is spelled correctly?", a: "reflex", w: ["reflects", "refleks", "reflix"], e: "r-e-f-l-e-x" },
+  { q: "Which word is spelled correctly?", a: "angle", w: ["angel", "angul", "engle"], e: "An angel is a different word!" },
+];
+let angBankDeck = [];
+const ANG_GEN = {
+  pic() {
+    const t = pick(ANG5), deg = angleOf(t);
+    return { text: "What kind of angle is this?", figure: angleSVG(deg), options: ANG5.slice(), answer: ANG5.indexOf(t), explain: `${t}. ${ANG_WHY[t]}` };
+  },
+  clock() {
+    const h = pick([1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11]), t = typeOf(Math.min(h * 30, 360 - h * 30));
+    const opts = ["Acute", "Right", "Obtuse", "Straight"];
+    return { text: `It is ${h} o'clock. What kind of angle do the hands make?`, figure: clockSVG(h), options: opts, answer: opts.indexOf(t), explain: `${t}. ${ANG_WHY[t]}` };
+  },
+  choose() {
+    const t = pick(ANG5), others = shuffle(ANG5.filter(x => x !== t)).slice(0, 3);
+    const types = shuffle([t, ...others]);
+    return { text: `Which one is ${t === "Acute" || t === "Obtuse" ? "an" : "a"} ${t.toLowerCase()} angle?`, pics: true, options: types.map(x => angleSVG(angleOf(x))), answer: types.indexOf(t), explain: `${t}. ${ANG_WHY[t]}` };
+  },
+  bank() {
+    if (!angBankDeck.length) angBankDeck = shuffle(ANG_BANK);
+    const it = angBankDeck.pop(), opts = shuffle([it.a, ...it.w]);
+    return { text: it.q, options: opts, answer: opts.indexOf(it.a), explain: `${it.a}. ${it.e}` };
+  },
+};
+const ANG_KINDS = [["pic", 40], ["clock", 15], ["choose", 15], ["bank", 30]];
+let lastAngKind = "";
+function angleQuestion() {
+  let kind;
+  do { let r = Math.random() * 100; kind = ANG_KINDS.find(k => (r -= k[1]) < 0)[0]; } while (kind === lastAngKind && kind !== "pic" && kind !== "bank");
+  lastAngKind = kind;
+  return ANG_GEN[kind]();
+}
+// Each question set: name in the title, ship names, question maker
+const SETS = {
+  tri: { title: "Triangle", ships: ["Equilateral", "Isosceles", "Scalene", "Obtuse", "Right Angle"], make: () => triangleQuestion() },
+  ang: { title: "Angle", ships: ["Acute", "Right", "Obtuse", "Straight", "Reflex"], make: () => angleQuestion() },
+  custom: { title: "Quiz", ships: ["Flagship", "Cruiser", "Destroyer", "Submarine", "Patrol Boat"], make: null },
+};
+
 /* =====================================================================
    PART 2 · GAME
    ===================================================================== */
@@ -662,7 +779,6 @@ const SIZES = {
   M: { n: 8, ships: [4, 3, 3, 2], label: "Medium", note: "8 × 8 · about 50 questions" },
   L: { n: 10, ships: [5, 4, 3, 3, 2], label: "Large", note: "10 × 10 · 70+ questions" },
 };
-const SHIP_NAMES = { tri: ["Equilateral", "Isosceles", "Scalene", "Obtuse", "Right Angle"], custom: ["Flagship", "Cruiser", "Destroyer", "Submarine", "Patrol Boat"] };
 const TEAM_DEFAULT = [["Sharks", "#2563c9"], ["Dolphins", "#e0661b"], ["Turtles", "#178a5c"], ["Octopus", "#8a43c9"]];
 const TIMERS = [0, 20, 30, 45];
 const COLS = "ABCDEFGHIJ";
@@ -701,7 +817,7 @@ function placeShips(n, lens) {
 
 function newGame() {
   const cfg = SIZES[prefs.size];
-  const names = SHIP_NAMES[prefs.set === "custom" ? "custom" : "tri"];
+  const names = (SETS[prefs.set] || SETS.tri).ships;
   const cells = placeShips(cfg.n, cfg.ships);
   S = {
     n: cfg.n, set: prefs.set, timer: prefs.timer,
@@ -709,7 +825,7 @@ function newGame() {
     shots: {}, turn: 0, q: 0, over: false, revealed: false,
     teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, hits: 0, right: 0, wrong: 0 })),
   };
-  customDeck = []; bankDeck = [];
+  customDeck = []; bankDeck = []; angBankDeck = [];
   save();
   showGame();
 }
@@ -755,6 +871,7 @@ function render() { renderBoard(); renderSide(); }
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 function showGame() {
+  setTitle(S.set);
   $("setup").hidden = true; $("game").hidden = false;
   $("winOverlay").hidden = true; $("qOverlay").hidden = true;
   aim = null; revealArm = newArm = 0;
@@ -771,7 +888,7 @@ function nextQuestion() {
     const list = parseCustom(prefs.custom);
     if (list.length) return customQuestion(list);
   }
-  return triangleQuestion();
+  return (SETS[S.set] && SETS[S.set].make ? SETS[S.set] : SETS.tri).make();
 }
 function openQuestion() {
   curQ = nextQuestion(); locked = false;
@@ -787,8 +904,9 @@ function openQuestion() {
   const fig = $("qFig");
   if (curQ.figure) { fig.innerHTML = curQ.figure; fig.hidden = false; $("qBody").classList.add("has-fig"); }
   else { fig.innerHTML = ""; fig.hidden = true; $("qBody").classList.remove("has-fig"); }
-  const letters = "ABCD";
-  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${letters[i]}</span><span>${esc(o)}</span></button>`).join("");
+  const letters = "ABCDE";
+  $("qOpts").className = "opts" + (curQ.pics ? " pics" : curQ.options.length > 4 ? " many" : "");
+  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${letters[i]}</span><span class="ot">${curQ.pics ? o : esc(o)}</span></button>`).join("");
   $("qFeedback").hidden = true; $("qFoot").hidden = false;
   box.hidden = false;
   startTimer();
@@ -936,10 +1054,11 @@ function seg(id, items, cur, onPick) {
   el.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; onPick(b.dataset.v); };
 }
 function renderSetup() {
+  setTitle(prefs.set);
   seg("segTeams", [[1, "Whole class"], [2, "2 teams"], [3, "3 teams"], [4, "4 teams"]], prefs.teams, v => { prefs.teams = +v; savePrefs(); renderSetup(); });
   seg("segSize", Object.entries(SIZES).map(([k, s]) => [k, s.label, s.note]), prefs.size, v => { prefs.size = v; savePrefs(); renderSetup(); });
   seg("segTimer", TIMERS.map(t => [t, t ? t + " seconds" : "No timer"]), prefs.timer, v => { prefs.timer = +v; savePrefs(); renderSetup(); });
-  seg("segSet", [["tri", "Triangles", "made for today"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
+  seg("segSet", [["tri", "Triangles", "Grade 5"], ["ang", "Angles", "Grade 3"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
   $("teamNamesField").hidden = prefs.teams === 1;
   $("teamNames").innerHTML = Array.from({ length: prefs.teams }, (_, i) => `<input id="tn${i}" maxlength="18" style="--tc:${TEAM_DEFAULT[i][1]}" value="${esc(prefs.names[i] || TEAM_DEFAULT[i][0])}" aria-label="Team ${i + 1} name">`).join("");
   $("teamNames").querySelectorAll("input").forEach((inp, i) => inp.oninput = () => { prefs.names[i] = inp.value.trim() || TEAM_DEFAULT[i][0]; savePrefs(); });
@@ -973,7 +1092,7 @@ $("btnSwap").onclick = swapQuestion;
 document.addEventListener("keydown", (e) => {
   if ($("qOverlay").hidden || !curQ) return;
   if (!locked) {
-    const i = "1234".indexOf(e.key) >= 0 ? "1234".indexOf(e.key) : "abcd".indexOf(e.key.toLowerCase());
+    const i = "12345".indexOf(e.key) >= 0 ? "12345".indexOf(e.key) : "abcde".indexOf(e.key.toLowerCase());
     if (i >= 0 && i < curQ.options.length) { e.preventDefault(); answer(i); }
     if (e.key === "Escape") cancelQuestion();
   }
@@ -1004,8 +1123,16 @@ $("btnLook").onclick = () => { $("winOverlay").hidden = true; S.revealed = true;
 
 /* ----- Boot (keeps a running game when the page is updated) ----- */
 window.claude?.hot?.snapshot?.(() => ({ S, prefs }));
+function setTitle(set) {
+  const t = (SETS[set] || SETS.tri).title;
+  document.querySelectorAll(".setname").forEach(el => el.textContent = t);
+  document.title = t + " Sea Battle";
+}
 function start(data) {
   if (data && data.prefs) prefs = Object.assign(prefs, data.prefs);
+  // a link ending in #angles or #triangles opens with that question set chosen
+  const h = (location.hash || "").slice(1);
+  if (h === "angles") prefs.set = "ang"; else if (h === "triangles") prefs.set = "tri";
   renderSetup();
   if (data && data.S) { S = data.S; showGame(); }
 }
