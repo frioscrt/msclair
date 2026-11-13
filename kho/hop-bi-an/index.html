@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mystery Box</title>
+<meta name="description" content="Classroom game: pick a mystery box, answer correctly to open it and win points or a surprise.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* One screen for a classroom TV: gift boxes on the left, scoreboard on the right.
+   One light look (projectors wash out dark themes). */
+:root {
+  color-scheme: light;
+  --paper: #fff4e6;
+  --ink: #2b2340;
+  --ink-soft: #6b5f7d;
+  --line: #efd5bd;
+  --card: #ffffff;
+  --accent: #ff4f8b;
+  --gold: #ffc93c;
+  --good: #17915f;
+  --bad: #d63650;
+  --display: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-weight: 700; font-size: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255,79,139,.10) 0 6px, transparent 7px),
+    radial-gradient(circle at 62% 72%, rgba(76,201,240,.12) 0 5px, transparent 6px),
+    radial-gradient(circle at 85% 30%, rgba(255,201,60,.18) 0 6px, transparent 7px),
+    radial-gradient(circle at 35% 88%, rgba(123,97,255,.10) 0 4px, transparent 5px);
+  background-size: 180px 180px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 4px solid var(--gold); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; letter-spacing: .01em; text-wrap: balance; }
+
+/* ---------- Setup ---------- */
+#setup { min-height: 100%; display: flex; align-items: center; justify-content: center; padding-block: 24px; }
+.setup-card {
+  width: min(980px, 100%);
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px;
+  background: var(--card); border: 3px solid var(--ink); border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--ink); padding: clamp(18px, 3vw, 36px);
+}
+.hero { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.hero h1 { font-size: clamp(2.6rem, 5.4vw, 4rem); line-height: .95; }
+.hero h1 span { color: var(--accent); display: block; }
+.hero .gifts { display: flex; gap: 10px; max-width: 340px; }
+.hero .gifts svg { flex: 1; height: auto; animation: bob 1.6s ease-in-out infinite alternate; }
+.hero .gifts svg:nth-child(2) { animation-delay: .3s; }
+.hero .gifts svg:nth-child(3) { animation-delay: .6s; }
+@keyframes bob { to { transform: translateY(-8px) rotate(-3deg); } }
+.howto { margin: 0; padding-left: 1.2em; color: var(--ink-soft); line-height: 1.5; font-size: 1.05rem; }
+.howto b { color: var(--ink); }
+.settings { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field > .label { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); font-weight: 900; }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button { border: 2.5px solid var(--ink); background: var(--card); border-radius: 12px; padding: 8px 14px; font-weight: 800; font-size: 1rem; }
+.seg button small { display: block; font-size: .72rem; color: var(--ink-soft); font-weight: 700; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.seg button[aria-pressed="true"] small { color: #e6dcf5; }
+.team-names { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.team-names input { width: 100%; font: inherit; font-weight: 800; padding: 8px 10px; border-radius: 10px; border: 2.5px solid var(--tc, var(--ink)); background: #fff; color: var(--ink); }
+details.custom { border: 2px dashed var(--line); border-radius: 12px; padding: 10px 12px; }
+details.custom summary { cursor: pointer; font-weight: 800; }
+details.custom p { margin: 8px 0; color: var(--ink-soft); font-size: .92rem; line-height: 1.45; }
+details.custom code { background: var(--paper); padding: 1px 5px; border-radius: 5px; font-size: .88rem; }
+#customText { width: 100%; min-height: 130px; font: 600 .95rem/1.45 ui-monospace, Menlo, Consolas, monospace; border: 2px solid var(--line); border-radius: 10px; padding: 8px; color: var(--ink); background: #fff; }
+#customStatus, #libStatus { font-size: .9rem; font-weight: 800; color: var(--ink-soft); }
+.lib-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#libSel { font: inherit; font-weight: 800; padding: 8px 10px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); max-width: 100%; }
+.start-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; align-items: center; }
+.to-kho { font-size: .9rem; font-weight: 800; color: var(--ink-soft); text-decoration: none; }
+.btn-big {
+  font-family: var(--display); font-weight: 600; font-size: 1.6rem; letter-spacing: .02em;
+  padding: 12px 26px; border-radius: 16px; border: 3px solid var(--ink);
+  background: var(--accent); color: #fff; box-shadow: 4px 4px 0 var(--ink);
+  transition: transform .08s, box-shadow .08s;
+}
+.btn-big:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.btn-big.alt { background: var(--card); color: var(--ink); }
+.btn-big:disabled { opacity: .45; cursor: default; }
+
+/* ---------- Game ---------- */
+#game { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 10px; padding-block: 10px; }
+.topbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.topbar h2 { font-size: clamp(1.3rem, 2.2vw, 1.9rem); margin-right: auto; }
+.topbar h2 small { font-family: var(--body); font-size: .55em; color: var(--ink-soft); font-weight: 800; margin-left: 8px; }
+.tool { border: 2.5px solid var(--ink); background: var(--card); border-radius: 10px; padding: 6px 12px; font-weight: 800; font-size: .95rem; }
+.tool.warn { background: var(--bad); color: #fff; border-color: var(--bad); }
+.tool.teacher { background: var(--gold); }
+.tool.endg { background: var(--ink); color: #fff; }
+.tool.endg.warn { background: var(--bad); border-color: var(--bad); }
+.play { display: grid; grid-template-columns: minmax(0, 1fr) clamp(250px, 25vw, 360px); gap: 18px; min-height: 0; }
+.board-wrap { display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0; }
+.board {
+  --c: 4; --r: 4;
+  width: min(100%, calc((100vh - 96px) * var(--c) / var(--r)));
+  width: min(100%, calc((100dvh - 96px) * var(--c) / var(--r)));
+  aspect-ratio: var(--c) / var(--r);
+  container-type: inline-size;
+  display: grid; grid-template-columns: repeat(var(--c), minmax(0, 1fr)); grid-template-rows: repeat(var(--r), minmax(0, 1fr));
+  gap: clamp(6px, 1.2vw, 14px);
+}
+.box {
+  position: relative; border: none; padding: 4%; background: none; border-radius: 16px; min-width: 0; min-height: 0;
+  display: flex; align-items: center; justify-content: center; transition: transform .12s;
+}
+.box svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 4px 0 rgba(43,35,64,.18)); }
+button.box:hover { transform: translateY(-4px) rotate(-2deg); }
+.box.aim { transform: translateY(-6px) scale(1.06); }
+.box.aim::before { content: ""; position: absolute; inset: 0; border-radius: 18px; background: rgba(255,201,60,.45); box-shadow: 0 0 0 4px var(--gold); }
+.box.nope { animation: nope .5s; }
+@keyframes nope { 20% { transform: translateX(-8px) rotate(-4deg); } 40% { transform: translateX(7px) rotate(3deg); } 60% { transform: translateX(-5px); } 80% { transform: translateX(3px); } }
+.box.open {
+  flex-direction: column; gap: 2%; border-radius: 16px; background: #fff; border: 3px solid var(--line);
+  font-size: calc(100cqi / var(--c) * .2); text-align: center; line-height: 1.05; overflow: hidden;
+}
+.box.open .ic { font-size: 1.15em; line-height: 1; }
+.box.open .lb { font-family: var(--display); font-weight: 600; font-size: .9em; color: var(--ink); }
+.box.open .lb.long { font-size: .62em; }
+.box.open .by { position: absolute; left: 0; right: 0; bottom: 0; height: 9%; background: var(--tc); }
+.box.open.k-good { background: #e7f8ee; border-color: #a7e2c3; }
+.box.open.k-bonus { background: #eef0ff; border-color: #c4c9ff; }
+.box.open.k-gold { background: #fff3c4; border-color: var(--gold); }
+.box.open.k-bad { background: #3a3150; border-color: #3a3150; }
+.box.open.k-bad .lb { color: #ff8fa6; }
+.box.open.left { opacity: .5; border-style: dashed; }
+.box.open.just { animation: pop .4s cubic-bezier(.2,1.6,.5,1); }
+
+.side { display: flex; flex-direction: column; gap: 14px; min-height: 0; overflow-y: auto; padding-right: 2px; }
+.panel { background: var(--card); border: 3px solid var(--ink); border-radius: 16px; padding: 12px 14px; }
+.panel h3 { font-size: 1.15rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.panel h3 small { font-family: var(--body); font-weight: 800; font-size: .85rem; color: var(--ink-soft); }
+.teams { display: flex; flex-direction: column; gap: 8px; }
+.team { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; border: 2.5px solid transparent; }
+.team .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--tc); }
+.team .nm { font-weight: 900; font-size: 1.15rem; min-width: 0; overflow-wrap: anywhere; }
+.team .nm small { display: block; font-size: .78rem; color: var(--ink-soft); font-weight: 700; }
+.team .pts { font-family: var(--display); font-weight: 600; font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--tc); }
+.team.now { border-color: var(--tc); background: var(--tc-l, #f6f2fb); }
+.team.now .nm::after { content: "YOUR TURN"; display: inline-block; margin-left: 6px; vertical-align: 2px; font-size: .62rem; letter-spacing: .1em; background: var(--tc); color: #fff; padding: 2px 6px; border-radius: 6px; }
+.team .nm .bdg { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 6px; font-size: .62rem; letter-spacing: .06em; vertical-align: 2px; background: var(--gold); color: var(--ink); }
+.team .nm .bdg.sk { background: var(--bad); color: #fff; }
+.team .nm .bdg.ex { background: #2ecc71; color: #fff; }
+.legend { font-size: .78rem; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.4; }
+.inside { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; }
+.inside div { border-radius: 10px; padding: 6px 2px; background: var(--paper); }
+.inside b { display: block; font-family: var(--display); font-weight: 600; font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.inside span { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); }
+.inside .bad { background: #3a3150; } .inside .bad b { color: #ff8fa6; } .inside .bad span { color: #d9cfe8; }
+.inside .bon { background: #eef0ff; }
+.hint { color: var(--ink-soft); font-size: .95rem; text-align: center; margin: 0; }
+
+/* ---------- Overlays + question ---------- */
+.overlay {
+  position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+  background: rgba(43, 35, 64, .55);
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.qbox {
+  width: min(1180px, 100%); max-height: 100%; overflow-y: auto;
+  background: var(--card); border: 4px solid var(--ink); border-radius: 24px; box-shadow: 10px 10px 0 var(--ink);
+  padding: clamp(16px, 2.6vw, 34px); display: flex; flex-direction: column; gap: 18px;
+  animation: pop .22s ease-out;
+}
+@keyframes pop { from { transform: scale(.94); opacity: 0; } to { transform: none; opacity: 1; } }
+.qhead { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.qteam { font-family: var(--display); font-weight: 600; font-size: clamp(1.2rem, 2vw, 1.7rem); color: #fff; background: var(--tc); padding: 4px 14px; border-radius: 12px; }
+.qcoord { font-family: var(--display); font-weight: 600; font-size: clamp(1.2rem, 2vw, 1.7rem); background: var(--gold); padding: 4px 14px; border-radius: 12px; }
+.qnum { color: var(--ink-soft); margin-right: auto; }
+.timer { width: 100%; height: 10px; border-radius: 6px; background: var(--paper); overflow: hidden; }
+.timer i { display: block; height: 100%; width: 100%; background: var(--good); transform-origin: left; }
+.qbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: center; }
+.qbody.has-fig { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.fig { background: var(--paper); border-radius: 18px; padding: 10px; display: flex; justify-content: center; }
+.fig svg { width: 100%; height: auto; max-height: 46vh; }
+.fig img { max-width: 100%; max-height: 40vh; border-radius: 12px; display: block; margin: 0 auto; }
+.qmain { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.qtext { font-size: clamp(1.6rem, 3.1vw, 2.7rem); line-height: 1.2; font-weight: 900; margin: 0; text-wrap: balance; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.opt {
+  display: flex; align-items: center; gap: 14px; text-align: left;
+  border: 3px solid var(--ink); background: #fff; border-radius: 16px; padding: 12px 16px;
+  font-size: clamp(1.25rem, 2.3vw, 2rem); font-weight: 900; line-height: 1.15; min-height: 3.2em;
+  box-shadow: 0 4px 0 var(--ink); transition: transform .08s, box-shadow .08s, background .15s;
+}
+.opt:hover:not(:disabled) { background: #fff3dc; }
+.opt:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.opt .k { flex-shrink: 0; width: 1.7em; height: 1.7em; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--ink); color: #fff; font-family: var(--display); font-weight: 600; font-size: .8em; }
+.opt .ot { min-width: 0; overflow-wrap: anywhere; }
+.opt:disabled { cursor: default; }
+.opt.right { background: #d8f5e7; border-color: var(--good); box-shadow: 0 4px 0 var(--good); }
+.opt.right .k { background: var(--good); }
+.opt.wrong { background: #fde0e3; border-color: var(--bad); box-shadow: 0 4px 0 var(--bad); }
+.opt.wrong .k { background: var(--bad); }
+.opt.dim { opacity: .45; }
+.feedback { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 14px 18px; border-radius: 16px; }
+.feedback.ok { background: #d8f5e7; color: #0d5a3c; }
+.feedback.no { background: #fde0e3; color: #8a1c2a; }
+.feedback .big { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3vw, 2.4rem); }
+.feedback .why { font-size: clamp(1.05rem, 1.7vw, 1.4rem); flex: 1 1 260px; min-width: 0; }
+.feedback .btn-big { font-size: 1.3rem; padding: 8px 18px; }
+.qfoot { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.link { background: none; border: none; color: var(--ink-soft); text-decoration: underline; font-weight: 800; padding: 4px; }
+
+/* ---------- Opening a box ---------- */
+.rbox { width: min(820px, 100%); align-items: center; text-align: center; }
+.rgift { width: min(260px, 32vh); aspect-ratio: 1; position: relative; }
+.rgift svg { width: 100%; height: 100%; overflow: visible; }
+.rgift.shake svg { animation: rshake .18s linear infinite; }
+@keyframes rshake { 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+.rgift .lid { transform-box: fill-box; transform-origin: 50% 100%; }
+.rgift.opened .lid { animation: lidFly .7s forwards cubic-bezier(.3,.6,.4,1); }
+@keyframes lidFly { to { transform: translate(40%, -140%) rotate(35deg); opacity: 0; } }
+.rgift .burst { position: absolute; left: 50%; top: 45%; width: 10px; height: 10px; border-radius: 50%; transform: translate(-50%, -50%); opacity: 0; pointer-events: none; }
+.rgift.opened .burst { animation: burst .8s ease-out forwards; }
+@keyframes burst { 0% { opacity: 1; box-shadow: 0 0 0 0 var(--gold); } 100% { opacity: 0; box-shadow: 0 0 0 160px rgba(255,201,60,0); width: 40px; height: 40px; } }
+.rprize { display: flex; flex-direction: column; align-items: center; gap: 10px; animation: prizeIn .5s cubic-bezier(.2,1.7,.5,1); }
+@keyframes prizeIn { from { transform: scale(.2) translateY(60px); opacity: 0; } }
+.rprize .chip { display: inline-flex; align-items: center; gap: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(2.8rem, 8vw, 5.6rem); line-height: 1; padding: 10px 28px; border-radius: 22px; border: 4px solid var(--ink); background: #2ecc71; color: #fff; box-shadow: 0 6px 0 var(--ink); }
+.rprize .chip.k-bonus { background: #7b61ff; }
+.rprize .chip.k-gold { background: var(--gold); color: var(--ink); }
+.rprize .chip.k-bad { background: #3a3150; color: #ff8fa6; }
+.rprize .what { font-size: clamp(1.4rem, 3vw, 2.3rem); font-weight: 900; margin: 0; }
+.rprize .chg { font-size: clamp(1.1rem, 2vw, 1.6rem); color: var(--ink-soft); margin: 0; }
+.choose-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.choose-row button { font-family: var(--display); font-weight: 600; font-size: 1.4rem; padding: 8px 18px; border-radius: 14px; border: 3px solid var(--ink); background: var(--tc); color: #fff; box-shadow: 0 4px 0 var(--ink); }
+.choose-row button small { display: block; font-family: var(--body); font-size: .7rem; }
+
+/* ---------- Banner + win ---------- */
+.banner {
+  position: fixed; left: 50%; top: 38%; z-index: 30; transform: translate(-50%, -50%);
+  font-family: var(--display); font-weight: 600; font-size: clamp(2rem, 6vw, 5rem); color: #fff; text-align: center;
+  background: var(--accent); border: 5px solid var(--ink); border-radius: 22px; padding: 14px 34px;
+  box-shadow: 8px 8px 0 var(--ink); pointer-events: none; max-width: calc(100% - 32px);
+  animation: bannerIn .35s cubic-bezier(.2, 1.6, .5, 1);
+}
+.banner.miss { background: #fff; color: var(--ink); }
+.banner small { display: block; font-size: .4em; font-family: var(--body); font-weight: 900; }
+@keyframes bannerIn { from { transform: translate(-50%, -50%) scale(.3) rotate(-6deg); opacity: 0; } }
+.winbox { text-align: center; align-items: center; }
+.winbox h2 { font-size: clamp(2.4rem, 6vw, 4.6rem); color: var(--accent); }
+.rank { display: flex; flex-direction: column; gap: 8px; width: min(520px, 100%); }
+.rank .team { font-size: 1.2rem; text-align: left; }
+#confetti { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 40; width: 100%; height: 100%; }
+
+/* ---------- Teacher panel + cards ---------- */
+.tbox { width: min(980px, 100%); }
+.tbox h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+.trow { display: grid; grid-template-columns: minmax(130px, 1.1fr) auto auto; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 16px; background: var(--tc-l, #f6f2fb); border: 3px solid var(--tc-m, #ddd); }
+.trow .tn { font-family: var(--display); font-weight: 600; font-size: 1.5rem; color: var(--tc-d, var(--ink)); min-width: 0; overflow-wrap: anywhere; }
+.trow .tn small { display: block; font-family: var(--body); font-size: .8rem; color: var(--ink-soft); font-weight: 800; }
+.tbtn { border: 3px solid var(--ink); border-radius: 14px; padding: 10px 14px; font-weight: 900; font-size: 1.1rem; background: #fff; box-shadow: 0 4px 0 var(--ink); line-height: 1.1; }
+.tbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.tbtn small { display: block; font-size: .7rem; font-weight: 800; opacity: .8; }
+.tbtn.noisy { background: var(--gold); }
+.tbtn.good { background: #2ecc71; color: #fff; }
+.tbtn.sm { padding: 6px 10px; font-size: .95rem; box-shadow: 0 3px 0 var(--ink); }
+.tmore { display: flex; gap: 6px; flex-wrap: wrap; grid-column: 1 / -1; justify-content: flex-end; }
+.tmore span { align-self: center; font-size: .8rem; color: var(--ink-soft); font-weight: 800; margin-right: 4px; }
+.tladder { margin: 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.45; }
+.tladder b { color: var(--ink); }
+.tfoot { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; align-items: center; }
+.fxlayer { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 36; display: flex; align-items: center; justify-content: center; padding: 16px; cursor: pointer; background: rgba(20,15,35,.55); }
+.tcard { width: min(420px, 80vw); padding: 28px 24px 30px; border-radius: 26px; border: 6px solid #fff; box-shadow: 0 18px 40px rgba(0,0,0,.4); text-align: center; color: var(--ink); animation: cardIn .6s cubic-bezier(.2,1.5,.5,1); }
+.tcard .ct { font-family: var(--display); font-weight: 600; font-size: clamp(1rem, 2vw, 1.4rem); letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.tcard .cn { font-family: var(--display); font-weight: 600; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin: 10px 0; overflow-wrap: anywhere; }
+.tcard .cw { font-size: clamp(1.4rem, 3.4vw, 2.4rem); font-weight: 900; }
+.tcard.warn { background: #ffd23f; }
+.tcard.minus { background: #ff9f43; }
+.tcard.skip { background: #e8452c; color: #fff; }
+.tcard.praise { background: #2ecc71; color: #fff; }
+@keyframes cardIn { from { transform: translateY(-60vh) rotate(-25deg); } 70% { transform: rotate(4deg); } }
+
+/* ---------- How to play ---------- */
+#intro { z-index: 25; }
+.ibox { width: min(1120px, 100%); min-height: min(620px, 100%); }
+.ihead { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ihead .step { font-weight: 900; color: var(--ink-soft); letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; }
+#iSlides { flex: 1; display: flex; align-items: center; }
+.slide { display: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; flex: 1; width: 100%; }
+.slide.on { display: grid; }
+.slide h2 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.02; color: var(--accent); margin-bottom: 14px; }
+.slide .say { font-size: clamp(1.4rem, 2.8vw, 2.3rem); font-weight: 900; line-height: 1.3; margin: 0; }
+.slide .say + .say { margin-top: 12px; color: var(--ink-soft); font-size: clamp(1.15rem, 2.2vw, 1.8rem); }
+.slide .art { background: var(--paper); border-radius: 22px; padding: 14px; display: flex; align-items: center; justify-content: center; min-height: 260px; }
+.slide .art svg { width: 100%; height: auto; max-height: 50vh; overflow: visible; }
+.slide.on .txt { animation: fadeUp .45s both; }
+.slide.on .art { animation: pop .4s .1s both; }
+@keyframes fadeUp { from { transform: translateY(20px); opacity: 0; } }
+.idots { display: flex; gap: 8px; justify-content: center; }
+.idots i { width: 14px; height: 14px; border-radius: 50%; background: var(--line); display: block; }
+.idots i.on { background: var(--accent); width: 34px; border-radius: 8px; }
+.inav { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.mini-gifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: 100%; max-width: 420px; }
+.mini-gifts svg { animation: bob 1.4s ease-in-out infinite alternate; }
+.mini-gifts svg:nth-child(2n) { animation-delay: .35s; }
+.mini-gifts svg:nth-child(3n) { animation-delay: .7s; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.chips span { font-family: var(--display); font-weight: 600; font-size: clamp(1.1rem, 2.2vw, 1.7rem); padding: 8px 14px; border-radius: 14px; border: 3px solid var(--ink); background: #2ecc71; color: #fff; }
+.chips .k-bonus { background: #7b61ff; } .chips .k-gold { background: var(--gold); color: var(--ink); } .chips .k-bad { background: #3a3150; color: #ff8fa6; }
+.slide.on .chips span { animation: prizeIn .45s both cubic-bezier(.2,1.7,.5,1); }
+.a-open .lid { transform-box: fill-box; transform-origin: 50% 100%; animation: aLid 3s infinite; }
+@keyframes aLid { 0%, 35% { transform: none; opacity: 1; } 55%, 85% { transform: translate(40%, -120%) rotate(30deg); opacity: 0; } 100% { transform: none; opacity: 1; } }
+.a-star { transform-box: fill-box; transform-origin: center; animation: aStar 3s infinite; }
+@keyframes aStar { 0%, 40% { transform: scale(0); } 55%, 85% { transform: scale(1); } 100% { transform: scale(0); } }
+.a-card { transform-box: fill-box; transform-origin: center; animation: aCard 3.6s infinite; }
+@keyframes aCard { 0%, 30% { transform: scale(0); opacity: 0; } 40%, 92% { transform: scale(1); opacity: 1; } 100% { opacity: 0; } }
+.a-right { animation: aRight 3.6s infinite; }
+@keyframes aRight { 0%, 60% { fill: #fff; } 65%, 100% { fill: #2ecc71; } }
+.cards-art { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.cards-art div { border-radius: 16px; padding: 14px 10px; text-align: center; font-weight: 900; font-size: clamp(1rem, 1.9vw, 1.45rem); border: 4px solid #fff; box-shadow: 0 6px 14px rgba(0,0,0,.18); line-height: 1.2; }
+.cards-art div small { display: block; font-size: .7em; opacity: .8; letter-spacing: .08em; text-transform: uppercase; }
+.cards-art .c1 { background: #ffd23f; } .cards-art .c2 { background: #ff9f43; } .cards-art .c3 { background: #e8452c; color: #fff; } .cards-art .c4 { background: #2ecc71; color: #fff; }
+.slide.on .cards-art div { animation: cardIn .6s both cubic-bezier(.2,1.5,.5,1); }
+.slide.on .cards-art div:nth-child(2) { animation-delay: .35s; }
+.slide.on .cards-art div:nth-child(3) { animation-delay: .7s; }
+.slide.on .cards-art div:nth-child(4) { animation-delay: 1.05s; }
+.pts-list { display: grid; gap: 10px; width: 100%; }
+.pts-list div { display: flex; justify-content: space-between; gap: 12px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 16px; font-size: clamp(1.1rem, 2.2vw, 1.7rem); font-weight: 900; border: 3px solid var(--line); }
+.pts-list div b { font-family: var(--display); font-weight: 600; color: var(--good); font-size: 1.2em; white-space: nowrap; }
+.slide.on .pts-list div { animation: fadeUp .4s both; }
+.slide.on .pts-list div:nth-child(2) { animation-delay: .25s; }
+.slide.on .pts-list div:nth-child(3) { animation-delay: .5s; }
+.slide.on .pts-list div:nth-child(4) { animation-delay: .75s; }
+
+/* Short screens (small classroom TVs): keep the setup on one screen */
+@media (min-width: 861px) and (max-height: 820px) {
+  #setup { padding-block: 10px; }
+  .setup-card { width: min(1120px, 100%); grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: 22px; padding: 16px 24px; }
+  .hero { gap: 8px; }
+  .hero h1 { font-size: clamp(2rem, 4vw, 3rem); }
+  .hero .gifts { max-width: 230px; }
+  .howto { font-size: .95rem; line-height: 1.4; }
+  .settings { gap: 8px; }
+  .field { gap: 5px; }
+  .seg { gap: 6px; }
+  .seg button { padding: 5px 11px; font-size: .95rem; }
+  .seg button small { display: inline; margin-left: 4px; }
+  .team-names input { padding: 5px 8px; }
+  details.custom { padding: 6px 10px; }
+  .btn-big { font-size: 1.35rem; padding: 9px 22px; }
+}
+@media (min-width: 861px) and (max-height: 640px) { .hero .gifts { display: none; } }
+@media (max-width: 860px) {
+  .setup-card { grid-template-columns: minmax(0, 1fr); }
+  #game { height: auto; }
+  .play { grid-template-columns: minmax(0, 1fr); }
+  .board { width: 100%; }
+  .qbody.has-fig { grid-template-columns: minmax(0, 1fr); }
+  .fig svg { max-height: 34vh; }
+  .slide { grid-template-columns: minmax(0, 1fr); }
+  .slide .art { min-height: 0; }
+  .trow { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .opts { grid-template-columns: minmax(0, 1fr); }
+  .team-names { grid-template-columns: minmax(0, 1fr); }
+  .box.open { border-width: 2px; border-radius: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="setup">
+  <div class="setup-card">
+    <section class="hero">
+      <h1>Mystery<span>Box</span></h1>
+      <div class="gifts" id="heroGifts" aria-hidden="true"></div>
+      <ol class="howto">
+        <li>Every box has a <b>surprise</b> inside.</li>
+        <li>Pick a box. Answer the question <b>correctly</b> to open it!</li>
+        <li>Wrong answer? The box stays closed.</li>
+        <li>Most boxes have points. Some have a <b>bonus</b>. A few are <b>bad</b>!</li>
+        <li>The team with the <b>most points</b> wins.</li>
+      </ol>
+    </section>
+    <section class="settings">
+      <div class="field"><span class="label">Teams</span><div class="seg" id="segTeams"></div></div>
+      <div class="field" id="teamNamesField"><span class="label">Team names</span><div class="team-names" id="teamNames"></div></div>
+      <div class="field"><span class="label">Boxes</span><div class="seg" id="segBoxes"></div></div>
+      <div class="field"><span class="label">Bad boxes</span><div class="seg" id="segBad"></div></div>
+      <div class="field"><span class="label">Time to answer</span><div class="seg" id="segTimer"></div></div>
+      <div class="field"><span class="label">Questions</span><div class="seg" id="segSet"></div>
+        <div class="lib-row" id="libRow" hidden><select id="libSel" aria-label="Question set from the library"></select><span id="libStatus"></span></div></div>
+      <div class="field"><span class="label">How to play</span><div class="seg" id="segIntro"></div></div>
+      <details class="custom" id="customBox">
+        <summary>Write my own questions</summary>
+        <p>One question per line: <code>question | right answer | wrong answer | wrong answer</code>. You can add 1 to 3 wrong answers. Saved on this device only.</p>
+        <textarea id="customText" spellcheck="false" placeholder="What is 7 × 8? | 56 | 54 | 64 | 48&#10;What is the past tense of &quot;go&quot;? | went | goed | gone"></textarea>
+        <div id="customStatus"></div>
+      </details>
+      <div class="start-row">
+        <button class="btn-big" id="btnStart">Start game</button>
+        <button class="btn-big alt" id="btnResume" hidden>Continue last game</button>
+        <a class="to-kho" href="../">← Game library</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="game" hidden>
+  <header class="topbar">
+    <h2>Mystery Box<small id="setName"></small></h2>
+    <button class="tool teacher" id="btnTeacher">Teacher</button>
+    <button class="tool" id="btnHow">How to play</button>
+    <button class="tool" id="btnSound">Sound: on</button>
+    <button class="tool" id="btnFull">Full screen</button>
+    <button class="tool endg" id="btnEnd">End game</button>
+    <button class="tool" id="btnNew">New game</button>
+  </header>
+  <div class="play">
+    <div class="board-wrap"><div class="board" id="board"></div></div>
+    <aside class="side">
+      <div class="panel"><h3>Score</h3><div class="teams" id="teams"></div>
+        <p class="legend">Answer correctly to open your box. The points inside go to your team.</p></div>
+      <div class="panel"><h3>Still inside <small id="boxesLeft"></small></h3>
+        <div class="inside"><div><b id="inPts">0</b><span>Points</span></div><div class="bon"><b id="inBon">0</b><span>Bonus</span></div><div class="bad"><b id="inBad">0</b><span>Bad</span></div></div></div>
+      <p class="hint" id="hint">Pick a box.</p>
+    </aside>
+  </div>
+</div>
+
+<div class="overlay" id="qOverlay" hidden>
+  <div class="qbox" role="dialog" aria-modal="true" aria-labelledby="qText">
+    <div class="qhead">
+      <span class="qteam" id="qTeam"></span>
+      <span class="qcoord" id="qCoord"></span>
+      <span class="qnum" id="qNum"></span>
+    </div>
+    <div class="timer" id="qTimer" hidden><i id="qTimerBar"></i></div>
+    <div class="qbody" id="qBody">
+      <div class="fig" id="qFig" hidden></div>
+      <div class="qmain">
+        <p class="qtext" id="qText"></p>
+        <div class="opts" id="qOpts"></div>
+      </div>
+    </div>
+    <div class="feedback" id="qFeedback" hidden></div>
+    <div class="qfoot" id="qFoot">
+      <button class="link" id="btnSwap">Different question</button>
+      <button class="link" id="btnCancel">Choose another box</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="rOverlay" hidden>
+  <div class="qbox rbox" role="dialog" aria-modal="true" aria-label="Opening the box">
+    <div class="qhead"><span class="qteam" id="rTeam"></span><span class="qcoord" id="rBoxNo"></span></div>
+    <div class="rgift" id="rGift"></div>
+    <div id="rPrize"></div>
+    <button class="btn-big" id="btnROk" hidden>Continue</button>
+  </div>
+</div>
+
+<div class="overlay" id="winOverlay" hidden>
+  <div class="qbox winbox" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+    <h2 id="winTitle">All boxes open!</h2>
+    <p class="qtext" id="winSub" style="font-size:clamp(1.2rem,2.2vw,1.8rem)"></p>
+    <div class="rank" id="winRank"></div>
+    <div class="start-row" style="justify-content:center">
+      <button class="btn-big" id="btnAgain">Play again</button>
+      <button class="btn-big alt" id="btnSetup">Settings</button>
+      <button class="btn-big alt" id="btnLook">See the boxes</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="teacherOverlay" hidden>
+  <div class="qbox tbox" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+    <h2 id="tTitle">Teacher's tools</h2>
+    <p class="tladder"><b>Too noisy</b> (each time): 1st = yellow card (warning) · 2nd = −10 points · 3rd and more = skip a turn. <b>Quiet +10</b> = a reward for a calm, kind team.</p>
+    <div class="teams" id="tRows"></div>
+    <div class="tfoot">
+      <button class="link" id="btnUndo" disabled>Undo last action</button>
+      <button class="btn-big" id="btnTClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="fxlayer" id="cardFx" hidden></div>
+
+<div class="overlay" id="intro" hidden>
+  <div class="qbox ibox" role="dialog" aria-modal="true" aria-label="How to play">
+    <div class="ihead"><span class="step" id="iStep"></span><button class="link" id="btnISkip">Skip</button></div>
+    <div id="iSlides"></div>
+    <div class="idots" id="iDots"></div>
+    <div class="inav">
+      <button class="btn-big alt" id="btnIBack">Back</button>
+      <button class="btn-big" id="btnINext">Next</button>
+    </div>
+  </div>
+</div>
+<canvas id="confetti" hidden></canvas>
+
+<script src="../kho.js"></script>
+<script>
+"use strict";
+const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const $ = (id) => document.getElementById(id);
+
+/* =====================================================================
+   SETTINGS
+   ===================================================================== */
+const SIZES = {
+  12: { c: 4, r: 3, label: "12 boxes", note: "about 20 questions" },
+  16: { c: 4, r: 4, label: "16 boxes", note: "about 25 questions" },
+  20: { c: 5, r: 4, label: "20 boxes", note: "about 30 questions" },
+  24: { c: 6, r: 4, label: "24 boxes", note: "about 40 questions" },
+};
+const BADS = [["all", "Yes", "bomb, swap, lose all"], ["soft", "Yes, but no “lose all”"], ["none", "No bad boxes"]];
+const TEAM_DEFAULT = [["Stars", "#e0457b"], ["Rockets", "#2563c9"], ["Turtles", "#178a5c"], ["Tigers", "#e0661b"]];
+const TIMERS = [0, 20, 30, 45];
+const STORE = "mystery-box-v1";
+const BOXC = ["#ff5d8f", "#4cc9f0", "#ffb703", "#7b61ff", "#2ec4b6", "#ff8c42", "#8ac926", "#f15bb5"];
+
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+let prefs = Object.assign({ teams: 2, boxes: 16, bad: "all", timer: 0, set: "lib", lib: "", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true, intro: 1 }, store.get(STORE + "-prefs") || {});
+let S = null;               // game state (saved on this device)
+let aim = null, curQ = null, locked = false, timerId = null, newArm = 0, endArm = 0;
+
+function mixHex(a, b, t) {
+  const p = (h) => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const A = p(a), B = p(b);
+  return "#" + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, "0")).join("");
+}
+const teamStyle = (c) => `--tc:${c};--tc-l:${mixHex(c, "#ffffff", .87)};--tc-m:${mixHex(c, "#ffffff", .65)};--tc-d:${mixHex(c, "#000000", .35)}`;
+
+/* =====================================================================
+   QUESTIONS: library sets (kho/bo/, read by kho.js) or the teacher's own
+   ===================================================================== */
+const LIB = { list: null, id: "", set: null, deck: null, err: "" };
+async function loadLibList() {
+  if (!window.KHO) { LIB.list = []; return; }
+  try { LIB.list = await KHO.list(); } catch (e) { LIB.list = []; LIB.err = "Can't load the library. Check the internet."; }
+}
+async function loadLib(id) {
+  if (!id || !window.KHO) return false;
+  if (LIB.id === id && LIB.deck && LIB.deck.size) return true;
+  try {
+    const set = await KHO.load(id), deck = KHO.deck(set);
+    if (!deck.size) throw new Error("empty");
+    Object.assign(LIB, { id, set, deck, err: "" });
+    return true;
+  } catch (e) { Object.assign(LIB, { id, set: null, deck: null, err: "Can't load this question set. Check the internet." }); return false; }
+}
+function parseCustom(text) {
+  return String(text || "").split("\n").map(l => l.split("|").map(s => s.trim())).filter(p => p.length >= 3 && p[0] && p[1] && p.slice(2).some(Boolean))
+    .map(p => ({ q: p[0], a: p[1], w: p.slice(2, 5).filter(Boolean) }));
+}
+let customDeck = [];
+function customQuestion(list) {
+  if (!customDeck.length) customDeck = shuffle(list);
+  const it = customDeck.pop(), opts = shuffle([it.a, ...it.w]);
+  return { text: it.q, options: opts, answer: opts.indexOf(it.a), explain: it.a };
+}
+function nextQuestion() {
+  if (S.set === "custom") { const list = parseCustom(prefs.custom); return list.length ? customQuestion(list) : null; }
+  return LIB.deck ? LIB.deck.next() : null;
+}
+function setLabel(set) {
+  if (set === "custom") return "My questions";
+  return LIB.set ? (LIB.set.short || LIB.set.title || "") : "";
+}
+
+/* =====================================================================
+   WHAT'S INSIDE THE BOXES
+   kind: pts (points) · jackpot · double · steal · all · again (bonus) · bomb · swap · zero (bad)
+   ===================================================================== */
+const PTS = [10, 20, 20, 30, 30, 40, 50];
+const GROUP = { pts: "good", jackpot: "gold", double: "bonus", steal: "bonus", all: "bonus", again: "bonus", bomb: "bad", swap: "bad", zero: "bad" };
+function makeBoxes(n, bad, teams) {
+  const solo = teams === 1, out = [];
+  const nBonus = Math.round(n * .25), nBad = bad === "none" ? 0 : Math.round(n * .13);
+  if (n >= 16) out.push({ k: "jackpot", v: 100 });
+  const pool = shuffle(["double", "steal", "again", "all"]).concat(shuffle(["steal", "again", "double", "all"]));
+  while (out.length < nBonus) out.push({ k: pool.shift(), v: 20 });
+  // "lose all" is rare: at most one per game, about half of the games
+  if (nBad && bad === "all" && Math.random() < .5) out.push({ k: "zero", v: 0 });
+  const badPool = ["bomb", "swap", "bomb"];
+  for (let i = 0; out.length < nBonus + nBad && i < 10; i++) out.push({ k: badPool[i % 3], v: 20 });
+  while (out.length < n) out.push({ k: "pts", v: pick(PTS) });
+  // one team only: no other team to steal from or swap with
+  out.forEach(b => { if (solo && b.k === "steal") Object.assign(b, { k: "pts", v: 20 }); if (solo && b.k === "swap") b.k = "bomb"; });
+  return shuffle(out.slice(0, n)).map(b => Object.assign(b, { open: false, by: -1 }));
+}
+function prizeInfo(b) {
+  switch (b.k) {
+    case "pts": return { ic: "⭐", lb: "+" + b.v, title: `+${b.v} points!` };
+    case "jackpot": return { ic: "💎", lb: "+100", title: "JACKPOT! +100 points!" };
+    case "double": return { ic: "🚀", lb: "×2", title: "Double your points!" };
+    case "steal": return { ic: "🧲", lb: "Steal 20", title: "Take 20 points from another team!" };
+    case "all": return { ic: "🎉", lb: "All +10", title: "Party box! Every team gets +10!" };
+    case "again": return { ic: "🔁", lb: "Extra turn", title: "Extra turn! Pick another box." };
+    case "bomb": return { ic: "💣", lb: "−20", title: "Bomb! −20 points." };
+    case "swap": return { ic: "🔄", lb: "Swap", title: "Swap points with another team!" };
+    case "zero": return { ic: "😱", lb: "Lose all", title: "Oh no! You lose all your points!" };
+  }
+  return { ic: "?", lb: "?", title: "" };
+}
+
+function giftSVG(i, num) {
+  const c = BOXC[i % BOXC.length], r = c === "#ffb703" || c === "#8ac926" ? "#ffffff" : "#ffd23f", ink = "#2b2340";
+  return `<svg viewBox="0 0 100 100" aria-hidden="true">
+    <rect x="14" y="44" width="72" height="50" rx="6" fill="${c}" stroke="${ink}" stroke-width="3.5"/>
+    <rect x="20" y="50" width="6" height="36" rx="3" fill="#fff" opacity=".35"/>
+    <rect x="44" y="44" width="12" height="50" fill="${r}" stroke="${ink}" stroke-width="3"/>
+    <g class="lid">
+      <path d="M50 27 C38 6 20 11 27 22 C31 28 42 28 50 27Z" fill="${r}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M50 27 C62 6 80 11 73 22 C69 28 58 28 50 27Z" fill="${r}" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="8" y="26" width="84" height="20" rx="5" fill="${c}" stroke="${ink}" stroke-width="3.5"/>
+      <rect x="44" y="26" width="12" height="20" fill="${r}" stroke="${ink}" stroke-width="3"/>
+      <circle cx="50" cy="27" r="5" fill="${r}" stroke="${ink}" stroke-width="3"/>
+    </g>
+    ${num === undefined ? "" : `<circle cx="50" cy="70" r="15" fill="#fff" stroke="${ink}" stroke-width="3"/>
+    <text x="50" y="71" text-anchor="middle" dominant-baseline="central" font-family="Fredoka, Nunito, sans-serif" font-size="${num > 9 ? 17 : 20}" font-weight="700" fill="${ink}">${num}</text>`}
+  </svg>`;
+}
+
+/* =====================================================================
+   GAME
+   ===================================================================== */
+function newGame() {
+  const n = +prefs.boxes || 16;
+  S = {
+    n, set: prefs.set, lib: prefs.lib, timer: prefs.timer, bad: prefs.bad,
+    boxes: makeBoxes(n, prefs.bad, prefs.teams),
+    teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, right: 0, wrong: 0, boxes: 0, noise: 0, skip: 0 })),
+    turn: 0, q: 0, over: false, again: false, pend: null,
+  };
+  customDeck = [];
+  save(); showGame();
+}
+function save() { if (S) store.set(STORE + "-game", S); }
+
+function renderBoard(just) {
+  const b = $("board"), sz = SIZES[S.n] || SIZES[16];
+  b.style.setProperty("--c", sz.c); b.style.setProperty("--r", sz.r);
+  b.innerHTML = S.boxes.map((x, i) => {
+    if (!x.open && S.over) { const p = prizeInfo(x); return `<div class="box open left k-${GROUP[x.k]}" aria-label="Box ${i + 1} (not opened): ${esc(p.lb)}"><span class="ic">${p.ic}</span><span class="lb${p.lb.length > 5 ? " long" : ""}">${esc(p.lb)}</span></div>`; }
+    if (!x.open) return `<button class="box${aim === i ? " aim" : ""}" data-i="${i}" aria-label="Box ${i + 1}">${giftSVG(i, i + 1)}</button>`;
+    const p = prizeInfo(x), t = S.teams[x.by];
+    return `<div class="box open k-${GROUP[x.k]}${just === i ? " just" : ""}" style="${t ? `--tc:${t.color}` : ""}" aria-label="Box ${i + 1}: ${esc(p.lb)}"><span class="ic">${p.ic}</span><span class="lb${p.lb.length > 5 ? " long" : ""}">${esc(p.lb)}</span>${t ? `<span class="by"></span>` : ""}</div>`;
+  }).join("");
+}
+function renderSide() {
+  const solo = S.teams.length === 1;
+  $("teams").innerHTML = S.teams.map((t, i) => `<div class="team${!solo && i === S.turn && !S.over ? " now" : ""}" style="${teamStyle(t.color)}">
+    <span class="dot"></span><span class="nm">${esc(solo ? "Class" : t.name)}<small>${t.right} right · ${t.wrong} wrong · ${t.boxes} box${t.boxes === 1 ? "" : "es"}${t.noise ? `<span class="bdg">NOISY ×${t.noise}</span>` : ""}${t.skip ? `<span class="bdg sk">SKIP NEXT</span>` : ""}${S.again && i === S.turn && !S.over ? `<span class="bdg ex">EXTRA TURN</span>` : ""}</small></span><span class="pts">${t.pts}</span></div>`).join("");
+  const shut = S.boxes.filter(b => !b.open);
+  $("boxesLeft").textContent = `${shut.length} of ${S.n} boxes`;
+  $("inPts").textContent = shut.filter(b => GROUP[b.k] === "good").length;
+  $("inBon").textContent = shut.filter(b => GROUP[b.k] === "bonus" || GROUP[b.k] === "gold").length;
+  $("inBad").textContent = shut.filter(b => GROUP[b.k] === "bad").length;
+  $("hint").textContent = S.over ? "Game over. Press New game to play again." : solo ? "Pick a box." : `${S.teams[S.turn].name}: pick a box.`;
+}
+function render(just) { renderBoard(just); renderSide(); }
+
+function showGame() {
+  $("setName").textContent = setLabel(S.set);
+  document.title = "Mystery Box" + (setLabel(S.set) ? " · " + setLabel(S.set) : "");
+  $("setup").hidden = true; $("game").hidden = false;
+  ["winOverlay", "qOverlay", "rOverlay", "teacherOverlay", "cardFx"].forEach(id => $(id).hidden = true);
+  aim = null; curQ = null; undoSnap = null; newArm = endArm = 0;
+  $("btnEnd").textContent = "End game"; $("btnEnd").classList.remove("warn");
+  $("btnNew").textContent = "New game"; $("btnNew").classList.remove("warn");
+  $("btnSound").textContent = "Sound: " + (prefs.sound ? "on" : "off");
+  render();
+  if (S.pend !== null && S.pend !== undefined) openReveal(S.pend, true);
+}
+
+/* ----- Question ----- */
+function openQuestion() {
+  curQ = nextQuestion(); locked = false;
+  if (!curQ) { aim = null; render(); alert("No questions to show. Go to Settings and choose a question set."); return; }
+  S.q++;
+  const t = S.teams[S.turn];
+  $("qOverlay").style.setProperty("--tc", t.color);
+  $("qTeam").textContent = S.teams.length > 1 ? t.name : "Class";
+  $("qTeam").style.setProperty("--tc", t.color);
+  $("qCoord").textContent = "Box " + (aim + 1);
+  $("qNum").textContent = "Question " + S.q;
+  $("qText").textContent = curQ.text;
+  const fig = $("qFig");
+  if (curQ.figure) { fig.innerHTML = curQ.figure; fig.hidden = false; $("qBody").classList.add("has-fig"); }
+  else { fig.innerHTML = ""; fig.hidden = true; $("qBody").classList.remove("has-fig"); }
+  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${"ABCDE"[i]}</span><span class="ot">${esc(o)}</span></button>`).join("");
+  $("qFeedback").hidden = true; $("qFoot").hidden = false;
+  $("qOverlay").hidden = false;
+  startTimer(); renderSide(); save();
+}
+function startTimer() {
+  clearInterval(timerId);
+  const bar = $("qTimerBar"), wrap = $("qTimer");
+  if (!S.timer) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  const end = Date.now() + S.timer * 1000;
+  bar.style.transform = "scaleX(1)"; bar.style.background = "var(--good)";
+  timerId = setInterval(() => {
+    const left = Math.max(0, end - Date.now()) / (S.timer * 1000);
+    bar.style.transform = `scaleX(${left})`;
+    bar.style.background = left < .25 ? "var(--bad)" : left < .5 ? "var(--gold)" : "var(--good)";
+    if (left <= 0) { clearInterval(timerId); answer(-1); }
+  }, 100);
+}
+function answer(i) {
+  if (locked || !curQ) return;
+  locked = true; clearInterval(timerId);
+  const ok = i === curQ.answer, t = S.teams[S.turn], box = aim;
+  document.querySelectorAll(".opt").forEach((b, j) => {
+    b.disabled = true;
+    b.classList.add(j === curQ.answer ? "right" : j === i ? "wrong" : "dim");
+  });
+  $("qFoot").hidden = true;
+  const fb = $("qFeedback");
+  fb.hidden = false;
+  if (ok) {
+    t.right++;
+    fb.className = "feedback ok";
+    fb.innerHTML = `<span class="big">Correct!</span><span class="why">Let's open box ${box + 1}…</span>`;
+    sfx("good"); save();
+    setTimeout(() => { $("qOverlay").hidden = true; openReveal(box); }, 1100);
+  } else {
+    t.wrong++;
+    fb.className = "feedback no";
+    fb.innerHTML = `<span class="big">${i < 0 ? "Time's up!" : "Not this time!"}</span><span class="why">Answer: ${esc(curQ.explain)}</span><button class="btn-big" id="btnNext">${S.teams.length > 1 ? "Next team" : "Continue"}</button>`;
+    sfx("bad"); save();
+    $("btnNext").focus();
+    $("btnNext").onclick = () => {
+      $("qOverlay").hidden = true; aim = null; curQ = null;
+      S.again = false; nextTurn();
+      const el = document.querySelector(`.box[data-i="${box}"]`);
+      if (el) { el.classList.add("nope"); }
+    };
+  }
+}
+function cancelQuestion() {
+  clearInterval(timerId); S.q = Math.max(0, S.q - 1);
+  $("qOverlay").hidden = true; aim = null; curQ = null; render(); save();
+}
+function swapQuestion() { S.q = Math.max(0, S.q - 1); openQuestion(); }
+
+/* ----- Opening a box ----- */
+let revealT = null;
+function openReveal(i, resume) {
+  const b = S.boxes[i], t = S.teams[S.turn];
+  if (!b.open) { b.open = true; b.by = S.turn; t.boxes++; }
+  S.pend = i; aim = null; curQ = null; save();
+  $("rOverlay").style.setProperty("--tc", t.color);
+  $("rTeam").textContent = S.teams.length > 1 ? t.name : "Class";
+  $("rTeam").style.setProperty("--tc", t.color);
+  $("rBoxNo").textContent = "Box " + (i + 1);
+  $("rGift").className = "rgift" + (resume ? " opened" : " shake");
+  $("rGift").innerHTML = giftSVG(i) + `<span class="burst"></span>`;
+  $("rPrize").innerHTML = ""; $("btnROk").hidden = true;
+  $("rOverlay").hidden = false;
+  clearTimeout(revealT);
+  if (resume) { applyPrize(i); return; }
+  sfx("drum");
+  revealT = setTimeout(() => { $("rGift").className = "rgift opened"; applyPrize(i); }, 1000);
+}
+function applyPrize(i) {
+  const b = S.boxes[i], ti = S.turn, t = S.teams[ti], p = prizeInfo(b), grp = GROUP[b.k];
+  const nm = S.teams.length > 1 ? t.name : "Class", before = t.pts;
+  const others = S.teams.map((o, j) => j).filter(j => j !== ti);
+  let what = p.title, chg = "";
+  const show = (w, c) => {
+    $("rPrize").innerHTML = `<div class="rprize"><span class="chip k-${grp}">${p.ic} ${esc(p.lb)}</span><p class="what">${esc(w)}</p>${c ? `<p class="chg">${esc(c)}</p>` : ""}</div>`;
+  };
+  const done = () => { S.pend = null; save(); render(i); $("btnROk").hidden = false; $("btnROk").focus(); };
+  if (b.k === "pts" || b.k === "jackpot") t.pts += b.v;
+  else if (b.k === "double") { if (t.pts > 0) t.pts *= 2; else { t.pts += 20; what = "No points to double yet, so +20!"; } }
+  else if (b.k === "all") S.teams.forEach(o => o.pts += 10);
+  else if (b.k === "again") S.again = true;
+  else if (b.k === "bomb") t.pts = Math.max(0, t.pts - 20);
+  else if (b.k === "zero") t.pts = 0;
+  else if (b.k === "swap") {
+    const j = pick(others), o = S.teams[j], a = t.pts;
+    t.pts = o.pts; o.pts = a;
+    what = `Swap points with ${o.name}!`;
+    chg = `${nm}: ${a} → ${t.pts} · ${o.name}: ${t.pts} → ${o.pts}`;
+  } else if (b.k === "steal") {
+    if (others.length === 1) { what = stealFrom(ti, others[0]); }
+    else {
+      show("Take 20 points from another team! Choose a team:", "");
+      const row = document.createElement("div");
+      row.className = "choose-row";
+      row.innerHTML = others.map(j => `<button data-j="${j}" style="${teamStyle(S.teams[j].color)}">${esc(S.teams[j].name)}<small>${S.teams[j].pts} points</small></button>`).join("");
+      $("rPrize").firstChild.appendChild(row);
+      row.onclick = (e) => {
+        const btn = e.target.closest("button"); if (!btn) return;
+        const msg = stealFrom(ti, +btn.dataset.j);
+        show(msg, `${nm}: ${before} → ${t.pts}`); sfx("prize"); done();
+      };
+      sfx("open"); save(); renderSide();
+      return;
+    }
+  }
+  if (!chg && t.pts !== before) chg = `${nm}: ${before} → ${t.pts}`;
+  show(what, chg);
+  sfx(grp === "bad" ? "oops" : grp === "gold" ? "win" : "open");
+  if (grp === "gold") confetti();
+  done();
+}
+function stealFrom(ti, j) {
+  const o = S.teams[j], t = S.teams[ti], take = Math.min(20, o.pts);
+  o.pts -= take; t.pts += take;
+  return take ? `You took ${take} points from ${o.name}!` : `${o.name} has no points to take!`;
+}
+function closeReveal() {
+  if (S.pend !== null) return;
+  $("rOverlay").hidden = true;
+  if (S.boxes.every(b => b.open)) { S.again = false; win(false); return; }
+  if (S.again) { S.again = false; save(); render(); banner("Extra turn!", (S.teams.length > 1 ? S.teams[S.turn].name + ": p" : "P") + "ick another box"); return; }
+  nextTurn();
+}
+
+function nextTurn() {
+  if (S.teams.length > 1) {
+    const skipped = [];
+    S.turn = (S.turn + 1) % S.teams.length;
+    for (let k = 0; k < S.teams.length && S.teams[S.turn].skip > 0; k++) {
+      S.teams[S.turn].skip--; skipped.push(S.teams[S.turn].name);
+      S.turn = (S.turn + 1) % S.teams.length;
+    }
+    if (skipped.length) { const now = S.teams[S.turn].name; setTimeout(() => banner(`${skipped.join(", ")}: skip!`, `Now it's ${now}'s turn`, true), 600); }
+  }
+  save(); render();
+}
+
+let bannerT;
+function banner(msg, sub, miss) {
+  document.querySelectorAll(".banner").forEach(b => b.remove());
+  const d = document.createElement("div");
+  d.className = "banner" + (miss ? " miss" : "");
+  d.innerHTML = esc(msg) + (sub ? `<small>${esc(sub)}</small>` : "");
+  document.body.appendChild(d);
+  clearTimeout(bannerT); bannerT = setTimeout(() => d.remove(), 1800);
+}
+function win(early) {
+  if (!S.over) S.early = !!early;
+  early = S.early;
+  S.over = true; S.again = false; save(); render();
+  const solo = S.teams.length === 1;
+  const ranked = S.teams.slice().sort((a, b) => b.pts - a.pts || b.right - a.right);
+  const tie = !solo && ranked[0].pts === ranked[1].pts && ranked[0].right === ranked[1].right;
+  const right = S.teams.reduce((s, t) => s + t.right, 0), total = S.teams.reduce((s, t) => s + t.right + t.wrong, 0);
+  const opened = S.boxes.filter(b => b.open).length;
+  const lead = early ? "Time's up! " : "";
+  $("winTitle").textContent = solo ? (early ? "Time's up! Great job!" : "You opened every box!") : tie ? lead + "It's a tie!" : `${lead}${ranked[0].name} win!`;
+  $("winSub").textContent = `${opened} of ${S.n} boxes opened · ${right} of ${total} answers correct${solo ? ` · ${S.teams[0].pts} points` : ""}`;
+  $("winRank").innerHTML = solo ? "" : ranked.map(t => `<div class="team" style="${teamStyle(t.color)}"><span class="dot"></span><span class="nm">${esc(t.name)}<small>${t.right} right · ${t.boxes} boxes</small></span><span class="pts">${t.pts}</span></div>`).join("");
+  $("winOverlay").hidden = false;
+  sfx("win"); confetti();
+}
+
+/* ----- Teacher's tools ----- */
+let undoSnap = null, cardT = null;
+function noiseNext(t) {
+  const n = (t.noise || 0) + 1;
+  return n === 1 ? "warning" : (n === 2 || S.teams.length === 1) ? "−10 points" : "skip a turn";
+}
+function openTeacher() { if (!S) return; renderTeacher(); $("teacherOverlay").hidden = false; }
+function renderTeacher() {
+  const solo = S.teams.length === 1;
+  $("tRows").innerHTML = S.teams.map((t, i) => `<div class="trow" style="${teamStyle(t.color)}">
+    <span class="tn">${esc(solo ? "Whole class" : t.name)}<small>${t.pts} points · noisy: ${t.noise || 0}${t.skip ? " · skips next turn" : ""}</small></span>
+    <button class="tbtn noisy" data-a="noisy" data-i="${i}">Too noisy!<small>next: ${noiseNext(t)}</small></button>
+    <button class="tbtn good" data-a="quiet" data-i="${i}">Quiet +10<small>reward</small></button>
+    <div class="tmore"><span>Or pick one:</span>
+      <button class="tbtn sm" data-a="warn" data-i="${i}">Warning</button>
+      <button class="tbtn sm" data-a="m10" data-i="${i}">−10</button>
+      <button class="tbtn sm" data-a="m20" data-i="${i}">−20</button>
+      ${solo ? "" : `<button class="tbtn sm" data-a="skip" data-i="${i}">Skip turn</button>`}
+      <button class="tbtn sm" data-a="p20" data-i="${i}">+20</button>
+    </div></div>`).join("");
+  $("btnUndo").disabled = !undoSnap;
+}
+function teacherAct(a, i) {
+  undoSnap = JSON.stringify({ teams: S.teams, turn: S.turn, again: S.again });
+  const t = S.teams[i], solo = S.teams.length === 1, nm = solo ? "Whole class" : t.name;
+  let kind, title, what;
+  if (a === "noisy") { t.noise = (t.noise || 0) + 1; a = t.noise === 1 ? "warn" : (t.noise === 2 || solo) ? "m10" : "skip"; }
+  if (a === "warn") { kind = "warn"; title = "Yellow card"; what = "Too noisy! This is a warning."; }
+  else if (a === "m10" || a === "m20") { const v = +a.slice(1); t.pts = Math.max(0, t.pts - v); kind = "minus"; title = "Too noisy"; what = `−${v} points`; }
+  else if (a === "skip") { kind = "skip"; title = "Red card"; what = skipTeam(i) ? "Skip this turn!" : "Skip the next turn!"; }
+  else if (a === "quiet") { t.pts += 10; kind = "praise"; title = "Great team!"; what = "Quiet and kind: +10 points"; }
+  else if (a === "p20") { t.pts += 20; kind = "praise"; title = "Great team!"; what = "+20 points"; }
+  save(); $("teacherOverlay").hidden = true; render();
+  showCard(kind, title, nm, what);
+}
+// true when the team loses the turn it is playing right now
+function skipTeam(i) {
+  const busy = !$("qOverlay").hidden || !$("rOverlay").hidden;
+  if (i === S.turn && !busy && !S.over) { S.again = false; aim = null; nextTurn(); return true; }
+  S.teams[i].skip = (S.teams[i].skip || 0) + 1; return false;
+}
+function undoTeacher() {
+  if (!undoSnap) return;
+  const u = JSON.parse(undoSnap); undoSnap = null;
+  S.teams = u.teams; S.turn = u.turn; S.again = u.again;
+  save(); render(); renderTeacher();
+}
+function showCard(kind, title, name, what) {
+  const fx = $("cardFx");
+  fx.innerHTML = `<div class="tcard ${kind}"><div class="ct">${title}</div><div class="cn">${esc(name)}</div><div class="cw">${what}</div></div>`;
+  fx.hidden = false;
+  sfx(kind === "praise" ? "praise" : "card");
+  clearTimeout(cardT);
+  const hide = () => { clearTimeout(cardT); fx.hidden = true; fx.innerHTML = ""; };
+  fx.onclick = hide; cardT = setTimeout(hide, 2800);
+}
+
+/* ----- How to play (slides) ----- */
+function introSlides() {
+  const bad = (S ? S.bad : prefs.bad) !== "none";
+  const art1 = `<div class="mini-gifts">${[0, 1, 2, 3, 4, 5].map(i => giftSVG(i, i + 1)).join("")}</div>`;
+  const art2 = `<svg viewBox="0 0 400 260"><g transform="translate(10 40) scale(1.7)">${giftSVG(3, 7).replace(/^<svg[^>]*>|<\/svg>\s*$/g, "")}</g>
+    <rect class="a-card" x="200" y="20" width="190" height="220" rx="18" fill="#fff" stroke="#2b2340" stroke-width="4"/>
+    <g class="a-card"><text x="295" y="62" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="34" font-weight="700" fill="#2b2340">?</text>
+    ${[0, 1, 2, 3].map(i => `<rect ${i === 2 ? 'class="a-right"' : ""} x="${216 + (i % 2) * 84}" y="${96 + Math.floor(i / 2) * 64}" width="74" height="52" rx="10" fill="#fff" stroke="#2b2340" stroke-width="3"/><text x="${253 + (i % 2) * 84}" y="${123 + Math.floor(i / 2) * 64}" text-anchor="middle" dominant-baseline="central" font-family="Fredoka, sans-serif" font-size="24" font-weight="700" fill="#2b2340">${"ABCD"[i]}</text>`).join("")}</g></svg>`;
+  const art3 = `<svg viewBox="0 0 300 260" class="a-open"><g transform="translate(40 50) scale(2.2)">${giftSVG(0).replace(/^<svg[^>]*>|<\/svg>\s*$/g, "")}</g>
+    <g class="a-star"><polygon points="150,40 162,72 196,74 170,95 179,128 150,110 121,128 130,95 104,74 138,72" fill="#ffc93c" stroke="#2b2340" stroke-width="4" stroke-linejoin="round"/>
+    <text x="150" y="160" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="30" font-weight="700" fill="#17915f">+30</text></g></svg>`;
+  const art4 = `<div class="chips"><span>+10</span><span>+20</span><span>+30</span><span>+40</span><span>+50</span><span class="k-gold">💎 +100</span><span class="k-bonus">🚀 ×2</span><span class="k-bonus">🧲 Steal 20</span><span class="k-bonus">🎉 All +10</span><span class="k-bonus">🔁 Extra turn</span>${bad ? `<span class="k-bad">💣 −20</span><span class="k-bad">🔄 Swap</span>${(S ? S.bad : prefs.bad) === "all" ? `<span class="k-bad">😱 Lose all</span>` : ""}` : ""}</div>`;
+  const art5 = `<div class="cards-art"><div class="c1"><small>1st time</small>Warning</div><div class="c2"><small>2nd time</small>−10 points</div><div class="c3"><small>3rd time</small>Skip a turn</div><div class="c4"><small>Quiet &amp; kind</small>+10 points</div></div>`;
+  const art6 = `<div class="pts-list"><div>Right answer <b>open the box</b></div><div>Points box <b>+10 to +50</b></div><div>Jackpot <b>+100</b></div><div>Bonus${bad ? " or bad box" : ""} <b>?</b></div></div>`;
+  return [
+    ["Pick a mystery box!", ["Every box has a surprise inside.", "On your turn, pick a box."], art1],
+    ["Answer the question", ["Right answer: the box opens!", "Wrong answer: it stays closed. Next team!"], art2],
+    ["Open the box!", ["The points inside go to your team.", "Other teams can still pick a box you did not open."], art3],
+    ["What's inside?", ["Most boxes have points.", bad ? "Some have a bonus. A few are bad. Good luck!" : "Some have a bonus!"], art4],
+    ["Teacher's cards", ["Too noisy? The teacher gives your team a card.", "Quiet and kind teams get +10 points!"], art5],
+    ["How to win", ["When all boxes are open, the game ends.", "The team with the most points wins!"], art6],
+  ];
+}
+let iIdx = 0, iAfter = null;
+function openIntro(after) {
+  const sl = introSlides();
+  $("iSlides").innerHTML = sl.map(([h, says, art]) => `<div class="slide"><div class="txt"><h2>${h}</h2>${says.map(x => `<p class="say">${x}</p>`).join("")}</div><div class="art">${art}</div></div>`).join("");
+  $("iDots").innerHTML = sl.map(() => "<i></i>").join("");
+  iAfter = after || null;
+  $("intro").hidden = false;
+  showSlide(0);
+}
+function showSlide(i) {
+  const slides = $("iSlides").children, n = slides.length;
+  iIdx = Math.max(0, Math.min(n - 1, i));
+  Array.from(slides).forEach(s => s.classList.remove("on"));
+  void $("iSlides").offsetWidth;
+  slides[iIdx].classList.add("on");
+  Array.from($("iDots").children).forEach((d, j) => d.classList.toggle("on", j === iIdx));
+  $("iStep").textContent = `How to play · ${iIdx + 1} of ${n}`;
+  $("btnIBack").style.visibility = iIdx ? "visible" : "hidden";
+  $("btnINext").textContent = iIdx === n - 1 ? "Let's play!" : "Next";
+  $("btnINext").focus();
+}
+function closeIntro() { $("intro").hidden = true; const f = iAfter; iAfter = null; if (f) f(); }
+
+/* ----- Sound (made in the browser, no files) ----- */
+let AC = null;
+function sfx(kind) {
+  if (!prefs.sound) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const now = AC.currentTime;
+    const tone = (f, t0, d, type = "sine", vol = .25) => {
+      const o = AC.createOscillator(), g = AC.createGain(); o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(vol, now + t0); g.gain.exponentialRampToValueAtTime(.001, now + t0 + d);
+      o.connect(g).connect(AC.destination); o.start(now + t0); o.stop(now + t0 + d);
+    };
+    if (kind === "good") { tone(660, 0, .15, "triangle"); tone(990, .12, .25, "triangle"); }
+    else if (kind === "bad") { tone(220, 0, .25, "square", .12); tone(165, .18, .35, "square", .12); }
+    else if (kind === "drum") { for (let i = 0; i < 9; i++) tone(140 + i * 8, i * .1, .07, "triangle", .2); }
+    else if (kind === "open") { tone(520, 0, .08, "square", .08); [784, 988, 1175, 1568].forEach((f, i) => tone(f, .06 + i * .08, .25, "triangle", .2)); }
+    else if (kind === "prize") { [784, 988, 1175, 1568].forEach((f, i) => tone(f, i * .09, .25, "triangle", .2)); }
+    else if (kind === "oops") { tone(392, 0, .22, "sawtooth", .1); tone(330, .2, .22, "sawtooth", .1); tone(247, .4, .5, "sawtooth", .1); }
+    else if (kind === "card") { tone(2100, 0, .14, "sine", .18); tone(2100, .2, .4, "sine", .18); }
+    else if (kind === "praise") { [1047, 1319, 1568, 2093].forEach((f, i) => tone(f, i * .08, .3, "sine", .16)); }
+    else if (kind === "win") { [523, 659, 784, 1047].forEach((f, i) => tone(f, i * .14, .35, "triangle", .22)); }
+  } catch {}
+}
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv = $("confetti"), ctx = cv.getContext("2d");
+  cv.hidden = false; cv.width = innerWidth; cv.height = innerHeight;
+  const cols = ["#ff4f8b", "#ffc93c", "#4cc9f0", "#7b61ff", "#2ec4b6"];
+  const ps = Array.from({ length: 160 }, () => ({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * .5, vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4, s: 6 + Math.random() * 8, r: Math.random() * 6, c: pick(cols) }));
+  let f = 0;
+  (function step() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ps.forEach(p => { p.x += p.vx; p.y += p.vy; p.r += .1; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); });
+    if (++f < 260) requestAnimationFrame(step); else cv.hidden = true;
+  })();
+}
+
+/* ----- Setup screen ----- */
+function seg(id, items, cur, onPick) {
+  const el = $(id);
+  el.innerHTML = items.map(([v, label, note]) => `<button data-v="${v}" aria-pressed="${String(v) === String(cur)}">${label}${note ? `<small>${note}</small>` : ""}</button>`).join("");
+  el.onclick = (e) => { const b = e.target.closest("button"); if (!b) return; onPick(b.dataset.v); };
+}
+function renderSetup() {
+  document.title = "Mystery Box";
+  seg("segTeams", [[1, "Whole class"], [2, "2 teams"], [3, "3 teams"], [4, "4 teams"]], prefs.teams, v => { prefs.teams = +v; savePrefs(); renderSetup(); });
+  seg("segBoxes", Object.entries(SIZES).map(([k, s]) => [k, s.label, s.note]), prefs.boxes, v => { prefs.boxes = +v; savePrefs(); renderSetup(); });
+  seg("segBad", BADS, prefs.bad, v => { prefs.bad = v; savePrefs(); renderSetup(); });
+  seg("segTimer", TIMERS.map(t => [t, t ? t + " seconds" : "No timer"]), prefs.timer, v => { prefs.timer = +v; savePrefs(); renderSetup(); });
+  seg("segSet", [["lib", "Library", "pick a set"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
+  seg("segIntro", [[1, "Show before the game"], [0, "Skip"]], prefs.intro, v => { prefs.intro = +v; savePrefs(); renderSetup(); });
+  $("teamNamesField").hidden = prefs.teams === 1;
+  $("teamNames").innerHTML = Array.from({ length: prefs.teams }, (_, i) => `<input id="tn${i}" maxlength="18" style="--tc:${TEAM_DEFAULT[i][1]}" value="${esc(prefs.names[i] || TEAM_DEFAULT[i][0])}" aria-label="Team ${i + 1} name">`).join("");
+  $("teamNames").querySelectorAll("input").forEach((inp, i) => inp.oninput = () => { prefs.names[i] = inp.value.trim() || TEAM_DEFAULT[i][0]; savePrefs(); });
+  if ($("customText").value !== prefs.custom) $("customText").value = prefs.custom;
+  renderSource();
+  const g = store.get(STORE + "-game");
+  $("btnResume").hidden = !(g && !g.over && g.boxes);
+}
+// Start is only possible once the chosen questions are ready
+function renderSource() {
+  const lib = prefs.set === "lib";
+  $("libRow").hidden = !lib;
+  const n = parseCustom(prefs.custom).length, cs = $("customStatus");
+  cs.textContent = n ? `${n} question${n > 1 ? "s" : ""} ready.` : prefs.set === "custom" ? "Add at least one question to start." : "No questions yet.";
+  cs.style.color = n ? "var(--good)" : prefs.set === "custom" ? "var(--bad)" : "var(--ink-soft)";
+  if (!lib) { $("btnStart").disabled = !n; return; }
+  if (LIB.list === null) { $("libStatus").textContent = "Loading…"; $("btnStart").disabled = true; loadLibList().then(renderSource); return; }
+  const list = LIB.list.slice();
+  if (prefs.lib && LIB.set && LIB.id === prefs.lib && !list.some(s => s.id === prefs.lib)) list.unshift({ id: prefs.lib, title: LIB.set.title, n: (LIB.set.questions || []).length });
+  $("libSel").innerHTML = `<option value="">Choose a set…</option>` + list.map(s => `<option value="${esc(s.id)}" ${s.id === prefs.lib ? "selected" : ""}>${esc(s.title)}${s.n ? " · " + s.n : ""}</option>`).join("");
+  const ready = prefs.lib && LIB.id === prefs.lib && LIB.deck;
+  $("btnStart").disabled = !ready;
+  if (!list.length) $("libStatus").textContent = LIB.err || "No sets in the library yet. Use “My questions”.";
+  else if (!prefs.lib) $("libStatus").textContent = "";
+  else if (ready) $("libStatus").textContent = LIB.deck.size + " questions ready.";
+  else if (LIB.id === prefs.lib && LIB.err) $("libStatus").textContent = LIB.err;
+  else { $("libStatus").textContent = "Loading…"; loadLib(prefs.lib).then(renderSource); }
+}
+function savePrefs() { store.set(STORE + "-prefs", prefs); }
+
+/* ----- Events ----- */
+$("libSel").addEventListener("change", (e) => { prefs.lib = e.target.value; savePrefs(); renderSource(); });
+$("customText").addEventListener("input", (e) => { prefs.custom = e.target.value; savePrefs(); renderSource(); });
+$("btnStart").onclick = () => { sfx("none"); newGame(); if (prefs.intro) openIntro(); };
+$("btnResume").onclick = async () => {
+  const g = store.get(STORE + "-game"); if (!g) return;
+  if (g.set === "lib" && !(await loadLib(g.lib))) { alert("Can't load this game's question set. Check the internet and try again."); return; }
+  S = g; showGame();
+};
+$("board").addEventListener("click", (e) => {
+  const b = e.target.closest("button.box"); if (!b || !S || S.over) return;
+  if (!$("qOverlay").hidden || !$("rOverlay").hidden) return;
+  aim = +b.dataset.i;
+  renderBoard();
+  setTimeout(openQuestion, 250);
+});
+$("qOpts").addEventListener("click", (e) => { const b = e.target.closest(".opt"); if (b) answer(+b.dataset.i); });
+$("btnCancel").onclick = cancelQuestion;
+$("btnSwap").onclick = swapQuestion;
+$("btnROk").onclick = closeReveal;
+document.addEventListener("keydown", (e) => {
+  if (!$("intro").hidden) {
+    if (e.key === "ArrowRight") { e.preventDefault(); iIdx === $("iSlides").children.length - 1 ? closeIntro() : showSlide(iIdx + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); showSlide(iIdx - 1); }
+    else if (e.key === "Escape") closeIntro();
+    return;
+  }
+  if (!$("teacherOverlay").hidden) { if (e.key === "Escape") $("teacherOverlay").hidden = true; return; }
+  if ($("qOverlay").hidden || !curQ || locked) return;
+  const i = "12345".indexOf(e.key) >= 0 ? "12345".indexOf(e.key) : "abcde".indexOf(e.key.toLowerCase());
+  if (e.key.length === 1 && i >= 0 && i < curQ.options.length) { e.preventDefault(); answer(i); }
+  if (e.key === "Escape") cancelQuestion();
+});
+$("btnSound").onclick = () => { prefs.sound = !prefs.sound; savePrefs(); $("btnSound").textContent = "Sound: " + (prefs.sound ? "on" : "off"); };
+$("btnFull").onclick = () => { try { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); } catch {} };
+function arm(btn, label, armedLabel, flag, go) {
+  if (!flag()) { flag(1); btn.textContent = armedLabel; btn.classList.add("warn"); setTimeout(() => { if (flag()) { flag(0); btn.textContent = label; btn.classList.remove("warn"); } }, 3000); return; }
+  flag(0); btn.textContent = label; btn.classList.remove("warn"); go();
+}
+$("btnNew").onclick = () => {
+  const go = () => { store.set(STORE + "-game", null); S = null; $("game").hidden = true; $("setup").hidden = false; renderSetup(); };
+  if (S && S.over) return go();
+  arm($("btnNew"), "New game", "Click again: end this game", (v) => v === undefined ? newArm : (newArm = v), go);
+};
+$("btnEnd").onclick = () => {
+  if (!S) return;
+  if (S.over) { win(); return; }
+  arm($("btnEnd"), "End game", "Click again: end now", (v) => v === undefined ? endArm : (endArm = v), () => win(true));
+};
+$("btnAgain").onclick = () => newGame();
+$("btnTeacher").onclick = openTeacher;
+$("btnTClose").onclick = () => { $("teacherOverlay").hidden = true; };
+$("btnUndo").onclick = undoTeacher;
+$("tRows").addEventListener("click", (e) => { const b = e.target.closest("[data-a]"); if (b) teacherAct(b.dataset.a, +b.dataset.i); });
+$("btnHow").onclick = () => openIntro();
+$("btnISkip").onclick = closeIntro;
+$("btnIBack").onclick = () => showSlide(iIdx - 1);
+$("btnINext").onclick = () => { iIdx === $("iSlides").children.length - 1 ? closeIntro() : showSlide(iIdx + 1); };
+$("btnSetup").onclick = () => { $("winOverlay").hidden = true; $("game").hidden = true; $("setup").hidden = false; renderSetup(); };
+$("btnLook").onclick = () => { $("winOverlay").hidden = true; };
+
+/* ----- Boot ----- */
+$("heroGifts").innerHTML = [0, 3, 1].map(i => giftSVG(i)).join("");
+(function start() {
+  // a link ending in #bo=<set id> or #custom opens with those questions chosen
+  const h = (location.hash || "").slice(1);
+  if (h === "custom") prefs.set = "custom";
+  else if (h.startsWith("bo=")) { prefs.set = "lib"; prefs.lib = decodeURIComponent(h.slice(3)); }
+  if (h) { savePrefs(); history.replaceState(null, "", location.pathname + location.search); }
+  renderSetup();
+  if (prefs.set === "custom") $("customBox").open = true;
+})();
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("../sw.js").catch(() => {});
+</script>
+</body>
+</html>

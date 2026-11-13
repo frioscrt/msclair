@@ -215,7 +215,10 @@ const GAMES = [
       { title: "Angles · Grade 3", note: "Góc lớp 3, có hình góc và đồng hồ", url: "../sea-battle/#angles" },
       { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "../sea-battle/#custom" },
     ] },
-  { id: "box", name: "Hộp bí ẩn", note: "Sắp có", emoji: "🎁", soon: true },
+  { id: "box", name: "Hộp bí ẩn", note: "Chọn hộp, trả lời đúng mới được mở", icon: "hop-bi-an/icon.svg", url: (id) => "hop-bi-an/#bo=" + encodeURIComponent(id),
+    builtin: [
+      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "hop-bi-an/#custom" },
+    ] },
   { id: "boat", name: "Đua thuyền", note: "Sắp có", emoji: "⛵", soon: true },
 ];
 
