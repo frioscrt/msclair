@@ -1,0 +1,446 @@
+{
+  "id": "gs3-u9-colours",
+  "title": "Unit 9 · Colours",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 9 Colours. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "🔴 What colour is it?",
+      "a": "It's red.",
+      "w": [
+        "It's blue.",
+        "It's green.",
+        "It's yellow."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🔵 What colour is it?",
+      "a": "It's blue.",
+      "w": [
+        "It's red.",
+        "It's black.",
+        "It's green."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🟢 What colour is it?",
+      "a": "It's green.",
+      "w": [
+        "It's yellow.",
+        "It's blue.",
+        "It's brown."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🟡 What colour is it?",
+      "a": "It's yellow.",
+      "w": [
+        "It's orange.",
+        "It's green.",
+        "It's white."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "⚫ What colour is it?",
+      "a": "It's black.",
+      "w": [
+        "It's white.",
+        "It's brown.",
+        "It's blue."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "⚪ What colour is it?",
+      "a": "It's white.",
+      "w": [
+        "It's black.",
+        "It's yellow.",
+        "It's pink."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🟤 What colour is it?",
+      "a": "It's brown.",
+      "w": [
+        "It's black.",
+        "It's orange.",
+        "It's red."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🟠 What colour is it?",
+      "a": "It's orange.",
+      "w": [
+        "It's yellow.",
+        "It's red.",
+        "It's brown."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🩷 What colour is it?",
+      "a": "It's pink.",
+      "w": [
+        "It's red.",
+        "It's white.",
+        "It's orange."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🟣 What colour is it?",
+      "a": "It's purple.",
+      "w": [
+        "It's pink.",
+        "It's blue.",
+        "It's black."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “màu sắc”?",
+      "a": "colour",
+      "w": [
+        "hobby",
+        "friend",
+        "school"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “màu đỏ”?",
+      "a": "red",
+      "w": [
+        "blue",
+        "green",
+        "pink"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “màu vàng”?",
+      "a": "yellow",
+      "w": [
+        "orange",
+        "white",
+        "brown"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “màu xanh lá cây”?",
+      "a": "green",
+      "w": [
+        "blue",
+        "yellow",
+        "black"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “màu đen”?",
+      "a": "black",
+      "w": [
+        "white",
+        "brown",
+        "blue"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “màu trắng”?",
+      "a": "white",
+      "w": [
+        "black",
+        "pink",
+        "yellow"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🌿 A leaf is ___.",
+      "a": "green",
+      "w": [
+        "red",
+        "black",
+        "pink"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🍌 A banana is ___.",
+      "a": "yellow",
+      "w": [
+        "blue",
+        "black",
+        "green"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“What colour is it?” – “___”",
+      "a": "It's red.",
+      "w": [
+        "They're red.",
+        "Yes, it is.",
+        "I like red."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“What colour are they?” – “___”",
+      "a": "They're blue.",
+      "w": [
+        "It's blue.",
+        "Yes, they are.",
+        "I'm blue."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "✏️✏️ (two green pencils) What colour are they?",
+      "a": "They're green.",
+      "w": [
+        "It's green.",
+        "They're red.",
+        "It's red."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "📏 (one yellow ruler) What colour is it?",
+      "a": "It's yellow.",
+      "w": [
+        "They're yellow.",
+        "It's blue.",
+        "They're blue."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What colour ___ they?",
+      "a": "are",
+      "w": [
+        "is",
+        "am",
+        "do"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What colour ___ it?",
+      "a": "is",
+      "w": [
+        "are",
+        "am",
+        "do"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“They're” is short for…",
+      "a": "They are",
+      "w": [
+        "They is",
+        "There are",
+        "They am"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "What colour is it?",
+      "w": [
+        "What colour it is?",
+        "What is colour it?",
+        "Colour what is it?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "They're brown.",
+      "w": [
+        "They brown.",
+        "They's brown.",
+        "Their brown."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: colour / What / are / they / ?",
+      "a": "What colour are they?",
+      "w": [
+        "What are colour they?",
+        "They are what colour?",
+        "What colour they are?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: y e l l _ w",
+      "a": "o",
+      "w": [
+        "a",
+        "e",
+        "u"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: b r _ w n",
+      "a": "o",
+      "w": [
+        "a",
+        "e",
+        "u"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: o r _ n g e",
+      "a": "a",
+      "w": [
+        "e",
+        "i",
+        "o"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What colour is it? – It's ___. 🔴",
+      "a": "red",
+      "w": [
+        "blue",
+        "green",
+        "pink"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What colour are they? – They're ___. 🔵🔵",
+      "a": "blue",
+      "w": [
+        "black",
+        "brown",
+        "white"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What ___ is it? – It's green.",
+      "a": "colour",
+      "w": [
+        "name",
+        "hobby",
+        "old"
+      ],
+      "alt": [
+        "color"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What colour ___ they? – They're pink.",
+      "a": "are",
+      "w": [
+        "is",
+        "am",
+        "do"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "My pencil case is ___. ⚫",
+      "a": "black",
+      "w": [
+        "white",
+        "red",
+        "yellow"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "🍎 An apple can be red.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "☁️ Clouds are black on a sunny day.",
+      "a": false,
+      "explain": "On a sunny day, clouds are white."
+    },
+    {
+      "type": "tf",
+      "q": "We use “They're” for two or more things.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“What colour are they?” – “It's green.” is correct.",
+      "a": false,
+      "explain": "Answer: “They're green.”"
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "red",
+          "màu đỏ"
+        ],
+        [
+          "blue",
+          "màu xanh dương"
+        ],
+        [
+          "yellow",
+          "màu vàng"
+        ],
+        [
+          "green",
+          "màu xanh lá"
+        ],
+        [
+          "black",
+          "màu đen"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the colour and the word.",
+      "pairs": [
+        [
+          "🔴",
+          "red"
+        ],
+        [
+          "🟡",
+          "yellow"
+        ],
+        [
+          "🟢",
+          "green"
+        ],
+        [
+          "🟤",
+          "brown"
+        ]
+      ]
+    }
+  ]
+}

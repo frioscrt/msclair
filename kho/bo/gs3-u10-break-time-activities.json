@@ -1,0 +1,424 @@
+{
+  "id": "gs3-u10-break-time-activities",
+  "title": "Unit 10 · Break time activities",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 10 Break time activities. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "⚽ What do you do at break time?",
+      "a": "I play football.",
+      "w": [
+        "I play chess.",
+        "I play badminton.",
+        "I do word puzzles."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏀 What do you do at break time?",
+      "a": "I play basketball.",
+      "w": [
+        "I play football.",
+        "I play volleyball.",
+        "I play chess."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏐 What do you do at break time?",
+      "a": "I play volleyball.",
+      "w": [
+        "I play basketball.",
+        "I play badminton.",
+        "I chat with my friends."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏸 What do you do at break time?",
+      "a": "I play badminton.",
+      "w": [
+        "I play volleyball.",
+        "I play football.",
+        "I play chess."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "♟️ What do you do at break time?",
+      "a": "I play chess.",
+      "w": [
+        "I play football.",
+        "I do word puzzles.",
+        "I play basketball."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🧩 What do you do at break time?",
+      "a": "I do word puzzles.",
+      "w": [
+        "I play chess.",
+        "I play badminton.",
+        "I play hide-and-seek."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "💬 What do you do at break time?",
+      "a": "I chat with my friends.",
+      "w": [
+        "I play chess.",
+        "I play football.",
+        "I do word puzzles."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🙈 What do you do at break time?",
+      "a": "I play hide-and-seek.",
+      "w": [
+        "I play chess.",
+        "I chat with my friends.",
+        "I play volleyball."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “giờ ra chơi”?",
+      "a": "break time",
+      "w": [
+        "school time",
+        "playground",
+        "classroom"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “cờ vua”?",
+      "a": "chess",
+      "w": [
+        "football",
+        "badminton",
+        "volleyball"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “cầu lông”?",
+      "a": "badminton",
+      "w": [
+        "basketball",
+        "volleyball",
+        "football"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “bóng rổ”?",
+      "a": "basketball",
+      "w": [
+        "volleyball",
+        "football",
+        "badminton"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “bóng chuyền”?",
+      "a": "volleyball",
+      "w": [
+        "basketball",
+        "badminton",
+        "chess"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “trò chơi trốn tìm”?",
+      "a": "hide-and-seek",
+      "w": [
+        "word puzzles",
+        "chess",
+        "badminton"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “trò chơi ô chữ”?",
+      "a": "word puzzles",
+      "w": [
+        "hide-and-seek",
+        "chess",
+        "volleyball"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “trò chuyện với bạn”?",
+      "a": "chat with friends",
+      "w": [
+        "play with friends",
+        "go to friends",
+        "draw friends"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What do you do ___ break time?",
+      "a": "at",
+      "w": [
+        "in",
+        "on",
+        "to"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "I ___ word puzzles.",
+      "a": "do",
+      "w": [
+        "play",
+        "go",
+        "have"
+      ],
+      "explain": "We say “do word puzzles” and “play chess”."
+    },
+    {
+      "type": "mc",
+      "q": "I ___ chess.",
+      "a": "play",
+      "w": [
+        "do",
+        "go",
+        "have"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“What do you do at break time?” – “___”",
+      "a": "I play badminton.",
+      "w": [
+        "Yes, I do.",
+        "It's red.",
+        "I like singing."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Do you like football?” – “Yes, ___.”",
+      "a": "I do",
+      "w": [
+        "I don't",
+        "it is",
+        "you can"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Do you like chess?” – “No, ___.”",
+      "a": "I don't",
+      "w": [
+        "I do",
+        "it isn't",
+        "you can't"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "I play volleyball at break time.",
+      "w": [
+        "I play volleyball in break time.",
+        "I volleyball play at break time.",
+        "I plays volleyball at break time."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "What do you do at break time?",
+      "w": [
+        "What you do at break time?",
+        "What do you at break time?",
+        "What do you do on break time?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: football / I / play / .",
+      "a": "I play football.",
+      "w": [
+        "Football I play.",
+        "I football play.",
+        "Play I football."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: b a d m _ n t o n",
+      "a": "i",
+      "w": [
+        "a",
+        "e",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: c h _ s s",
+      "a": "e",
+      "w": [
+        "a",
+        "o",
+        "u"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: p u z z _ e s",
+      "a": "l",
+      "w": [
+        "i",
+        "r",
+        "n"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What do you do at break ___?",
+      "a": "time",
+      "w": [
+        "day",
+        "room",
+        "play"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I play ___. ⚽",
+      "a": "football",
+      "w": [
+        "chess",
+        "badminton",
+        "volleyball"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I ___ word puzzles. 🧩",
+      "a": "do",
+      "w": [
+        "play",
+        "go",
+        "am"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I ___ with my friends. 💬",
+      "a": "chat",
+      "w": [
+        "do",
+        "play chess",
+        "go"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Do you like basketball? – Yes, I ___.",
+      "a": "do",
+      "w": [
+        "don't",
+        "am",
+        "is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What do you do ___ break time?",
+      "a": "at",
+      "w": [
+        "in",
+        "on",
+        "to"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "We play chess with a ball.",
+      "a": false,
+      "explain": "We play football, basketball and volleyball with a ball. Chess has no ball."
+    },
+    {
+      "type": "tf",
+      "q": "We play badminton with a racket. 🏸",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“I do word puzzles.” is correct.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“I play word puzzles.” is the sentence in our book.",
+      "a": false,
+      "explain": "We say “I do word puzzles.”"
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "chess",
+          "cờ vua"
+        ],
+        [
+          "badminton",
+          "cầu lông"
+        ],
+        [
+          "basketball",
+          "bóng rổ"
+        ],
+        [
+          "volleyball",
+          "bóng chuyền"
+        ],
+        [
+          "football",
+          "bóng đá"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the picture and the activity.",
+      "pairs": [
+        [
+          "⚽",
+          "play football"
+        ],
+        [
+          "♟️",
+          "play chess"
+        ],
+        [
+          "🧩",
+          "do word puzzles"
+        ],
+        [
+          "🏸",
+          "play badminton"
+        ]
+      ]
+    }
+  ]
+}

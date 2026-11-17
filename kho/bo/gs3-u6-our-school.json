@@ -1,0 +1,405 @@
+{
+  "id": "gs3-u6-our-school",
+  "title": "Unit 6 · Our school",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 6 Our school. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "📚 We read books in the ___.",
+      "a": "library",
+      "w": [
+        "gym",
+        "playground",
+        "music room"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "💻 We use computers in the ___.",
+      "a": "computer room",
+      "w": [
+        "library",
+        "gym",
+        "art room"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🎵 We sing songs in the ___.",
+      "a": "music room",
+      "w": [
+        "computer room",
+        "library",
+        "gym"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🎨 We draw and paint in the ___.",
+      "a": "art room",
+      "w": [
+        "music room",
+        "gym",
+        "library"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🤸 We do sports inside in the ___.",
+      "a": "gym",
+      "w": [
+        "library",
+        "classroom",
+        "computer room"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "⚽ We play games outside in the ___.",
+      "a": "playground",
+      "w": [
+        "library",
+        "computer room",
+        "music room"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “thư viện”?",
+      "a": "library",
+      "w": [
+        "classroom",
+        "gym",
+        "playground"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “sân chơi”?",
+      "a": "playground",
+      "w": [
+        "gym",
+        "library",
+        "school"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “lớp học”?",
+      "a": "classroom",
+      "w": [
+        "music room",
+        "art room",
+        "gym"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “phòng thể dục”?",
+      "a": "gym",
+      "w": [
+        "library",
+        "classroom",
+        "playground"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “phòng máy tính”?",
+      "a": "computer room",
+      "w": [
+        "music room",
+        "art room",
+        "classroom"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “trường học”? 🏫",
+      "a": "school",
+      "w": [
+        "class",
+        "library",
+        "room"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is this our classroom?” – “___”",
+      "a": "Yes, it is.",
+      "w": [
+        "Yes, I do.",
+        "Yes, I am.",
+        "Yes, you can."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is that our library?” – “No, ___.”",
+      "a": "it isn't",
+      "w": [
+        "it is",
+        "I don't",
+        "you can't"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Let's go to the gym.” – “___”",
+      "a": "OK, let's go.",
+      "w": [
+        "Yes, it is.",
+        "Fine, thank you.",
+        "I'm eight."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Let's ___ to the art room.",
+      "a": "go",
+      "w": [
+        "goes",
+        "going",
+        "to go"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Is ___ our school? – Yes, it is.",
+      "a": "this",
+      "w": [
+        "it's",
+        "a",
+        "is"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Let's” is short for…",
+      "a": "Let us",
+      "w": [
+        "Let is",
+        "Let it",
+        "Let me"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Let's go to the library.",
+      "w": [
+        "Let's go the library.",
+        "Let go to the library.",
+        "Let's to go library."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Is that our music room?",
+      "w": [
+        "That is our music room?",
+        "Is our that music room?",
+        "Our music room is that?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: go / Let's / to / the / gym / .",
+      "a": "Let's go to the gym.",
+      "w": [
+        "Let's go the to gym.",
+        "Go let's to the gym.",
+        "Let's the gym go to."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: l i b r _ r y",
+      "a": "a",
+      "w": [
+        "e",
+        "o",
+        "u"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: p l a y g r _ _ n d",
+      "a": "ou",
+      "w": [
+        "oo",
+        "ow",
+        "au"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: c l a s s r o _ m",
+      "a": "o",
+      "w": [
+        "a",
+        "u",
+        "e"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Let's go to the ___. 📚",
+      "a": "library",
+      "w": [
+        "gym",
+        "playground",
+        "music room"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Let's go to the ___. 🎵",
+      "a": "music room",
+      "w": [
+        "art room",
+        "computer room",
+        "library"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Is this ___ classroom? – Yes, it is.",
+      "a": "our",
+      "w": [
+        "we",
+        "us",
+        "you're"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Is that our gym? – No, it ___.",
+      "a": "isn't",
+      "w": [
+        "is",
+        "not",
+        "don't"
+      ],
+      "alt": [
+        "is not"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "___ go to the playground. – OK, let's go.",
+      "a": "Let's",
+      "w": [
+        "Let",
+        "Is",
+        "Go"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Let's go ___ the art room.",
+      "a": "to",
+      "w": [
+        "in",
+        "at",
+        "on"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "We read books in the library.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "We play football in the computer room.",
+      "a": false,
+      "explain": "We play football in the playground."
+    },
+    {
+      "type": "tf",
+      "q": "We sing songs in the music room.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“Let's” means “Let us”.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“Is this our school?” – “Yes, I do.” is correct.",
+      "a": false,
+      "explain": "Answer: “Yes, it is.”"
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "library",
+          "thư viện"
+        ],
+        [
+          "playground",
+          "sân chơi"
+        ],
+        [
+          "gym",
+          "phòng thể dục"
+        ],
+        [
+          "classroom",
+          "lớp học"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the room and what we do there.",
+      "pairs": [
+        [
+          "library",
+          "read books"
+        ],
+        [
+          "music room",
+          "sing songs"
+        ],
+        [
+          "art room",
+          "draw pictures"
+        ],
+        [
+          "computer room",
+          "use computers"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the question with the answer.",
+      "pairs": [
+        [
+          "Is this our library?",
+          "Yes, it is."
+        ],
+        [
+          "Let's go to the gym.",
+          "OK, let's go."
+        ],
+        [
+          "Is that our art room?",
+          "No, it isn't."
+        ]
+      ]
+    }
+  ]
+}

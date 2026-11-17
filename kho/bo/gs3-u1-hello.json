@@ -1,0 +1,381 @@
+{
+  "id": "gs3-u1-hello",
+  "title": "Unit 1 · Hello",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 1 Hello. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "👋 You meet your friend at school. You say:",
+      "a": "Hello!",
+      "w": [
+        "Goodbye!",
+        "Thank you!",
+        "Bye!"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏠 You go home after school. You say to your teacher:",
+      "a": "Goodbye, Miss Hoa.",
+      "w": [
+        "Hello, Miss Hoa.",
+        "Fine, thank you.",
+        "How are you?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“How are you?” – “___”",
+      "a": "Fine, thank you.",
+      "w": [
+        "I'm Nam.",
+        "Goodbye.",
+        "Hello."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Goodbye, Lucy.” – “___”",
+      "a": "Bye, Minh.",
+      "w": [
+        "Hello, Minh.",
+        "Fine, thanks.",
+        "How are you?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Hi. I'm Mary.” – “___”",
+      "a": "Hello, Mary. I'm Ben.",
+      "w": [
+        "Goodbye, Mary.",
+        "Fine, thank you.",
+        "Bye, Mary."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “xin chào”?",
+      "a": "hello",
+      "w": [
+        "goodbye",
+        "thank you",
+        "fine"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “tạm biệt”?",
+      "a": "goodbye",
+      "w": [
+        "hello",
+        "thank you",
+        "fine"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “cảm ơn”?",
+      "a": "thank you",
+      "w": [
+        "hello",
+        "goodbye",
+        "how are you"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means the same as “hello”?",
+      "a": "hi",
+      "w": [
+        "bye",
+        "fine",
+        "thank"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means the same as “goodbye”?",
+      "a": "bye",
+      "w": [
+        "hi",
+        "fine",
+        "you"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Hello. I'm Linh.” – “Hi, Linh. ___ Nam.”",
+      "a": "I'm",
+      "w": [
+        "I",
+        "Am",
+        "Is"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "How ___ you?",
+      "a": "are",
+      "w": [
+        "is",
+        "am",
+        "old"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "I'm Mai.",
+      "w": [
+        "I Mai.",
+        "Mai I'm.",
+        "Am I Mai."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "How are you?",
+      "w": [
+        "How you are?",
+        "Are how you?",
+        "You how are?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Fine, thank you.",
+      "w": [
+        "Fine, thank I.",
+        "Fine, you thank.",
+        "Thank fine you."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Hello, I'm Ben.",
+      "w": [
+        "Hello, Ben I'm.",
+        "I'm hello Ben.",
+        "Ben hello I'm."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: h _ l l o",
+      "a": "e",
+      "w": [
+        "a",
+        "i",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: g _ _ d b y e",
+      "a": "oo",
+      "w": [
+        "aa",
+        "ee",
+        "uu"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: f _ n e",
+      "a": "i",
+      "w": [
+        "a",
+        "e",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: t h _ n k",
+      "a": "a",
+      "w": [
+        "e",
+        "i",
+        "u"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: you / are / How / ?",
+      "a": "How are you?",
+      "w": [
+        "You are how?",
+        "Are you how?",
+        "How you are?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: thank / Fine, / you / .",
+      "a": "Fine, thank you.",
+      "w": [
+        "Thank you, fine.",
+        "You thank, fine.",
+        "Fine, you thank."
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "___, I'm Mary. 👋",
+      "a": "Hello",
+      "w": [
+        "Goodbye",
+        "Fine",
+        "Thank"
+      ],
+      "alt": [
+        "Hi"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "How are ___?",
+      "a": "you",
+      "w": [
+        "I",
+        "me",
+        "my"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I'm fine, thank ___.",
+      "a": "you",
+      "w": [
+        "I",
+        "me",
+        "my"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Good___, Mr Long.",
+      "a": "bye",
+      "w": [
+        "by",
+        "bay",
+        "buy"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I ___ Ben.",
+      "a": "am",
+      "w": [
+        "is",
+        "are",
+        "be"
+      ],
+      "explain": "I am = I'm"
+    },
+    {
+      "type": "fill",
+      "q": "Hi, ___ Lucy.",
+      "a": "I'm",
+      "w": [
+        "I",
+        "my",
+        "me"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "We say “Goodbye” when we meet a friend.",
+      "a": false,
+      "explain": "We say “Hello” when we meet. We say “Goodbye” when we leave."
+    },
+    {
+      "type": "tf",
+      "q": "“Hi” and “Hello” mean the same.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“Fine, thank you.” is an answer to “How are you?”",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“Bye” is a short way to say “Goodbye”.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "We say “Hello” when we go home.",
+      "a": false,
+      "explain": "We say “Goodbye” when we go home."
+    },
+    {
+      "type": "tf",
+      "q": "“Thank you” means “xin lỗi”.",
+      "a": false,
+      "explain": "“Thank you” means “cảm ơn”."
+    },
+    {
+      "type": "tf",
+      "q": "“I'm” is short for “I am”.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“How are you?” – “I'm Nam.” is a good answer.",
+      "a": false,
+      "explain": "Answer: “Fine, thank you.”"
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "hello",
+          "xin chào"
+        ],
+        [
+          "goodbye",
+          "tạm biệt"
+        ],
+        [
+          "thank you",
+          "cảm ơn"
+        ],
+        [
+          "fine",
+          "khoẻ"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the question with the answer.",
+      "pairs": [
+        [
+          "How are you?",
+          "Fine, thank you."
+        ],
+        [
+          "Hello, I'm Mai.",
+          "Hi, Mai. I'm Nam."
+        ],
+        [
+          "Goodbye!",
+          "Bye!"
+        ]
+      ]
+    }
+  ]
+}

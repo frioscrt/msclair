@@ -1,0 +1,393 @@
+{
+  "id": "gs3-u2-our-names",
+  "title": "Unit 2 · Our names",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 2 Our names. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "“What's your name?” – “___”",
+      "a": "My name's Lucy.",
+      "w": [
+        "I'm eight years old.",
+        "Fine, thank you.",
+        "Goodbye."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“How old are you?” – “___”",
+      "a": "I'm eight years old.",
+      "w": [
+        "My name's Nam.",
+        "Fine, thanks.",
+        "Hello."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What's your ___? – My name's Ben.",
+      "a": "name",
+      "w": [
+        "old",
+        "age",
+        "fine"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "How ___ are you? – I'm nine.",
+      "a": "old",
+      "w": [
+        "name",
+        "are",
+        "fine"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“What's” is short for…",
+      "a": "What is",
+      "w": [
+        "What are",
+        "What am",
+        "Who is"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“name's” in “My name's Mai” is short for…",
+      "a": "name is",
+      "w": [
+        "name are",
+        "name am",
+        "names"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which number is 1?",
+      "a": "one",
+      "w": [
+        "two",
+        "ten",
+        "nine"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which number is 3? 🍎🍎🍎",
+      "a": "three",
+      "w": [
+        "two",
+        "four",
+        "five"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which number is 5? ✋",
+      "a": "five",
+      "w": [
+        "four",
+        "six",
+        "nine"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which number is 7?",
+      "a": "seven",
+      "w": [
+        "six",
+        "eight",
+        "ten"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which number is 8?",
+      "a": "eight",
+      "w": [
+        "seven",
+        "nine",
+        "three"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which number is 10? 🙌",
+      "a": "ten",
+      "w": [
+        "one",
+        "nine",
+        "two"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is “nine”?",
+      "a": "9",
+      "w": [
+        "6",
+        "5",
+        "10"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is “six”?",
+      "a": "6",
+      "w": [
+        "9",
+        "7",
+        "3"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is “four”?",
+      "a": "4",
+      "w": [
+        "5",
+        "14",
+        "2"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Two + three = ?",
+      "a": "five",
+      "w": [
+        "four",
+        "six",
+        "seven"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Four + four = ?",
+      "a": "eight",
+      "w": [
+        "seven",
+        "nine",
+        "six"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What comes after “seven”?",
+      "a": "eight",
+      "w": [
+        "six",
+        "nine",
+        "five"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What comes before “ten”?",
+      "a": "nine",
+      "w": [
+        "eight",
+        "one",
+        "seven"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "What's your name?",
+      "w": [
+        "What your name?",
+        "Your name what's?",
+        "What's name your?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "I'm eight years old.",
+      "w": [
+        "I eight years old.",
+        "I'm eight year old.",
+        "I'm years old eight."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "How old are you?",
+      "w": [
+        "How are old you?",
+        "Old how are you?",
+        "How old you are?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: name's / My / Linh / .",
+      "a": "My name's Linh.",
+      "w": [
+        "Linh my name's.",
+        "Name's my Linh.",
+        "My Linh name's."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: s e v _ n",
+      "a": "e",
+      "w": [
+        "a",
+        "i",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: t h r _ _",
+      "a": "ee",
+      "w": [
+        "aa",
+        "oo",
+        "ea"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: n a _ e",
+      "a": "m",
+      "w": [
+        "n",
+        "b",
+        "k"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's your ___? – My name's Nam.",
+      "a": "name",
+      "w": [
+        "old",
+        "fine",
+        "you"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "How ___ are you? – I'm seven years old.",
+      "a": "old",
+      "w": [
+        "name",
+        "fine",
+        "is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I'm nine years ___.",
+      "a": "old",
+      "w": [
+        "name",
+        "age",
+        "are"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "My ___ Mary.",
+      "a": "name's",
+      "w": [
+        "name",
+        "names",
+        "I'm"
+      ],
+      "alt": [
+        "name is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's ___ name?",
+      "a": "your",
+      "w": [
+        "you",
+        "I",
+        "my"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "“How old are you?” asks about your name.",
+      "a": false,
+      "explain": "It asks about your age (tuổi)."
+    },
+    {
+      "type": "tf",
+      "q": "“My name's Ben.” answers “What's your name?”",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“ten” is 10.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“six” is 7.",
+      "a": false,
+      "explain": "six = 6, seven = 7"
+    },
+    {
+      "type": "tf",
+      "q": "Three + two = five.",
+      "a": true
+    },
+    {
+      "type": "match",
+      "q": "Match the number and the word.",
+      "pairs": [
+        [
+          "2",
+          "two"
+        ],
+        [
+          "4",
+          "four"
+        ],
+        [
+          "6",
+          "six"
+        ],
+        [
+          "9",
+          "nine"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the question with the answer.",
+      "pairs": [
+        [
+          "What's your name?",
+          "My name's Mai."
+        ],
+        [
+          "How old are you?",
+          "I'm eight years old."
+        ],
+        [
+          "How are you?",
+          "Fine, thank you."
+        ]
+      ]
+    }
+  ]
+}

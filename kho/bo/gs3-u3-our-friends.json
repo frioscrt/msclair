@@ -1,0 +1,401 @@
+{
+  "id": "gs3-u3-our-friends",
+  "title": "Unit 3 · Our friends",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 3 Our friends. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "Which word means “bạn”?",
+      "a": "friend",
+      "w": [
+        "teacher",
+        "school",
+        "name"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “giáo viên”? 👩‍🏫",
+      "a": "teacher",
+      "w": [
+        "friend",
+        "pupil",
+        "book"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Mary is near you. You say: “___ is Mary.”",
+      "a": "This",
+      "w": [
+        "That",
+        "These",
+        "Those"
+      ],
+      "explain": "Near = this. Far = that."
+    },
+    {
+      "type": "mc",
+      "q": "Ben is far from you. You say: “___ Ben.”",
+      "a": "That's",
+      "w": [
+        "This",
+        "This is",
+        "These"
+      ],
+      "explain": "Far = that. That's = That is."
+    },
+    {
+      "type": "mc",
+      "q": "“Is this Lucy?” – “Yes, ___.”",
+      "a": "it is",
+      "w": [
+        "it isn't",
+        "I am",
+        "I do"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is that Nam?” – “No, ___.”",
+      "a": "it isn't",
+      "w": [
+        "it is",
+        "I'm not",
+        "it not"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is that Linh?” – “No, it isn't. ___ Mai.”",
+      "a": "It's",
+      "w": [
+        "This",
+        "Is",
+        "I'm"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“That's” is short for…",
+      "a": "That is",
+      "w": [
+        "That are",
+        "This is",
+        "That am"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“isn't” is short for…",
+      "a": "is not",
+      "w": [
+        "is it",
+        "it is",
+        "are not"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“This is my friend Ben.” – “___”",
+      "a": "Hello, Ben.",
+      "w": [
+        "Goodbye, Ben.",
+        "Yes, it is.",
+        "I'm eight."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a question?",
+      "a": "Is that Mary?",
+      "w": [
+        "That's Mary.",
+        "This is Mary.",
+        "Mary is my friend."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "This is my friend.",
+      "w": [
+        "This my friend is.",
+        "Is this my friend.",
+        "My friend this is."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Is that Minh?",
+      "w": [
+        "That is Minh?",
+        "Is Minh that?",
+        "Minh is that?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "No, it isn't.",
+      "w": [
+        "No, it is.",
+        "No, isn't it.",
+        "No, it not."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Yes, it is.",
+      "w": [
+        "Yes, it isn't.",
+        "Yes, is it.",
+        "Yes, it."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: is / This / Lucy / .",
+      "a": "This is Lucy.",
+      "w": [
+        "Is this Lucy.",
+        "Lucy this is.",
+        "This Lucy is."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: that / Is / Ben / ?",
+      "a": "Is that Ben?",
+      "w": [
+        "That is Ben?",
+        "Ben is that?",
+        "Is Ben that?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: f r i _ n d",
+      "a": "e",
+      "w": [
+        "a",
+        "o",
+        "u"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: t e a c h _ r",
+      "a": "e",
+      "w": [
+        "a",
+        "o",
+        "i"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: t h _ s",
+      "a": "i",
+      "w": [
+        "a",
+        "e",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is this Mai?” 👧 (It is Mai.) – “___”",
+      "a": "Yes, it is.",
+      "w": [
+        "No, it isn't.",
+        "Yes, I am.",
+        "No, I'm not."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is that Tom?” 👦 (It is Bill.) – “___”",
+      "a": "No, it isn't. It's Bill.",
+      "w": [
+        "Yes, it is.",
+        "Yes, it's Tom.",
+        "No, it's Tom."
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "___ is my friend Mary. (near)",
+      "a": "This",
+      "w": [
+        "That",
+        "These",
+        "It"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "___ my teacher, Miss Hoa. (far)",
+      "a": "That's",
+      "w": [
+        "This",
+        "These",
+        "Is"
+      ],
+      "alt": [
+        "That is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Is ___ Ben? – Yes, it is.",
+      "a": "that",
+      "w": [
+        "it",
+        "he",
+        "a"
+      ],
+      "alt": [
+        "this"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Is this Nam? – No, it ___.",
+      "a": "isn't",
+      "w": [
+        "is",
+        "not",
+        "are"
+      ],
+      "alt": [
+        "is not"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Is that Lucy? – Yes, it ___.",
+      "a": "is",
+      "w": [
+        "isn't",
+        "are",
+        "am"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "No, it isn't. ___ Linh.",
+      "a": "It's",
+      "w": [
+        "Is",
+        "This",
+        "I'm"
+      ],
+      "alt": [
+        "It is"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "We use “this” for a friend near us.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "We use “that” for a friend near us.",
+      "a": false,
+      "explain": "Near = this. Far = that."
+    },
+    {
+      "type": "tf",
+      "q": "“Is that Mary?” – “Yes, it is.” is correct.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“That's” means “That is”.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“isn't” means “is”.",
+      "a": false,
+      "explain": "isn't = is not"
+    },
+    {
+      "type": "tf",
+      "q": "A teacher teaches pupils at school.",
+      "a": true
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "friend",
+          "bạn"
+        ],
+        [
+          "teacher",
+          "giáo viên"
+        ],
+        [
+          "this",
+          "đây (gần)"
+        ],
+        [
+          "that",
+          "kia (xa)"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the question with the answer.",
+      "pairs": [
+        [
+          "Is this Mai?",
+          "Yes, it is."
+        ],
+        [
+          "Is that Nam?",
+          "No, it isn't. It's Minh."
+        ],
+        [
+          "How are you?",
+          "Fine, thank you."
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the short form and the long form.",
+      "pairs": [
+        [
+          "That's",
+          "That is"
+        ],
+        [
+          "isn't",
+          "is not"
+        ],
+        [
+          "It's",
+          "It is"
+        ],
+        [
+          "I'm",
+          "I am"
+        ]
+      ]
+    }
+  ]
+}

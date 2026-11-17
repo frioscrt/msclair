@@ -1,0 +1,409 @@
+{
+  "id": "gs3-u5-my-hobbies",
+  "title": "Unit 5 · My hobbies",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 5 My hobbies. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "🏊 What's your hobby?",
+      "a": "I like swimming.",
+      "w": [
+        "I like singing.",
+        "I like cooking.",
+        "I like drawing."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🎤 What's your hobby?",
+      "a": "I like singing.",
+      "w": [
+        "I like dancing.",
+        "I like walking.",
+        "I like running."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "💃 What's your hobby?",
+      "a": "I like dancing.",
+      "w": [
+        "I like swimming.",
+        "I like painting.",
+        "I like cooking."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "✏️ What's your hobby?",
+      "a": "I like drawing.",
+      "w": [
+        "I like singing.",
+        "I like running.",
+        "I like swimming."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🎨 What's your hobby?",
+      "a": "I like painting.",
+      "w": [
+        "I like walking.",
+        "I like dancing.",
+        "I like cooking."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏃 What's your hobby?",
+      "a": "I like running.",
+      "w": [
+        "I like swimming.",
+        "I like singing.",
+        "I like drawing."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🚶 What's your hobby?",
+      "a": "I like walking.",
+      "w": [
+        "I like running.",
+        "I like dancing.",
+        "I like painting."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🍳 What's your hobby?",
+      "a": "I like cooking.",
+      "w": [
+        "I like walking.",
+        "I like drawing.",
+        "I like singing."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “sở thích”?",
+      "a": "hobby",
+      "w": [
+        "friend",
+        "name",
+        "school"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “hát”?",
+      "a": "singing",
+      "w": [
+        "dancing",
+        "swimming",
+        "running"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “bơi”?",
+      "a": "swimming",
+      "w": [
+        "running",
+        "walking",
+        "cooking"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “nấu ăn”?",
+      "a": "cooking",
+      "w": [
+        "drawing",
+        "painting",
+        "dancing"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “nhảy múa”?",
+      "a": "dancing",
+      "w": [
+        "singing",
+        "running",
+        "walking"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “vẽ (bằng bút chì)”?",
+      "a": "drawing",
+      "w": [
+        "painting",
+        "dancing",
+        "cooking"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“What's your hobby?” – “___”",
+      "a": "I like singing.",
+      "w": [
+        "I'm eight.",
+        "Yes, it is.",
+        "My name's Ben."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What's your ___? – I like cooking.",
+      "a": "hobby",
+      "w": [
+        "name",
+        "friend",
+        "old"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "I like ___ . I go to the pool. 🏊",
+      "a": "swimming",
+      "w": [
+        "singing",
+        "cooking",
+        "drawing"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "I like ___ . I sing every day. 🎵",
+      "a": "singing",
+      "w": [
+        "swimming",
+        "walking",
+        "painting"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "I like ___ . I make food with my mum. 🍲",
+      "a": "cooking",
+      "w": [
+        "dancing",
+        "running",
+        "drawing"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "I like dancing.",
+      "w": [
+        "I like dance.",
+        "I likes dancing.",
+        "Like I dancing."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "What's your hobby?",
+      "w": [
+        "What your hobby?",
+        "What's hobby your?",
+        "Your hobby what's?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: like / I / painting / .",
+      "a": "I like painting.",
+      "w": [
+        "Painting I like.",
+        "Like I painting.",
+        "I painting like."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which spelling is correct?",
+      "a": "swimming",
+      "w": [
+        "swiming",
+        "swimmin",
+        "swimeing"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which spelling is correct?",
+      "a": "running",
+      "w": [
+        "runing",
+        "runnin",
+        "ruuning"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which spelling is correct?",
+      "a": "dancing",
+      "w": [
+        "danceing",
+        "dansing",
+        "dancin"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: c o _ _ i n g",
+      "a": "ok",
+      "w": [
+        "kk",
+        "oo",
+        "ck"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's your ___? – I like walking.",
+      "a": "hobby",
+      "w": [
+        "name",
+        "friend",
+        "old"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I ___ drawing. ✏️",
+      "a": "like",
+      "w": [
+        "likes",
+        "am",
+        "is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I like ___. 🎤",
+      "a": "singing",
+      "w": [
+        "dancing",
+        "cooking",
+        "swimming"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I like ___. 🏃",
+      "a": "running",
+      "w": [
+        "walking",
+        "painting",
+        "singing"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I like ___. 🎨",
+      "a": "painting",
+      "w": [
+        "drawing",
+        "running",
+        "cooking"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's ___ hobby? – I like swimming.",
+      "a": "your",
+      "w": [
+        "you",
+        "I",
+        "it"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "“I like swimming.” means “Tớ thích bơi.”",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“cooking” means “hát”.",
+      "a": false,
+      "explain": "cooking = nấu ăn, singing = hát"
+    },
+    {
+      "type": "tf",
+      "q": "“What's your hobby?” asks about your age.",
+      "a": false,
+      "explain": "It asks about your hobby (sở thích)."
+    },
+    {
+      "type": "tf",
+      "q": "We swim in the water.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“I like dance.” is correct.",
+      "a": false,
+      "explain": "I like dancing."
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "singing",
+          "hát"
+        ],
+        [
+          "swimming",
+          "bơi"
+        ],
+        [
+          "cooking",
+          "nấu ăn"
+        ],
+        [
+          "running",
+          "chạy"
+        ],
+        [
+          "walking",
+          "đi bộ"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the picture and the word.",
+      "pairs": [
+        [
+          "🏊",
+          "swimming"
+        ],
+        [
+          "💃",
+          "dancing"
+        ],
+        [
+          "🎨",
+          "painting"
+        ],
+        [
+          "🍳",
+          "cooking"
+        ]
+      ]
+    }
+  ]
+}

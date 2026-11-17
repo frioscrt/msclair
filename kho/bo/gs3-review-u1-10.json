@@ -1,0 +1,487 @@
+{
+  "id": "gs3-review-u1-10",
+  "title": "Review · Units 1–10",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), ôn tập Unit 1–10 (5 câu mỗi unit, lấy từ 10 bộ của từng unit). Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "Which word means “bạn”?",
+      "a": "friend",
+      "w": [
+        "teacher",
+        "school",
+        "name"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which spelling is correct?",
+      "a": "dancing",
+      "w": [
+        "danceing",
+        "dansing",
+        "dancin"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "Three + two = five.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "☁️ Clouds are black on a sunny day.",
+      "a": false,
+      "explain": "On a sunny day, clouds are white."
+    },
+    {
+      "type": "mc",
+      "q": "___ your eyes. 😌 (Nhắm mắt lại)",
+      "a": "Close",
+      "w": [
+        "Open",
+        "Touch",
+        "Raise"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: colour / What / are / they / ?",
+      "a": "What colour are they?",
+      "w": [
+        "What are colour they?",
+        "They are what colour?",
+        "What colour they are?"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "“Is this our school?” – “Yes, I do.” is correct.",
+      "a": false,
+      "explain": "Answer: “Yes, it is.”"
+    },
+    {
+      "type": "mc",
+      "q": "What do you do ___ break time?",
+      "a": "at",
+      "w": [
+        "in",
+        "on",
+        "to"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I ___ with my friends. 💬",
+      "a": "chat",
+      "w": [
+        "do",
+        "play chess",
+        "go"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "We say “Hello” when we go home.",
+      "a": false,
+      "explain": "We say “Goodbye” when we go home."
+    },
+    {
+      "type": "mc",
+      "q": "“Is that Nam?” – “No, ___.”",
+      "a": "it isn't",
+      "w": [
+        "it is",
+        "I'm not",
+        "it not"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “cảm ơn”?",
+      "a": "thank you",
+      "w": [
+        "hello",
+        "goodbye",
+        "how are you"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: p e n c _ l",
+      "a": "i",
+      "w": [
+        "e",
+        "a",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We hear with our ___.",
+      "a": "ears",
+      "w": [
+        "eyes",
+        "mouth",
+        "hands"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Fine, thank you.",
+      "w": [
+        "Fine, thank I.",
+        "Fine, you thank.",
+        "Thank fine you."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “cục tẩy”?",
+      "a": "eraser",
+      "w": [
+        "ruler",
+        "pencil",
+        "pen"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: t e a c h _ r",
+      "a": "e",
+      "w": [
+        "a",
+        "o",
+        "i"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "“I like swimming.” means “Tớ thích bơi.”",
+      "a": true
+    },
+    {
+      "type": "fill",
+      "q": "May I ___ a question?",
+      "a": "ask",
+      "w": [
+        "go",
+        "sit",
+        "come"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "👃 What's this?",
+      "a": "It's a nose.",
+      "w": [
+        "It's an ear.",
+        "It's a hand.",
+        "It's a mouth."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: c o _ _ i n g",
+      "a": "ok",
+      "w": [
+        "kk",
+        "oo",
+        "ck"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🤸 We do sports inside in the ___.",
+      "a": "gym",
+      "w": [
+        "library",
+        "classroom",
+        "computer room"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: r u l _ r",
+      "a": "e",
+      "w": [
+        "a",
+        "o",
+        "i"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🪑 The teacher wants you to sit. She says:",
+      "a": "Sit down, please.",
+      "w": [
+        "Stand up, please.",
+        "Go out, please.",
+        "Open your book."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“That's” is short for…",
+      "a": "That is",
+      "w": [
+        "That are",
+        "This is",
+        "That am"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I ___ a school bag. 🎒",
+      "a": "have",
+      "w": [
+        "has",
+        "am",
+        "is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "My pencil case is ___. ⚫",
+      "a": "black",
+      "w": [
+        "white",
+        "red",
+        "yellow"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Close your ___. 😌",
+      "a": "eyes",
+      "w": [
+        "ears",
+        "hands",
+        "nose"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which spelling is correct?",
+      "a": "swimming",
+      "w": [
+        "swiming",
+        "swimmin",
+        "swimeing"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's this? – It's ___ ear.",
+      "a": "an",
+      "w": [
+        "a",
+        "the",
+        "is"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "I like ___ . I go to the pool. 🏊",
+      "a": "swimming",
+      "w": [
+        "singing",
+        "cooking",
+        "drawing"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Let's go to the library.",
+      "w": [
+        "Let's go the library.",
+        "Let go to the library.",
+        "Let's to go library."
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "“How old are you?” asks about your name.",
+      "a": false,
+      "explain": "It asks about your age (tuổi)."
+    },
+    {
+      "type": "fill",
+      "q": "What colour is it? – It's ___. 🔴",
+      "a": "red",
+      "w": [
+        "blue",
+        "green",
+        "pink"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🟠 What colour is it?",
+      "a": "It's orange.",
+      "w": [
+        "It's yellow.",
+        "It's red.",
+        "It's brown."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Two + three = ?",
+      "a": "five",
+      "w": [
+        "four",
+        "six",
+        "seven"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: b a d m _ n t o n",
+      "a": "i",
+      "w": [
+        "a",
+        "e",
+        "o"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "⚽ We play games outside in the ___.",
+      "a": "playground",
+      "w": [
+        "library",
+        "computer room",
+        "music room"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's your ___? – My name's Nam.",
+      "a": "name",
+      "w": [
+        "old",
+        "fine",
+        "you"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Do you like basketball? – Yes, I ___.",
+      "a": "do",
+      "w": [
+        "don't",
+        "am",
+        "is"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “tạm biệt”?",
+      "a": "goodbye",
+      "w": [
+        "hello",
+        "thank you",
+        "fine"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I'm nine years ___.",
+      "a": "old",
+      "w": [
+        "name",
+        "age",
+        "are"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“Is that Linh?” – “No, it isn't. ___ Mai.”",
+      "a": "It's",
+      "w": [
+        "This",
+        "Is",
+        "I'm"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What do you do ___ break time?",
+      "a": "at",
+      "w": [
+        "in",
+        "on",
+        "to"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: you / are / How / ?",
+      "a": "How are you?",
+      "w": [
+        "You are how?",
+        "Are you how?",
+        "How you are?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "May I go out?",
+      "w": [
+        "May go I out?",
+        "I may go out?",
+        "May I out go?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which words mean “đứng lên”?",
+      "a": "stand up",
+      "w": [
+        "sit down",
+        "come in",
+        "go out"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "May I ___ in?",
+      "a": "come",
+      "w": [
+        "go",
+        "sit",
+        "stand"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Do you have a notebook? – Yes, I ___.",
+      "a": "do",
+      "w": [
+        "don't",
+        "am",
+        "is"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: l i b r _ r y",
+      "a": "a",
+      "w": [
+        "e",
+        "o",
+        "u"
+      ]
+    }
+  ]
+}

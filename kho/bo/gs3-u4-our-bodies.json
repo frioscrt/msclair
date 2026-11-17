@@ -1,0 +1,419 @@
+{
+  "id": "gs3-u4-our-bodies",
+  "title": "Unit 4 · Our bodies",
+  "subject": "English",
+  "grade": "3",
+  "book": "Global Success",
+  "lang": "en",
+  "status": "pending",
+  "source": "Tiếng Anh 3 Global Success (Kết nối tri thức), Unit 4 Our bodies. Claude tổng hợp từ vựng và mẫu câu, Clair xác nhận khớp sách 17/11/2026.",
+  "updated": "2026-11-17T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "👃 What's this?",
+      "a": "It's a nose.",
+      "w": [
+        "It's an ear.",
+        "It's a hand.",
+        "It's a mouth."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "👂 What's this?",
+      "a": "It's an ear.",
+      "w": [
+        "It's a nose.",
+        "It's an eye.",
+        "It's a face."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "👁️ What's this?",
+      "a": "It's an eye.",
+      "w": [
+        "It's an ear.",
+        "It's a hand.",
+        "It's a nose."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "✋ What's this?",
+      "a": "It's a hand.",
+      "w": [
+        "It's a face.",
+        "It's a head.",
+        "It's an ear."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "👄 What's this?",
+      "a": "It's a mouth.",
+      "w": [
+        "It's a nose.",
+        "It's an eye.",
+        "It's a hand."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🙂 What's this?",
+      "a": "It's a face.",
+      "w": [
+        "It's a hand.",
+        "It's a nose.",
+        "It's an ear."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “mũi”?",
+      "a": "nose",
+      "w": [
+        "mouth",
+        "ear",
+        "eye"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “tai”?",
+      "a": "ear",
+      "w": [
+        "eye",
+        "hand",
+        "face"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “mắt”?",
+      "a": "eye",
+      "w": [
+        "ear",
+        "nose",
+        "hair"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “miệng”?",
+      "a": "mouth",
+      "w": [
+        "nose",
+        "face",
+        "head"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “tóc”?",
+      "a": "hair",
+      "w": [
+        "head",
+        "hand",
+        "face"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which word means “đầu”?",
+      "a": "head",
+      "w": [
+        "hair",
+        "hand",
+        "face"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We see with our ___.",
+      "a": "eyes",
+      "w": [
+        "ears",
+        "hands",
+        "nose"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We hear with our ___.",
+      "a": "ears",
+      "w": [
+        "eyes",
+        "mouth",
+        "hands"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We smell with our ___.",
+      "a": "nose",
+      "w": [
+        "ears",
+        "hands",
+        "hair"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We eat with our ___.",
+      "a": "mouth",
+      "w": [
+        "nose",
+        "ears",
+        "eyes"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "It's ___ ear.",
+      "a": "an",
+      "w": [
+        "a",
+        "the two",
+        "is"
+      ],
+      "explain": "Use “an” before a, e, i, o, u: an ear, an eye."
+    },
+    {
+      "type": "mc",
+      "q": "It's ___ nose.",
+      "a": "a",
+      "w": [
+        "an",
+        "is",
+        "two"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "“What's this?” – “___”",
+      "a": "It's a hand.",
+      "w": [
+        "It's hand.",
+        "This a hand.",
+        "Yes, it is."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Teacher: “Touch your nose!” 👉👃 What do you do?",
+      "a": "You touch your nose.",
+      "w": [
+        "You open your mouth.",
+        "You close your eyes.",
+        "You touch your ears."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "___ your eyes. 😌 (Nhắm mắt lại)",
+      "a": "Close",
+      "w": [
+        "Open",
+        "Touch",
+        "Raise"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "___ your mouth. 😮 (Há miệng ra)",
+      "a": "Open",
+      "w": [
+        "Close",
+        "Touch",
+        "Sit"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "It's an eye.",
+      "w": [
+        "It's a eye.",
+        "It an eye.",
+        "Its a eye."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Choose the correct sentence.",
+      "a": "Touch your ear.",
+      "w": [
+        "Touch you ear.",
+        "Your touch ear.",
+        "Ear touch your."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Put the words in order: this / What's / ?",
+      "a": "What's this?",
+      "w": [
+        "This what's?",
+        "What this's?",
+        "Is what this?"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: m o _ t h",
+      "a": "u",
+      "w": [
+        "a",
+        "o",
+        "e"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letter: n o _ e",
+      "a": "s",
+      "w": [
+        "c",
+        "z",
+        "t"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Fill in the missing letters: f _ c e",
+      "a": "a",
+      "w": [
+        "e",
+        "i",
+        "o"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's this? – It's ___ ear.",
+      "a": "an",
+      "w": [
+        "a",
+        "the",
+        "is"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's this? – It's a ___. 👃",
+      "a": "nose",
+      "w": [
+        "ear",
+        "eye",
+        "mouth"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "___ your hand. 👉✋",
+      "a": "Touch",
+      "w": [
+        "Close",
+        "Sit",
+        "Come"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Close your ___. 😌",
+      "a": "eyes",
+      "w": [
+        "ears",
+        "hands",
+        "nose"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "What's ___? – It's a mouth.",
+      "a": "this",
+      "w": [
+        "it",
+        "your",
+        "a"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "We have two eyes. 👀",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "We have two noses.",
+      "a": false,
+      "explain": "We have one nose."
+    },
+    {
+      "type": "tf",
+      "q": "We hear with our ears.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "“It's a ear.” is correct.",
+      "a": false,
+      "explain": "It's an ear."
+    },
+    {
+      "type": "tf",
+      "q": "Our mouth is on our face.",
+      "a": true
+    },
+    {
+      "type": "match",
+      "q": "Match the English word with the Vietnamese meaning.",
+      "pairs": [
+        [
+          "ear",
+          "tai"
+        ],
+        [
+          "eye",
+          "mắt"
+        ],
+        [
+          "nose",
+          "mũi"
+        ],
+        [
+          "mouth",
+          "miệng"
+        ],
+        [
+          "hand",
+          "bàn tay"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the picture and the word.",
+      "pairs": [
+        [
+          "👃",
+          "nose"
+        ],
+        [
+          "👂",
+          "ear"
+        ],
+        [
+          "✋",
+          "hand"
+        ],
+        [
+          "👄",
+          "mouth"
+        ]
+      ]
+    }
+  ]
+}
