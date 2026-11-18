@@ -1,7 +1,7 @@
 // Cho trang kho mở được cả khi mất mạng.
 // Có mạng: lấy bản mới nhất rồi cất. Mất mạng: dùng bản đã cất.
-const CACHE = 'kho-v3';
-const FILES = ['./', './index.html', './kho.js', './icon.svg', './manifest.webmanifest', './hop-bi-an/', './hop-bi-an/index.html', './hop-bi-an/icon.svg', './dua-thuyen/', './dua-thuyen/index.html', './dua-thuyen/icon.svg'];
+const CACHE = 'kho-v4';
+const FILES = ['./', './index.html', './kho.js', './icon.svg', './manifest.webmanifest', './hop-bi-an/', './hop-bi-an/index.html', './hop-bi-an/icon.svg', './dua-thuyen/', './dua-thuyen/index.html', './dua-thuyen/icon.svg', './bowling/', './bowling/index.html', './bowling/icon.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));

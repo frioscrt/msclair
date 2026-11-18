@@ -223,6 +223,10 @@ const GAMES = [
     builtin: [
       { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "dua-thuyen/#custom" },
     ] },
+  { id: "bowl", name: "Bowling", note: "Trả lời đúng thì được ném bóng, tự ngắm và chọn lực", icon: "bowling/icon.svg", url: (id) => "bowling/#bo=" + encodeURIComponent(id),
+    builtin: [
+      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "bowling/#custom" },
+    ] },
 ];
 
 let sets = [], game = null;
