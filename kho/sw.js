@@ -1,6 +1,6 @@
 // Cho trang kho mở được cả khi mất mạng.
 // Có mạng: lấy bản mới nhất rồi cất. Mất mạng: dùng bản đã cất.
-const CACHE = 'kho-v4';
+const CACHE = 'kho-v5';
 const FILES = ['./', './index.html', './kho.js', './icon.svg', './manifest.webmanifest', './hop-bi-an/', './hop-bi-an/index.html', './hop-bi-an/icon.svg', './dua-thuyen/', './dua-thuyen/index.html', './dua-thuyen/icon.svg', './bowling/', './bowling/index.html', './bowling/icon.svg'];
 
 self.addEventListener('install', (e) => {
