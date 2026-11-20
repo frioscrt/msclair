@@ -1,0 +1,443 @@
+{
+  "id": "e5-u5-weather-places",
+  "title": "Unit 5 · Everyday weather expressions",
+  "subject": "English",
+  "grade": "5",
+  "book": "E-project",
+  "lang": "en",
+  "status": "pending",
+  "source": "Slide E-project lớp 5, Unit 5 (W12 G5 P1 U5): Let's learn 03 (music band, magician, fountain, statue, market stall, mall) và Find the differences. Ảnh cắt từ ảnh chụp Clair gửi 20/11/2026.",
+  "updated": "2026-11-20T01:01:56Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "img": "img/e5-u5-music-band.jpg",
+      "a": "It's a music band.",
+      "w": [
+        "It's a magician.",
+        "It's a fountain.",
+        "It's a statue."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "img": "img/e5-u5-magician.jpg",
+      "a": "It's a magician.",
+      "w": [
+        "It's a music band.",
+        "It's a fountain.",
+        "It's a statue."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "img": "img/e5-u5-fountain.jpg",
+      "a": "It's a fountain.",
+      "w": [
+        "It's a music band.",
+        "It's a magician.",
+        "It's a statue."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "img": "img/e5-u5-statue.jpg",
+      "a": "It's a statue.",
+      "w": [
+        "It's a music band.",
+        "It's a magician.",
+        "It's a fountain."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "img": "img/e5-u5-market-stall.jpg",
+      "a": "It's a market stall.",
+      "w": [
+        "It's a music band.",
+        "It's a magician.",
+        "It's a fountain."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏬 What is this? It's a big building with many shops.",
+      "a": "It's a mall.",
+      "w": [
+        "It's a statue.",
+        "It's a fountain.",
+        "It's a market stall."
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "This is a statue.",
+      "img": "img/e5-u5-statue.jpg",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "This is a music band.",
+      "img": "img/e5-u5-fountain.jpg",
+      "a": false
+    },
+    {
+      "type": "tf",
+      "q": "This is a magician.",
+      "img": "img/e5-u5-magician.jpg",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "This is a mall.",
+      "img": "img/e5-u5-market-stall.jpg",
+      "a": false
+    },
+    {
+      "type": "tf",
+      "q": "This is a music band.",
+      "img": "img/e5-u5-music-band.jpg",
+      "a": true
+    },
+    {
+      "type": "match",
+      "q": "Match the word and the meaning.",
+      "pairs": [
+        [
+          "music band",
+          "ban nhạc"
+        ],
+        [
+          "magician",
+          "ảo thuật gia"
+        ],
+        [
+          "fountain",
+          "đài phun nước"
+        ],
+        [
+          "statue",
+          "bức tượng"
+        ],
+        [
+          "market stall",
+          "sạp hàng ở chợ"
+        ],
+        [
+          "mall",
+          "trung tâm thương mại"
+        ]
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A ___ is a big building with many shops.",
+      "a": "mall",
+      "w": [
+        "music band",
+        "magician",
+        "fountain"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A ___ does magic tricks. He can pull a rabbit out of a hat.",
+      "a": "magician",
+      "w": [
+        "music band",
+        "fountain",
+        "statue"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A ___ is a group of people who play music together.",
+      "a": "music band",
+      "w": [
+        "magician",
+        "fountain",
+        "statue"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Water goes up and comes down in a ___.",
+      "a": "fountain",
+      "w": [
+        "music band",
+        "magician",
+        "statue"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "You can buy fruit and vegetables at a ___.",
+      "a": "market stall",
+      "w": [
+        "music band",
+        "magician",
+        "fountain"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A ___ is made of stone. It looks like a person or an animal.",
+      "a": "statue",
+      "w": [
+        "music band",
+        "magician",
+        "fountain"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, it is ___, but in picture 2, it is rainy.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "sunny",
+      "w": [
+        "music band",
+        "market stalls",
+        "fountain"
+      ],
+      "explain": "In picture 1, it is sunny, but in picture 2, it is rainy."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, there is a ___, but in picture 2, there are two magicians.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "music band",
+      "w": [
+        "sunny",
+        "market stalls",
+        "fountain"
+      ],
+      "explain": "In picture 1, there is a music band, but in picture 2, there are two magicians."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, there are ___, but in picture 2, there is a mall.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "market stalls",
+      "w": [
+        "sunny",
+        "music band",
+        "fountain"
+      ],
+      "explain": "In picture 1, there are market stalls, but in picture 2, there is a mall."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, there is a ___, but in picture 2, there is a statue.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "fountain",
+      "w": [
+        "sunny",
+        "music band",
+        "market stalls"
+      ],
+      "explain": "In picture 1, there is a fountain, but in picture 2, there is a statue."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, there is a ___, but in picture 2, there is a taxi.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "bus",
+      "w": [
+        "sunny",
+        "music band",
+        "market stalls"
+      ],
+      "explain": "In picture 1, there is a bus, but in picture 2, there is a taxi."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, a family is having a ___, but in picture 2, people are eating in a restaurant.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "picnic",
+      "w": [
+        "sunny",
+        "music band",
+        "market stalls"
+      ],
+      "explain": "In picture 1, a family is having a picnic, but in picture 2, people are eating in a restaurant."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, people are ___, but in picture 2, people are riding bikes.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "walking",
+      "w": [
+        "sunny",
+        "music band",
+        "market stalls"
+      ],
+      "explain": "In picture 1, people are walking, but in picture 2, people are riding bikes."
+    },
+    {
+      "type": "fill",
+      "q": "In picture 1, a man is ___, but in picture 2, a woman is painting a picture.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "taking photos",
+      "w": [
+        "sunny",
+        "music band",
+        "market stalls"
+      ],
+      "explain": "In picture 1, a man is taking photos, but in picture 2, a woman is painting a picture."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the pictures. Which sentence is correct?",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "In picture 1, it is sunny, but in picture 2, it is rainy.",
+      "w": [
+        "In picture 1, it is rainy, but in picture 2, it is sunny.",
+        "In picture 1, there are two magicians, but in picture 2, there is a music band.",
+        "In picture 1, there is a mall, but in picture 2, there are market stalls."
+      ],
+      "explain": "Picture 1 is on the left. Picture 2 is on the right."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the pictures. Which sentence is correct?",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "In picture 1, there is a fountain, but in picture 2, there is a statue.",
+      "w": [
+        "In picture 1, there is a statue, but in picture 2, there is a fountain.",
+        "In picture 1, it is rainy, but in picture 2, it is sunny.",
+        "In picture 1, there are two magicians, but in picture 2, there is a music band."
+      ],
+      "explain": "Picture 1 is on the left. Picture 2 is on the right."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the pictures. Which sentence is correct?",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "In picture 1, there is a bus, but in picture 2, there is a taxi.",
+      "w": [
+        "In picture 1, there is a taxi, but in picture 2, there is a bus.",
+        "In picture 1, it is rainy, but in picture 2, it is sunny.",
+        "In picture 1, there are two magicians, but in picture 2, there is a music band."
+      ],
+      "explain": "Picture 1 is on the left. Picture 2 is on the right."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the pictures. Which sentence is correct?",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "In picture 1, there is a music band, but in picture 2, there are two magicians.",
+      "w": [
+        "In picture 1, there are two magicians, but in picture 2, there is a music band.",
+        "In picture 1, it is rainy, but in picture 2, it is sunny.",
+        "In picture 1, there is a mall, but in picture 2, there are market stalls."
+      ],
+      "explain": "Picture 1 is on the left. Picture 2 is on the right."
+    },
+    {
+      "type": "tf",
+      "q": "In picture 1, it is rainy.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": false
+    },
+    {
+      "type": "tf",
+      "q": "In picture 2, there is a taxi.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "In picture 1, there is a magician.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": false
+    },
+    {
+      "type": "tf",
+      "q": "In picture 2, people are riding bikes.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "In picture 1, there is a mall.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": false
+    },
+    {
+      "type": "tf",
+      "q": "In picture 1, there is a music band.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "In picture 2, there is a fountain.",
+      "img": "img/e5-u5-diff.jpg",
+      "a": false
+    },
+    {
+      "type": "match",
+      "q": "Picture 1 and picture 2: match the differences.",
+      "pairs": [
+        [
+          "sunny",
+          "rainy"
+        ],
+        [
+          "fountain",
+          "statue"
+        ],
+        [
+          "music band",
+          "magicians"
+        ],
+        [
+          "market stalls",
+          "mall"
+        ],
+        [
+          "bus",
+          "taxi"
+        ]
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "In picture 1, it is sunny, ___ in picture 2, it is rainy.",
+      "a": "but",
+      "w": [
+        "and",
+        "so",
+        "because"
+      ],
+      "explain": "We use “but” to show a difference."
+    },
+    {
+      "type": "mc",
+      "q": "What's the weather like in picture 2?",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "It's rainy.",
+      "w": [
+        "It's sunny.",
+        "It's snowy.",
+        "It's windy."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What's the weather like in picture 1?",
+      "img": "img/e5-u5-diff.jpg",
+      "a": "It's sunny.",
+      "w": [
+        "It's rainy.",
+        "It's snowy.",
+        "It's cloudy."
+      ]
+    }
+  ]
+}
