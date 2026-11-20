@@ -7,7 +7,7 @@
   "lang": "en",
   "status": "approved",
   "source": "Slide E-project lớp 5, Unit 5 (W12 G5 P1 U5): Let's learn 03 (music band, magician, fountain, statue, market stall, mall) và Find the differences. Ảnh cắt từ ảnh chụp Clair gửi 20/11/2026.",
-  "updated": "2026-11-20T01:15:06Z",
+  "updated": "2026-11-20T01:17:52Z",
   "questions": [
     {
       "type": "mc",
@@ -66,13 +66,20 @@
     },
     {
       "type": "mc",
-      "q": "🏬 What is this? It's a big building with many shops.",
+      "q": "What is this?",
       "a": "It's a mall.",
       "w": [
         "It's a statue.",
         "It's a fountain.",
         "It's a market stall."
-      ]
+      ],
+      "img": "img/e5-u5-mall.jpg"
+    },
+    {
+      "type": "tf",
+      "q": "This is a mall.",
+      "img": "img/e5-u5-mall.jpg",
+      "a": true
     },
     {
       "type": "tf",
