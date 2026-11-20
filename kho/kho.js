@@ -40,7 +40,8 @@
     : { t: "True", f: "False", match: (x) => `Which one goes with “${x}”?` };
 
   /* Đổi cả bộ thành câu trắc nghiệm (dạng mọi game đều chơi được).
-     Trả về [{ text, options, answer, explain, figure }]. Câu nào không đổi được thì bỏ. */
+     Trả về [{ text, options, answer, explain, figure, optPics }]. Câu nào không đổi được thì bỏ.
+     optPics: { "chữ đáp án": "link ảnh" } khi câu trắc nghiệm có đáp án kèm hình (trường "pics"). */
   function toMC(set) {
     const W = words(set.lang), out = [];
     const qs = (set.questions || []).filter((q) => q && q.type);
@@ -50,7 +51,13 @@
       const wr = [...new Set(wrongs.map(String))].filter((w) => w && w !== String(right)).slice(0, 4);
       if (!text || right === undefined || right === "" || !wr.length) return;
       const options = shuffle([String(right), ...wr]);
-      out.push({ text, options, answer: options.indexOf(String(right)), explain: why ? `${right}. ${why}` : String(right), figure: fig(q) });
+      const item = { text, options, answer: options.indexOf(String(right)), explain: why ? `${right}. ${why}` : String(right), figure: fig(q) };
+      if (q.pics && typeof q.pics === "object") {
+        const optPics = {};
+        for (const o of options) if (q.pics[o]) optPics[o] = imgURL(q.pics[o]);
+        if (Object.keys(optPics).length) item.optPics = optPics;
+      }
+      out.push(item);
     };
     for (const q of qs) {
       if (q.type === "mc") add(q, q.q, q.a, q.w || [], q.explain);
@@ -89,5 +96,21 @@
     };
   }
 
-  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc };
+  /* Nội dung một nút đáp án: chữ, kèm hình bên phải nếu đáp án có hình. Game nào cũng gọi hàm này. */
+  function optHTML(q, o) {
+    const pic = q && q.optPics && q.optPics[o];
+    if (!pic) return esc(o);
+    return `<span class="kho-opt"><span class="kho-opt-t">${esc(o)}</span><img class="kho-opt-pic" src="${esc(pic)}" alt=""></span>`;
+  }
+  // Kiểu dáng cho đáp án có hình, gắn một lần cho mọi game
+  try {
+    const st = document.createElement("style");
+    st.textContent = ".kho-opt{display:flex;align-items:center;justify-content:space-between;gap:.6em;width:100%}"
+      + ".kho-opt-t{min-width:0;overflow-wrap:anywhere}"
+      + ".kho-opt-pic{flex-shrink:0;height:clamp(64px,13vh,140px);width:auto;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:10px;padding:3px}"
+      + ".opt .ot:has(.kho-opt){flex:1}";
+    (document.head || document.documentElement).appendChild(st);
+  } catch (e) {}
+
+  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML };
 })();

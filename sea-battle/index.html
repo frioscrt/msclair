@@ -1421,7 +1421,7 @@ function openQuestion() {
   else { fig.innerHTML = ""; fig.hidden = true; $("qBody").classList.remove("has-fig"); }
   const letters = "ABCDE";
   $("qOpts").className = "opts" + (curQ.pics ? " pics" : curQ.options.length > 4 ? " many" : "");
-  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${letters[i]}</span><span class="ot">${curQ.pics ? o : esc(o)}</span></button>`).join("");
+  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${letters[i]}</span><span class="ot">${curQ.pics ? o : KHO.optHTML(curQ, o)}</span></button>`).join("");
   $("qFeedback").hidden = true; $("qFoot").hidden = false;
   box.hidden = false;
   startTimer();

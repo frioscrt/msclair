@@ -705,7 +705,7 @@ function openQuestion() {
   const fig = $("qFig");
   if (curQ.figure) { fig.innerHTML = curQ.figure; fig.hidden = false; $("qBody").classList.add("has-fig"); }
   else { fig.innerHTML = ""; fig.hidden = true; $("qBody").classList.remove("has-fig"); }
-  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${"ABCDE"[i]}</span><span class="ot">${esc(o)}</span></button>`).join("");
+  $("qOpts").innerHTML = curQ.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${"ABCDE"[i]}</span><span class="ot">${KHO.optHTML(curQ, o)}</span></button>`).join("");
   $("qFeedback").hidden = true; $("qFoot").hidden = false;
   $("qOverlay").hidden = false;
   startTimer(); renderSide(); save();

@@ -147,8 +147,8 @@
       "grade": "3",
       "book": "E-project Science",
       "status": "pending",
-      "n": 44,
-      "updated": "2026-11-20T02:33:36Z"
+      "n": 38,
+      "updated": "2026-11-20T02:42:20Z"
     },
     {
       "id": "sci3-c2-u2-digestive-health",
@@ -157,8 +157,8 @@
       "grade": "3",
       "book": "E-project Science",
       "status": "pending",
-      "n": 38,
-      "updated": "2026-11-20T02:33:36Z"
+      "n": 30,
+      "updated": "2026-11-20T02:42:20Z"
     }
   ]
 }

@@ -6,77 +6,329 @@
   "book": "E-project Science",
   "lang": "en",
   "status": "pending",
-  "source": "E-project Science lớp 3, Chapter 2 Unit 1 The Digestive System, trang 18–19 (ảnh Clair gửi)",
-  "updated": "2026-11-20T02:33:36Z",
+  "source": "E-project Science lớp 3, Chapter 2 Unit 1 The Digestive System, trang 18–19 (ảnh Clair gửi); hình bộ phận cắt từ trang 19",
+  "updated": "2026-11-20T02:42:20Z",
   "questions": [
     {
       "type": "mc",
-      "q": "👄 Where does digestion begin?",
-      "a": "the mouth",
-      "w": [
-        "the stomach",
-        "the large intestine",
-        "the esophagus"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "Which part begins digestion by chewing and mixing food with saliva?",
+      "q": "Where does the food go first?",
       "a": "mouth",
       "w": [
-        "esophagus",
+        "large intestine",
         "stomach",
-        "small intestine"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "Which part transports food to the stomach?",
-      "a": "esophagus",
-      "w": [
-        "mouth",
-        "stomach",
-        "small intestine"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "Which part breaks down food with acids and enzymes?",
-      "a": "stomach",
-      "w": [
-        "mouth",
-        "esophagus",
-        "small intestine"
-      ]
+        "esophagus"
+      ],
+      "pics": {
+        "mouth": "img/sci3-mouth.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "stomach": "img/sci3-stomach.jpg",
+        "esophagus": "img/sci3-esophagus.jpg"
+      }
     },
     {
       "type": "mc",
       "q": "Which part absorbs nutrients?",
       "a": "small intestine",
       "w": [
-        "mouth",
         "esophagus",
-        "stomach"
-      ]
+        "stomach",
+        "large intestine"
+      ],
+      "pics": {
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "esophagus": "img/sci3-esophagus.jpg",
+        "stomach": "img/sci3-stomach.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg"
+      }
     },
     {
       "type": "mc",
-      "q": "Which part absorbs water and forms waste?",
+      "q": "Which part begins digestion?",
+      "a": "mouth",
+      "w": [
+        "stomach",
+        "esophagus",
+        "large intestine"
+      ],
+      "pics": {
+        "mouth": "img/sci3-mouth.jpg",
+        "stomach": "img/sci3-stomach.jpg",
+        "esophagus": "img/sci3-esophagus.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part chews food and mixes it with saliva?",
+      "a": "mouth",
+      "w": [
+        "large intestine",
+        "small intestine",
+        "esophagus"
+      ],
+      "pics": {
+        "mouth": "img/sci3-mouth.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "esophagus": "img/sci3-esophagus.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part transports food to the stomach?",
+      "a": "esophagus",
+      "w": [
+        "small intestine",
+        "mouth",
+        "stomach"
+      ],
+      "pics": {
+        "esophagus": "img/sci3-esophagus.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "mouth": "img/sci3-mouth.jpg",
+        "stomach": "img/sci3-stomach.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part breaks down food with acids and enzymes?",
+      "a": "stomach",
+      "w": [
+        "small intestine",
+        "large intestine",
+        "mouth"
+      ],
+      "pics": {
+        "stomach": "img/sci3-stomach.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "mouth": "img/sci3-mouth.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part absorbs water?",
       "a": "large intestine",
       "w": [
+        "esophagus",
+        "small intestine",
+        "stomach"
+      ],
+      "pics": {
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "esophagus": "img/sci3-esophagus.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "stomach": "img/sci3-stomach.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part forms waste?",
+      "a": "large intestine",
+      "w": [
+        "small intestine",
         "mouth",
+        "stomach"
+      ],
+      "pics": {
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "mouth": "img/sci3-mouth.jpg",
+        "stomach": "img/sci3-stomach.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Where does the food go after the mouth?",
+      "a": "esophagus",
+      "w": [
+        "stomach",
+        "small intestine",
+        "mouth"
+      ],
+      "pics": {
+        "esophagus": "img/sci3-esophagus.jpg",
+        "stomach": "img/sci3-stomach.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "mouth": "img/sci3-mouth.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Where does the food go after the esophagus?",
+      "a": "stomach",
+      "w": [
+        "esophagus",
+        "large intestine",
+        "small intestine"
+      ],
+      "pics": {
+        "stomach": "img/sci3-stomach.jpg",
+        "esophagus": "img/sci3-esophagus.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Where does the food go after the stomach?",
+      "a": "small intestine",
+      "w": [
+        "large intestine",
+        "mouth",
+        "esophagus"
+      ],
+      "pics": {
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "mouth": "img/sci3-mouth.jpg",
+        "esophagus": "img/sci3-esophagus.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Where does the food go after the small intestine?",
+      "a": "large intestine",
+      "w": [
+        "small intestine",
         "esophagus",
         "stomach"
-      ]
+      ],
+      "pics": {
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "esophagus": "img/sci3-esophagus.jpg",
+        "stomach": "img/sci3-stomach.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Where does the food go last?",
+      "a": "large intestine",
+      "w": [
+        "small intestine",
+        "stomach",
+        "mouth"
+      ],
+      "pics": {
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "small intestine": "img/sci3-small-intestine.jpg",
+        "stomach": "img/sci3-stomach.jpg",
+        "mouth": "img/sci3-mouth.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part is a tube from the mouth to the stomach?",
+      "a": "esophagus",
+      "w": [
+        "stomach",
+        "large intestine",
+        "mouth"
+      ],
+      "pics": {
+        "esophagus": "img/sci3-esophagus.jpg",
+        "stomach": "img/sci3-stomach.jpg",
+        "large intestine": "img/sci3-large-intestine.jpg",
+        "mouth": "img/sci3-mouth.jpg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which part of the digestive system is this?",
+      "a": "mouth",
+      "w": [
+        "stomach",
+        "large intestine",
+        "small intestine"
+      ],
+      "img": "img/sci3-mouth.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Which part of the digestive system is this?",
+      "a": "esophagus",
+      "w": [
+        "mouth",
+        "stomach",
+        "small intestine"
+      ],
+      "img": "img/sci3-esophagus.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Which part of the digestive system is this?",
+      "a": "stomach",
+      "w": [
+        "mouth",
+        "large intestine",
+        "esophagus"
+      ],
+      "img": "img/sci3-stomach.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Which part of the digestive system is this?",
+      "a": "small intestine",
+      "w": [
+        "large intestine",
+        "mouth",
+        "esophagus"
+      ],
+      "img": "img/sci3-small-intestine.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Which part of the digestive system is this?",
+      "a": "large intestine",
+      "w": [
+        "small intestine",
+        "mouth",
+        "stomach"
+      ],
+      "img": "img/sci3-large-intestine.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What does this part do?",
+      "a": "It breaks down food with acids and enzymes.",
+      "w": [
+        "It begins digestion by chewing and mixing with saliva.",
+        "It absorbs nutrients.",
+        "It absorbs water and forms waste."
+      ],
+      "img": "img/sci3-stomach.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What does this part do?",
+      "a": "It transports food to the stomach.",
+      "w": [
+        "It breaks down food with acids and enzymes.",
+        "It absorbs nutrients.",
+        "It absorbs water and forms waste."
+      ],
+      "img": "img/sci3-esophagus.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What does this part do?",
+      "a": "It absorbs nutrients.",
+      "w": [
+        "It begins digestion by chewing and mixing with saliva.",
+        "It transports food to the stomach.",
+        "It breaks down food with acids and enzymes."
+      ],
+      "img": "img/sci3-small-intestine.jpg"
     },
     {
       "type": "mc",
       "q": "What does the mouth do?",
-      "a": "It begins digestion.",
+      "a": "It begins digestion by chewing and mixing with saliva.",
       "w": [
-        "It forms waste.",
-        "It absorbs nutrients.",
-        "It transports food to the stomach."
+        "It transports food to the stomach.",
+        "It breaks down food with acids and enzymes.",
+        "It absorbs nutrients."
       ]
     },
     {
@@ -84,19 +336,19 @@
       "q": "What does the esophagus do?",
       "a": "It transports food to the stomach.",
       "w": [
-        "It begins digestion.",
-        "It forms waste.",
-        "It absorbs water."
+        "It begins digestion by chewing and mixing with saliva.",
+        "It breaks down food with acids and enzymes.",
+        "It absorbs nutrients."
       ]
     },
     {
       "type": "mc",
       "q": "What does the stomach do?",
-      "a": "It breaks down food.",
+      "a": "It breaks down food with acids and enzymes.",
       "w": [
-        "It chews food.",
-        "It forms waste.",
-        "It transports food to the mouth."
+        "It begins digestion by chewing and mixing with saliva.",
+        "It transports food to the stomach.",
+        "It absorbs nutrients."
       ]
     },
     {
@@ -104,9 +356,9 @@
       "q": "What does the small intestine do?",
       "a": "It absorbs nutrients.",
       "w": [
-        "It chews food.",
-        "It forms waste.",
-        "It mixes food with saliva."
+        "It begins digestion by chewing and mixing with saliva.",
+        "It transports food to the stomach.",
+        "It breaks down food with acids and enzymes."
       ]
     },
     {
@@ -114,89 +366,49 @@
       "q": "What does the large intestine do?",
       "a": "It absorbs water and forms waste.",
       "w": [
-        "It chews food.",
-        "It breaks down food with acids.",
-        "It transports food to the stomach."
+        "It begins digestion by chewing and mixing with saliva.",
+        "It transports food to the stomach.",
+        "It breaks down food with acids and enzymes."
       ]
     },
     {
       "type": "mc",
-      "q": "😋 In the mouth, food is mixed with…",
+      "q": "In the mouth, food is mixed with…",
       "a": "saliva",
       "w": [
         "acids",
-        "waste",
-        "water from the large intestine"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "🦷 We use our teeth for…",
-      "a": "chewing",
-      "w": [
-        "absorbing",
-        "transporting",
-        "forming waste"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "The stomach uses acids and ___ to break down food.",
-      "a": "enzymes",
-      "w": [
-        "saliva",
-        "teeth",
+        "enzymes",
         "waste"
       ]
     },
     {
       "type": "mc",
-      "q": "The esophagus is a tube from the mouth to the…",
-      "a": "stomach",
+      "q": "The stomach breaks down food with acids and…",
+      "a": "enzymes",
       "w": [
-        "small intestine",
-        "large intestine",
-        "teeth"
+        "saliva",
+        "water",
+        "waste"
       ]
     },
     {
       "type": "mc",
-      "q": "After the stomach, food goes to the…",
-      "a": "small intestine",
+      "q": "The large intestine absorbs water and forms…",
+      "a": "waste",
       "w": [
-        "large intestine",
-        "esophagus",
-        "mouth"
+        "saliva",
+        "nutrients",
+        "enzymes"
       ]
     },
     {
       "type": "mc",
-      "q": "After the esophagus, food goes to the…",
-      "a": "stomach",
+      "q": "The small intestine absorbs…",
+      "a": "nutrients",
       "w": [
-        "mouth",
-        "large intestine",
-        "small intestine"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "After the mouth, food goes to the…",
-      "a": "esophagus",
-      "w": [
-        "stomach",
-        "small intestine",
-        "large intestine"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "After the small intestine, food goes to the…",
-      "a": "large intestine",
-      "w": [
-        "stomach",
-        "esophagus",
-        "mouth"
+        "saliva",
+        "waste",
+        "acids"
       ]
     },
     {
@@ -210,120 +422,11 @@
       ]
     },
     {
-      "type": "mc",
-      "q": "Which part is the LAST stop for food?",
-      "a": "large intestine",
-      "w": [
-        "small intestine",
-        "stomach",
-        "esophagus"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "Which part is the FIRST stop for food?",
-      "a": "mouth",
-      "w": [
-        "stomach",
-        "esophagus",
-        "small intestine"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "The digestive system helps our body…",
-      "a": "process food",
-      "w": [
-        "see things",
-        "pump blood",
-        "breathe air"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "Which is NOT a part of the digestive system?",
-      "a": "heart",
-      "w": [
-        "stomach",
-        "esophagus",
-        "mouth"
-      ]
-    },
-    {
-      "type": "mc",
-      "q": "Which is NOT a part of the digestive system?",
-      "a": "lungs",
-      "w": [
-        "small intestine",
-        "large intestine",
-        "mouth"
-      ]
-    },
-    {
-      "type": "tf",
-      "q": "The mouth begins digestion.",
-      "a": true
-    },
-    {
-      "type": "tf",
-      "q": "The esophagus transports food to the stomach.",
-      "a": true
-    },
-    {
-      "type": "tf",
-      "q": "The stomach breaks down food with acids and enzymes.",
-      "a": true
-    },
-    {
-      "type": "tf",
-      "q": "The small intestine absorbs nutrients.",
-      "a": true
-    },
-    {
-      "type": "tf",
-      "q": "The large intestine absorbs water and forms waste.",
-      "a": true
-    },
-    {
-      "type": "tf",
-      "q": "The stomach chews food.",
-      "a": false,
-      "explain": "The mouth chews food. The stomach breaks down food with acids and enzymes."
-    },
-    {
-      "type": "tf",
-      "q": "Food goes from the mouth to the esophagus.",
-      "a": true
-    },
-    {
-      "type": "tf",
-      "q": "Food goes from the stomach to the esophagus.",
-      "a": false,
-      "explain": "Food goes from the esophagus to the stomach."
-    },
-    {
-      "type": "tf",
-      "q": "The large intestine absorbs nutrients.",
-      "a": false,
-      "explain": "The small intestine absorbs nutrients. The large intestine absorbs water and forms waste."
-    },
-    {
-      "type": "tf",
-      "q": "The small intestine forms waste.",
-      "a": false,
-      "explain": "The large intestine forms waste."
-    },
-    {
-      "type": "tf",
-      "q": "Saliva is in the mouth.",
-      "a": true
-    },
-    {
       "type": "fill",
       "q": "The ___ begins digestion by chewing and mixing with saliva.",
       "a": "mouth",
       "w": [
-        "esophagus",
+        "large intestine",
         "stomach",
         "small intestine"
       ]
@@ -334,8 +437,8 @@
       "a": "esophagus",
       "w": [
         "mouth",
-        "stomach",
-        "small intestine"
+        "small intestine",
+        "stomach"
       ]
     },
     {
@@ -343,9 +446,9 @@
       "q": "The ___ breaks down food with acids and enzymes.",
       "a": "stomach",
       "w": [
-        "mouth",
         "esophagus",
-        "small intestine"
+        "mouth",
+        "large intestine"
       ]
     },
     {
@@ -353,7 +456,7 @@
       "q": "The ___ absorbs nutrients.",
       "a": "small intestine",
       "w": [
-        "mouth",
+        "large intestine",
         "esophagus",
         "stomach"
       ]
@@ -363,24 +466,14 @@
       "q": "The ___ absorbs water and forms waste.",
       "a": "large intestine",
       "w": [
+        "stomach",
         "mouth",
-        "esophagus",
-        "stomach"
-      ]
-    },
-    {
-      "type": "fill",
-      "q": "The mouth mixes food with ___.",
-      "a": "saliva",
-      "w": [
-        "acids",
-        "enzymes",
-        "waste"
+        "small intestine"
       ]
     },
     {
       "type": "match",
-      "q": "Match the part to its function.",
+      "q": "Match the part of the digestive system to its function.",
       "pairs": [
         [
           "Mouth",
@@ -401,32 +494,6 @@
         [
           "Large intestine",
           "to form waste"
-        ]
-      ]
-    },
-    {
-      "type": "match",
-      "q": "Match the word and the meaning.",
-      "pairs": [
-        [
-          "mouth",
-          "miệng"
-        ],
-        [
-          "esophagus",
-          "thực quản"
-        ],
-        [
-          "stomach",
-          "dạ dày"
-        ],
-        [
-          "small intestine",
-          "ruột non"
-        ],
-        [
-          "large intestine",
-          "ruột già"
         ]
       ]
     }
