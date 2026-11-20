@@ -1,0 +1,387 @@
+{
+  "id": "sci3-c2-u2-digestive-health",
+  "title": "Chapter 2 · Unit 2 · Caring for the digestive system",
+  "subject": "Science",
+  "grade": "3",
+  "book": "E-project Science",
+  "lang": "en",
+  "status": "pending",
+  "source": "E-project Science lớp 3, Chapter 2 Unit 2, trang 23 (ảnh Clair gửi)",
+  "updated": "2026-11-20T02:33:36Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "🥗 A balanced ___ is essential for digestive health.",
+      "a": "diet",
+      "w": [
+        "rest",
+        "exercise",
+        "hydration"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "💧 Proper ___ helps in digestion.",
+      "a": "hydration",
+      "w": [
+        "diet",
+        "rest",
+        "exercise"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "🏃 Regular ___ promotes digestive function.",
+      "a": "exercise",
+      "w": [
+        "diet",
+        "hydration",
+        "rest"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "😴 Getting enough ___ supports overall health.",
+      "a": "rest",
+      "w": [
+        "diet",
+        "hydration",
+        "exercise"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Drinking enough water is called…",
+      "a": "hydration",
+      "w": [
+        "diet",
+        "exercise",
+        "rest"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Eating a variety of foods is a balanced…",
+      "a": "diet",
+      "w": [
+        "rest",
+        "exercise",
+        "hydration"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Getting enough sleep is called…",
+      "a": "rest",
+      "w": [
+        "diet",
+        "exercise",
+        "hydration"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Running, jumping and playing sports are…",
+      "a": "exercise",
+      "w": [
+        "rest",
+        "diet",
+        "hydration"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What does a balanced diet do?",
+      "a": "It provides nutrients for digestion.",
+      "w": [
+        "It supports recovery.",
+        "It is the same as sleeping.",
+        "It makes waste in the mouth."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What does hydration do?",
+      "a": "It aids in food breakdown.",
+      "w": [
+        "It provides sleep.",
+        "It replaces food.",
+        "It stops digestion."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What does exercise do?",
+      "a": "It improves digestive function.",
+      "w": [
+        "It replaces water.",
+        "It stops digestion.",
+        "It is the same as sleeping."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "What does rest do?",
+      "a": "It supports recovery and health.",
+      "w": [
+        "It breaks down food with acids.",
+        "It replaces a balanced diet.",
+        "It transports food to the stomach."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which action provides nutrients for digestion?",
+      "a": "diet",
+      "w": [
+        "rest",
+        "exercise",
+        "hydration"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which action aids in food breakdown?",
+      "a": "hydration",
+      "w": [
+        "rest",
+        "exercise",
+        "diet"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which action improves digestive function?",
+      "a": "exercise",
+      "w": [
+        "rest",
+        "hydration",
+        "diet"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which action supports recovery and health?",
+      "a": "rest",
+      "w": [
+        "diet",
+        "hydration",
+        "exercise"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "💧 What should we drink to stay hydrated?",
+      "a": "water",
+      "w": [
+        "soft drinks",
+        "nothing",
+        "only coffee"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "A balanced diet includes…",
+      "a": "fruits and vegetables",
+      "w": [
+        "only sweets",
+        "only chips",
+        "only soft drinks"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which is a healthy snack?",
+      "a": "🍎 an apple",
+      "w": [
+        "🍭 a lollipop",
+        "🍟 lots of chips",
+        "🍩 three donuts"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which habit is GOOD for the digestive system?",
+      "a": "eating fruits and vegetables",
+      "w": [
+        "skipping water all day",
+        "eating only candy",
+        "never moving"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which habit is BAD for the digestive system?",
+      "a": "not drinking water",
+      "w": [
+        "eating vegetables",
+        "sleeping enough",
+        "playing sports"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Caring for the digestive system is essential for…",
+      "a": "overall health",
+      "w": [
+        "only our hair",
+        "only our eyes",
+        "nothing"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "A balanced diet is essential for digestive health.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Proper hydration helps in digestion.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Regular exercise promotes digestive function.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Getting enough rest supports overall health.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Hydration means getting enough sleep.",
+      "a": false,
+      "explain": "Hydration means drinking enough water. Rest means getting enough sleep."
+    },
+    {
+      "type": "tf",
+      "q": "Eating only candy is a balanced diet.",
+      "a": false,
+      "explain": "A balanced diet has a variety of foods, like fruits and vegetables."
+    },
+    {
+      "type": "tf",
+      "q": "Exercise means engaging in regular physical activity.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Drinking enough water helps digestion.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "We do not need to sleep to stay healthy.",
+      "a": false,
+      "explain": "Getting enough rest supports overall health."
+    },
+    {
+      "type": "fill",
+      "q": "A balanced ___ is essential for digestive health.",
+      "a": "diet",
+      "w": [
+        "rest",
+        "exercise",
+        "hydration"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Proper ___ helps in digestion.",
+      "a": "hydration",
+      "w": [
+        "diet",
+        "rest",
+        "exercise"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Regular ___ promotes digestive function.",
+      "a": "exercise",
+      "w": [
+        "diet",
+        "hydration",
+        "rest"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Getting enough ___ supports overall health.",
+      "a": "rest",
+      "w": [
+        "diet",
+        "hydration",
+        "exercise"
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the action to its benefit.",
+      "pairs": [
+        [
+          "Diet",
+          "Provides nutrients for digestion"
+        ],
+        [
+          "Hydration",
+          "Aids in food breakdown"
+        ],
+        [
+          "Exercise",
+          "Improves digestive function"
+        ],
+        [
+          "Rest",
+          "Supports recovery and health"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the action to what we do.",
+      "pairs": [
+        [
+          "Diet",
+          "eating a variety of foods"
+        ],
+        [
+          "Hydration",
+          "drinking enough water"
+        ],
+        [
+          "Exercise",
+          "regular physical activity"
+        ],
+        [
+          "Rest",
+          "getting enough sleep"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the word and the meaning.",
+      "pairs": [
+        [
+          "diet",
+          "chế độ ăn"
+        ],
+        [
+          "hydration",
+          "uống đủ nước"
+        ],
+        [
+          "exercise",
+          "tập thể dục"
+        ],
+        [
+          "rest",
+          "nghỉ ngơi"
+        ]
+      ]
+    }
+  ]
+}

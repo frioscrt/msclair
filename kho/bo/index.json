@@ -139,6 +139,26 @@
       "status": "approved",
       "n": 42,
       "updated": "2026-11-20T01:17:52Z"
+    },
+    {
+      "id": "sci3-c2-u1-digestive-system",
+      "title": "Chapter 2 · Unit 1 · The digestive system",
+      "subject": "Science",
+      "grade": "3",
+      "book": "E-project Science",
+      "status": "pending",
+      "n": 44,
+      "updated": "2026-11-20T02:33:36Z"
+    },
+    {
+      "id": "sci3-c2-u2-digestive-health",
+      "title": "Chapter 2 · Unit 2 · Caring for the digestive system",
+      "subject": "Science",
+      "grade": "3",
+      "book": "E-project Science",
+      "status": "pending",
+      "n": 38,
+      "updated": "2026-11-20T02:33:36Z"
     }
   ]
 }
