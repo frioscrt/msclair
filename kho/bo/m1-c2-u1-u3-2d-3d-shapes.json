@@ -1,0 +1,1069 @@
+{
+ "id": "m1-c2-u1-u3-2d-3d-shapes",
+ "title": "Chapter 2 · Unit 1–3 · 2D and 3D shapes",
+ "subject": "Math",
+ "grade": "1",
+ "book": "E-project Math",
+ "lang": "en",
+ "status": "pending",
+ "source": "E-project Math Grade 1, Chapter 2 (Unit 1–3): 2D shapes (circle, oval, triangle, square, rectangle, hexagon) và 3D shapes (sphere, cube, cone, cylinder, pyramid, cuboid). Soạn theo danh sách hình Clair đưa, chưa đối chiếu sách.",
+ "updated": "2026-11-25T03:00:00Z",
+ "questions": [
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "circle",
+   "w": [
+    "oval",
+    "square",
+    "hexagon"
+   ],
+   "img": "img/m1-circle-red.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "circle",
+   "w": [
+    "oval",
+    "square",
+    "hexagon"
+   ],
+   "img": "img/m1-circle-green.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "oval",
+   "w": [
+    "circle",
+    "rectangle",
+    "triangle"
+   ],
+   "img": "img/m1-oval-blue.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "oval",
+   "w": [
+    "circle",
+    "rectangle",
+    "triangle"
+   ],
+   "img": "img/m1-oval-purple-1.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "triangle",
+   "w": [
+    "square",
+    "hexagon",
+    "circle"
+   ],
+   "img": "img/m1-triangle-yellow.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "triangle",
+   "w": [
+    "square",
+    "hexagon",
+    "circle"
+   ],
+   "img": "img/m1-triangle-orange-1.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "triangle",
+   "w": [
+    "square",
+    "hexagon",
+    "circle"
+   ],
+   "img": "img/m1-triangle-green-2.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "square",
+   "w": [
+    "rectangle",
+    "triangle",
+    "hexagon"
+   ],
+   "img": "img/m1-square-blue.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "square",
+   "w": [
+    "rectangle",
+    "triangle",
+    "hexagon"
+   ],
+   "img": "img/m1-square-pink-2.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "rectangle",
+   "w": [
+    "square",
+    "oval",
+    "triangle"
+   ],
+   "img": "img/m1-rectangle-green.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "rectangle",
+   "w": [
+    "square",
+    "oval",
+    "triangle"
+   ],
+   "img": "img/m1-rectangle-orange-1.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "hexagon",
+   "w": [
+    "circle",
+    "square",
+    "triangle"
+   ],
+   "img": "img/m1-hexagon-purple.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "hexagon",
+   "w": [
+    "circle",
+    "square",
+    "triangle"
+   ],
+   "img": "img/m1-hexagon-yellow-1.svg"
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a triangle? Choose the colour.",
+   "a": "green",
+   "w": [
+    "red",
+    "blue",
+    "yellow"
+   ],
+   "pics": {
+    "green": "img/m1-pic-triangle-green.svg",
+    "red": "img/m1-pic-square-red.svg",
+    "blue": "img/m1-pic-circle-blue.svg",
+    "yellow": "img/m1-pic-hexagon-yellow.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a square? Choose the colour.",
+   "a": "red",
+   "w": [
+    "yellow",
+    "blue",
+    "green"
+   ],
+   "pics": {
+    "red": "img/m1-pic-square-red.svg",
+    "yellow": "img/m1-pic-rectangle-yellow.svg",
+    "blue": "img/m1-pic-triangle-blue.svg",
+    "green": "img/m1-pic-circle-green.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a circle? Choose the colour.",
+   "a": "red",
+   "w": [
+    "green",
+    "yellow",
+    "blue"
+   ],
+   "pics": {
+    "red": "img/m1-pic-circle-red.svg",
+    "green": "img/m1-pic-oval-green.svg",
+    "yellow": "img/m1-pic-hexagon-yellow.svg",
+    "blue": "img/m1-pic-square-blue.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a hexagon? Choose the colour.",
+   "a": "green",
+   "w": [
+    "blue",
+    "red",
+    "yellow"
+   ],
+   "pics": {
+    "green": "img/m1-pic-hexagon-green.svg",
+    "blue": "img/m1-pic-circle-blue.svg",
+    "red": "img/m1-pic-triangle-red.svg",
+    "yellow": "img/m1-pic-rectangle-yellow.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a rectangle? Choose the colour.",
+   "a": "blue",
+   "w": [
+    "green",
+    "red",
+    "yellow"
+   ],
+   "pics": {
+    "blue": "img/m1-pic-rectangle-blue.svg",
+    "green": "img/m1-pic-square-green.svg",
+    "red": "img/m1-pic-oval-red.svg",
+    "yellow": "img/m1-pic-triangle-yellow.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a oval? Choose the colour.",
+   "a": "red",
+   "w": [
+    "blue",
+    "yellow",
+    "green"
+   ],
+   "pics": {
+    "red": "img/m1-pic-oval-red.svg",
+    "blue": "img/m1-pic-circle-blue.svg",
+    "yellow": "img/m1-pic-rectangle-yellow.svg",
+    "green": "img/m1-pic-hexagon-green.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "How many sides does this shape have?",
+   "a": "3",
+   "w": [
+    "4",
+    "5",
+    "6"
+   ],
+   "img": "img/m1-triangle-yellow.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many sides does this shape have?",
+   "a": "4",
+   "w": [
+    "3",
+    "5",
+    "6"
+   ],
+   "img": "img/m1-square-blue.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many sides does this shape have?",
+   "a": "6",
+   "w": [
+    "4",
+    "5",
+    "3"
+   ],
+   "img": "img/m1-hexagon-purple.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many corners does this shape have?",
+   "a": "4",
+   "w": [
+    "3",
+    "2",
+    "6"
+   ],
+   "img": "img/m1-rectangle-green.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many corners does this shape have?",
+   "a": "3",
+   "w": [
+    "4",
+    "6",
+    "0"
+   ],
+   "img": "img/m1-triangle-orange-1.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many corners does this shape have?",
+   "a": "0",
+   "w": [
+    "1",
+    "2",
+    "4"
+   ],
+   "img": "img/m1-circle-red.svg",
+   "explain": "A circle is round. It has no corners."
+  },
+  {
+   "type": "mc",
+   "q": "Which shape has 6 sides?",
+   "a": "hexagon",
+   "w": [
+    "triangle",
+    "square",
+    "rectangle"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "Which shape has 3 sides?",
+   "a": "triangle",
+   "w": [
+    "square",
+    "hexagon",
+    "circle"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "Which shape has no sides and no corners?",
+   "a": "circle",
+   "w": [
+    "triangle",
+    "square",
+    "hexagon"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "A square has 4 sides. The sides are all…",
+   "a": "the same length",
+   "w": [
+    "different lengths",
+    "curved",
+    "round"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "Which shape has 2 long sides and 2 short sides?",
+   "a": "rectangle",
+   "w": [
+    "square",
+    "triangle",
+    "hexagon"
+   ],
+   "img": "img/m1-rectangle-green.svg"
+  },
+  {
+   "type": "tf",
+   "q": "A circle has corners.",
+   "a": false,
+   "img": "img/m1-circle-green.svg",
+   "explain": "A circle is round. It has no corners."
+  },
+  {
+   "type": "tf",
+   "q": "A triangle has 3 corners.",
+   "a": true,
+   "img": "img/m1-triangle-yellow.svg"
+  },
+  {
+   "type": "tf",
+   "q": "A hexagon has 5 sides.",
+   "a": false,
+   "img": "img/m1-hexagon-yellow-1.svg",
+   "explain": "A hexagon has 6 sides."
+  },
+  {
+   "type": "tf",
+   "q": "An oval looks like an egg.",
+   "a": true,
+   "img": "img/m1-oval-blue.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the clock?",
+   "a": "circle",
+   "w": [
+    "oval",
+    "square",
+    "triangle"
+   ],
+   "img": "img/m1-obj-clock.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the egg?",
+   "a": "oval",
+   "w": [
+    "circle",
+    "rectangle",
+    "hexagon"
+   ],
+   "img": "img/m1-obj-egg.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the door?",
+   "a": "rectangle",
+   "w": [
+    "square",
+    "triangle",
+    "oval"
+   ],
+   "img": "img/m1-obj-door.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the window?",
+   "a": "square",
+   "w": [
+    "rectangle",
+    "circle",
+    "triangle"
+   ],
+   "img": "img/m1-obj-window.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the sandwich?",
+   "a": "triangle",
+   "w": [
+    "square",
+    "circle",
+    "hexagon"
+   ],
+   "img": "img/m1-obj-sandwich.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the book?",
+   "a": "rectangle",
+   "w": [
+    "square",
+    "circle",
+    "oval"
+   ],
+   "img": "img/m1-obj-book.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is each cell of the honeycomb?",
+   "a": "hexagon",
+   "w": [
+    "circle",
+    "square",
+    "triangle"
+   ],
+   "img": "img/m1-obj-honeycomb.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the roof?",
+   "a": "triangle",
+   "w": [
+    "square",
+    "rectangle",
+    "circle"
+   ],
+   "img": "img/m1-obj-house.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the window?",
+   "a": "square",
+   "w": [
+    "triangle",
+    "circle",
+    "oval"
+   ],
+   "img": "img/m1-obj-house.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the door?",
+   "a": "rectangle",
+   "w": [
+    "triangle",
+    "circle",
+    "hexagon"
+   ],
+   "img": "img/m1-obj-house.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the sun?",
+   "a": "circle",
+   "w": [
+    "square",
+    "triangle",
+    "rectangle"
+   ],
+   "img": "img/m1-obj-house.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many triangles are there?",
+   "a": "3",
+   "w": [
+    "2",
+    "4",
+    "5"
+   ],
+   "img": "img/m1-count-tri.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many circles are there?",
+   "a": "4",
+   "w": [
+    "3",
+    "5",
+    "2"
+   ],
+   "img": "img/m1-count-cir.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many squares are there?",
+   "a": "2",
+   "w": [
+    "3",
+    "4",
+    "1"
+   ],
+   "img": "img/m1-count-sq.svg"
+  },
+  {
+   "type": "mc",
+   "q": "How many hexagons are there?",
+   "a": "3",
+   "w": [
+    "2",
+    "4",
+    "6"
+   ],
+   "img": "img/m1-count-hex.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-sphere-blue.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-sphere-orange.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cube",
+   "w": [
+    "cuboid",
+    "pyramid",
+    "sphere"
+   ],
+   "img": "img/m1-cube-red.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cube",
+   "w": [
+    "cuboid",
+    "pyramid",
+    "sphere"
+   ],
+   "img": "img/m1-cube-green.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cone",
+   "w": [
+    "pyramid",
+    "cylinder",
+    "sphere"
+   ],
+   "img": "img/m1-cone-yellow.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cone",
+   "w": [
+    "pyramid",
+    "cylinder",
+    "sphere"
+   ],
+   "img": "img/m1-cone-purple.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-cylinder-green.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-cylinder-red.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "pyramid",
+   "w": [
+    "cone",
+    "cube",
+    "cuboid"
+   ],
+   "img": "img/m1-pyramid-orange.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "pyramid",
+   "w": [
+    "cone",
+    "cube",
+    "cuboid"
+   ],
+   "img": "img/m1-pyramid-blue.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "pyramid"
+   ],
+   "img": "img/m1-cuboid-purple.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "pyramid"
+   ],
+   "img": "img/m1-cuboid-yellow-1.svg"
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a cube? Choose the colour.",
+   "a": "yellow",
+   "w": [
+    "green",
+    "red",
+    "blue"
+   ],
+   "pics": {
+    "yellow": "img/m1-pic-cube-yellow.svg",
+    "green": "img/m1-pic-sphere-green.svg",
+    "red": "img/m1-pic-cone-red.svg",
+    "blue": "img/m1-pic-cylinder-blue.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a sphere? Choose the colour.",
+   "a": "yellow",
+   "w": [
+    "red",
+    "green",
+    "blue"
+   ],
+   "pics": {
+    "yellow": "img/m1-pic-sphere-yellow.svg",
+    "red": "img/m1-pic-cube-red.svg",
+    "green": "img/m1-pic-pyramid-green.svg",
+    "blue": "img/m1-pic-cone-blue.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a cone? Choose the colour.",
+   "a": "yellow",
+   "w": [
+    "red",
+    "blue",
+    "green"
+   ],
+   "pics": {
+    "yellow": "img/m1-pic-cone-yellow.svg",
+    "red": "img/m1-pic-pyramid-red.svg",
+    "blue": "img/m1-pic-cylinder-blue.svg",
+    "green": "img/m1-pic-cube-green.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a cylinder? Choose the colour.",
+   "a": "yellow",
+   "w": [
+    "green",
+    "blue",
+    "red"
+   ],
+   "pics": {
+    "yellow": "img/m1-pic-cylinder-yellow.svg",
+    "green": "img/m1-pic-cone-green.svg",
+    "blue": "img/m1-pic-cuboid-blue.svg",
+    "red": "img/m1-pic-sphere-red.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a pyramid? Choose the colour.",
+   "a": "yellow",
+   "w": [
+    "green",
+    "blue",
+    "red"
+   ],
+   "pics": {
+    "yellow": "img/m1-pic-pyramid-yellow.svg",
+    "green": "img/m1-pic-cone-green.svg",
+    "blue": "img/m1-pic-cube-blue.svg",
+    "red": "img/m1-pic-sphere-red.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the ball?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-ball.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the orange?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cylinder",
+    "pyramid"
+   ],
+   "img": "img/m1-obj-orange.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the dice?",
+   "a": "cube",
+   "w": [
+    "sphere",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-dice.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the gift box?",
+   "a": "cuboid",
+   "w": [
+    "sphere",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-gift-box.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the ice cream cone?",
+   "a": "cone",
+   "w": [
+    "cylinder",
+    "cube",
+    "sphere"
+   ],
+   "img": "img/m1-obj-ice-cream-cone.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the party hat?",
+   "a": "cone",
+   "w": [
+    "pyramid",
+    "cylinder",
+    "sphere"
+   ],
+   "img": "img/m1-obj-party-hat.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the can?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cube",
+    "sphere"
+   ],
+   "img": "img/m1-obj-can.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is this?",
+   "a": "pyramid",
+   "w": [
+    "cone",
+    "cube",
+    "sphere"
+   ],
+   "img": "img/m1-obj-pyramid-in-the-desert.svg"
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a sphere?",
+   "a": "ball",
+   "w": [
+    "dice",
+    "can",
+    "party hat"
+   ],
+   "pics": {
+    "ball": "img/m1-opic-ball.svg",
+    "dice": "img/m1-opic-dice.svg",
+    "can": "img/m1-opic-can.svg",
+    "party hat": "img/m1-opic-party-hat.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a cube?",
+   "a": "dice",
+   "w": [
+    "ball",
+    "can",
+    "ice cream cone"
+   ],
+   "pics": {
+    "dice": "img/m1-opic-dice.svg",
+    "ball": "img/m1-opic-ball.svg",
+    "can": "img/m1-opic-can.svg",
+    "ice cream cone": "img/m1-opic-ice-cream-cone.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a cylinder?",
+   "a": "can",
+   "w": [
+    "ball",
+    "dice",
+    "party hat"
+   ],
+   "pics": {
+    "can": "img/m1-opic-can.svg",
+    "ball": "img/m1-opic-ball.svg",
+    "dice": "img/m1-opic-dice.svg",
+    "party hat": "img/m1-opic-party-hat.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a cone?",
+   "a": "party hat",
+   "w": [
+    "gift box",
+    "can",
+    "orange"
+   ],
+   "pics": {
+    "party hat": "img/m1-opic-party-hat.svg",
+    "gift box": "img/m1-opic-gift-box.svg",
+    "can": "img/m1-opic-can.svg",
+    "orange": "img/m1-opic-orange.svg"
+   }
+  },
+  {
+   "type": "tf",
+   "q": "A ball can roll.",
+   "a": true,
+   "img": "img/m1-obj-ball.svg"
+  },
+  {
+   "type": "tf",
+   "q": "A cube can roll.",
+   "a": false,
+   "img": "img/m1-cube-red.svg",
+   "explain": "A cube has flat faces. It slides, but it does not roll."
+  },
+  {
+   "type": "tf",
+   "q": "A cone has a pointed top.",
+   "a": true,
+   "img": "img/m1-cone-yellow.svg"
+  },
+  {
+   "type": "tf",
+   "q": "A sphere has corners.",
+   "a": false,
+   "img": "img/m1-sphere-blue.svg",
+   "explain": "A sphere is round all over. It has no corners."
+  },
+  {
+   "type": "mc",
+   "q": "Which shape can roll?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cuboid",
+    "pyramid"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "Which shape has a pointed top and a round bottom?",
+   "a": "cone",
+   "w": [
+    "cylinder",
+    "cube",
+    "sphere"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "Is this a 2D shape or a 3D shape?",
+   "a": "2D shape",
+   "w": [
+    "3D shape"
+   ],
+   "img": "img/m1-square-pink-2.svg",
+   "explain": "It is flat. It is a 2D shape."
+  },
+  {
+   "type": "mc",
+   "q": "Is this a 2D shape or a 3D shape?",
+   "a": "3D shape",
+   "w": [
+    "2D shape"
+   ],
+   "img": "img/m1-cube-green.svg",
+   "explain": "It is not flat. It is a 3D shape."
+  },
+  {
+   "type": "mc",
+   "q": "Is this a 2D shape or a 3D shape?",
+   "a": "2D shape",
+   "w": [
+    "3D shape"
+   ],
+   "img": "img/m1-circle-red.svg"
+  },
+  {
+   "type": "mc",
+   "q": "Is this a 2D shape or a 3D shape?",
+   "a": "3D shape",
+   "w": [
+    "2D shape"
+   ],
+   "img": "img/m1-sphere-orange.svg"
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a 3D shape?",
+   "a": "cylinder",
+   "w": [
+    "circle",
+    "square",
+    "triangle"
+   ]
+  },
+  {
+   "type": "mc",
+   "q": "Which one is a 2D shape?",
+   "a": "hexagon",
+   "w": [
+    "cube",
+    "cone",
+    "sphere"
+   ]
+  },
+  {
+   "type": "match",
+   "q": "Match the object and the shape.",
+   "pairs": [
+    [
+     "ball",
+     "sphere"
+    ],
+    [
+     "dice",
+     "cube"
+    ],
+    [
+     "can",
+     "cylinder"
+    ],
+    [
+     "party hat",
+     "cone"
+    ]
+   ]
+  },
+  {
+   "type": "match",
+   "q": "Match the shape and the number of sides.",
+   "pairs": [
+    [
+     "triangle",
+     "3 sides"
+    ],
+    [
+     "square",
+     "4 sides"
+    ],
+    [
+     "hexagon",
+     "6 sides"
+    ]
+   ]
+  }
+ ]
+}
