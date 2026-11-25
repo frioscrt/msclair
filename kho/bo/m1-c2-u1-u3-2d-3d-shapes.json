@@ -1064,6 +1064,350 @@
      "6 sides"
     ]
    ]
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the globe?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-globe.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape are the marbles?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-marbles.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the glue stick?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-obj-glue-stick.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the candle?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-obj-candle.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the milk carton?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "img": "img/m1-obj-milk-carton.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the peanut butter jar?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-obj-peanut-butter-jar.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the tissue box?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "img": "img/m1-obj-tissue-box.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the cereal box?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "img": "img/m1-obj-cereal-box.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the traffic cone?",
+   "a": "cone",
+   "w": [
+    "cylinder",
+    "cube",
+    "sphere"
+   ],
+   "img": "img/m1-obj-traffic-cone.svg"
+  },
+  {
+   "type": "mc",
+   "q": "What shape is the ice cube?",
+   "a": "cube",
+   "w": [
+    "cuboid",
+    "sphere",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-ice-cube.svg"
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the globe go?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-globe.svg",
+   "pics": {
+    "sphere": "img/m1-pic-sphere-red.svg",
+    "cube": "img/m1-pic-cube-blue.svg",
+    "cone": "img/m1-pic-cone-purple.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the marble go?",
+   "a": "sphere",
+   "w": [
+    "cube",
+    "cone",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-marbles.svg",
+   "pics": {
+    "sphere": "img/m1-pic-sphere-red.svg",
+    "cube": "img/m1-pic-cube-blue.svg",
+    "cone": "img/m1-pic-cone-purple.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the glue stick go?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-obj-glue-stick.svg",
+   "pics": {
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cone": "img/m1-pic-cone-purple.svg",
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "sphere": "img/m1-pic-sphere-red.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the candle go?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-obj-candle.svg",
+   "pics": {
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cone": "img/m1-pic-cone-purple.svg",
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "sphere": "img/m1-pic-sphere-red.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the milk carton go?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "img": "img/m1-obj-milk-carton.svg",
+   "pics": {
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "cube": "img/m1-pic-cube-blue.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cone": "img/m1-pic-cone-purple.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the peanut butter jar go?",
+   "a": "cylinder",
+   "w": [
+    "cone",
+    "cuboid",
+    "sphere"
+   ],
+   "img": "img/m1-obj-peanut-butter-jar.svg",
+   "pics": {
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cone": "img/m1-pic-cone-purple.svg",
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "sphere": "img/m1-pic-sphere-red.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the tissue box go?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "img": "img/m1-obj-tissue-box.svg",
+   "pics": {
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "cube": "img/m1-pic-cube-blue.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cone": "img/m1-pic-cone-purple.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the cereal box go?",
+   "a": "cuboid",
+   "w": [
+    "cube",
+    "cylinder",
+    "cone"
+   ],
+   "img": "img/m1-obj-cereal-box.svg",
+   "pics": {
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "cube": "img/m1-pic-cube-blue.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cone": "img/m1-pic-cone-purple.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the traffic cone go?",
+   "a": "cone",
+   "w": [
+    "cylinder",
+    "cube",
+    "sphere"
+   ],
+   "img": "img/m1-obj-traffic-cone.svg",
+   "pics": {
+    "cone": "img/m1-pic-cone-purple.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg",
+    "cube": "img/m1-pic-cube-blue.svg",
+    "sphere": "img/m1-pic-sphere-red.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Sort it! Where does the ice cube go?",
+   "a": "cube",
+   "w": [
+    "cuboid",
+    "sphere",
+    "cylinder"
+   ],
+   "img": "img/m1-obj-ice-cube.svg",
+   "pics": {
+    "cube": "img/m1-pic-cube-blue.svg",
+    "cuboid": "img/m1-pic-cuboid-green.svg",
+    "sphere": "img/m1-pic-sphere-red.svg",
+    "cylinder": "img/m1-pic-cylinder-yellow.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a cylinder?",
+   "a": "candle",
+   "w": [
+    "ice cube",
+    "globe",
+    "tissue box"
+   ],
+   "pics": {
+    "candle": "img/m1-opic-candle.svg",
+    "ice cube": "img/m1-opic-ice-cube.svg",
+    "globe": "img/m1-opic-globe.svg",
+    "tissue box": "img/m1-opic-tissue-box.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a cuboid?",
+   "a": "cereal box",
+   "w": [
+    "marbles",
+    "traffic cone",
+    "glue stick"
+   ],
+   "pics": {
+    "cereal box": "img/m1-opic-cereal-box.svg",
+    "marbles": "img/m1-opic-marbles.svg",
+    "traffic cone": "img/m1-opic-traffic-cone.svg",
+    "glue stick": "img/m1-opic-glue-stick.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a sphere?",
+   "a": "globe",
+   "w": [
+    "milk carton",
+    "candle",
+    "ice cube"
+   ],
+   "pics": {
+    "globe": "img/m1-opic-globe.svg",
+    "milk carton": "img/m1-opic-milk-carton.svg",
+    "candle": "img/m1-opic-candle.svg",
+    "ice cube": "img/m1-opic-ice-cube.svg"
+   }
+  },
+  {
+   "type": "mc",
+   "q": "Which one looks like a cube?",
+   "a": "ice cube",
+   "w": [
+    "peanut butter jar",
+    "globe",
+    "traffic cone"
+   ],
+   "pics": {
+    "ice cube": "img/m1-opic-ice-cube.svg",
+    "peanut butter jar": "img/m1-opic-peanut-butter-jar.svg",
+    "globe": "img/m1-opic-globe.svg",
+    "traffic cone": "img/m1-opic-traffic-cone.svg"
+   }
   }
  ]
 }
