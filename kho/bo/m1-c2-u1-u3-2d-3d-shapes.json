@@ -5,9 +5,9 @@
  "grade": "1",
  "book": "E-project Math",
  "lang": "en",
- "status": "pending",
+ "status": "approved",
  "source": "E-project Math Grade 1, Chapter 2 (Unit 1–3): 2D shapes (circle, oval, triangle, square, rectangle, hexagon) và 3D shapes (sphere, cube, cone, cylinder, pyramid, cuboid). Soạn theo danh sách hình Clair đưa, chưa đối chiếu sách.",
- "updated": "2026-11-25T03:00:00Z",
+ "updated": "2026-11-25T05:00:00Z",
  "questions": [
   {
    "type": "mc",
