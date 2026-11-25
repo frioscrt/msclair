@@ -257,7 +257,7 @@
     "5",
     "6"
    ],
-   "img": "img/m1-triangle-yellow.svg"
+   "img": "img/m1-triangle-yellow-plain.svg"
   },
   {
    "type": "mc",
@@ -268,7 +268,7 @@
     "5",
     "6"
    ],
-   "img": "img/m1-square-blue.svg"
+   "img": "img/m1-square-blue-plain.svg"
   },
   {
    "type": "mc",
@@ -279,7 +279,7 @@
     "5",
     "3"
    ],
-   "img": "img/m1-hexagon-purple.svg"
+   "img": "img/m1-hexagon-purple-plain.svg"
   },
   {
    "type": "mc",
@@ -290,7 +290,7 @@
     "2",
     "6"
    ],
-   "img": "img/m1-rectangle-green.svg"
+   "img": "img/m1-rectangle-green-plain.svg"
   },
   {
    "type": "mc",
@@ -301,7 +301,7 @@
     "6",
     "0"
    ],
-   "img": "img/m1-triangle-orange-1.svg"
+   "img": "img/m1-triangle-orange-1-plain.svg"
   },
   {
    "type": "mc",
@@ -312,7 +312,7 @@
     "2",
     "4"
    ],
-   "img": "img/m1-circle-red.svg",
+   "img": "img/m1-circle-red-plain.svg",
    "explain": "A circle is round. It has no corners."
   },
   {
@@ -364,26 +364,26 @@
     "triangle",
     "hexagon"
    ],
-   "img": "img/m1-rectangle-green.svg"
+   "img": "img/m1-rectangle-green-plain.svg"
   },
   {
    "type": "tf",
    "q": "A circle has corners.",
    "a": false,
-   "img": "img/m1-circle-green.svg",
+   "img": "img/m1-circle-green-plain.svg",
    "explain": "A circle is round. It has no corners."
   },
   {
    "type": "tf",
    "q": "A triangle has 3 corners.",
    "a": true,
-   "img": "img/m1-triangle-yellow.svg"
+   "img": "img/m1-triangle-yellow-plain.svg"
   },
   {
    "type": "tf",
    "q": "A hexagon has 5 sides.",
    "a": false,
-   "img": "img/m1-hexagon-yellow-1.svg",
+   "img": "img/m1-hexagon-yellow-1-plain.svg",
    "explain": "A hexagon has 6 sides."
   },
   {
@@ -944,7 +944,7 @@
    "type": "tf",
    "q": "A sphere has corners.",
    "a": false,
-   "img": "img/m1-sphere-blue.svg",
+   "img": "img/m1-sphere-blue-plain.svg",
    "explain": "A sphere is round all over. It has no corners."
   },
   {
