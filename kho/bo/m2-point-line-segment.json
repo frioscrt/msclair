@@ -1,0 +1,453 @@
+{
+  "id": "m2-point-line-segment",
+  "title": "Point and line segment",
+  "subject": "Math",
+  "grade": "2",
+  "book": "E-project Math",
+  "lang": "en",
+  "status": "approved",
+  "source": "E-project Math Grade 2, Point and line segment (point A, point B, line segment AB)",
+  "updated": "2026-11-25T00:52:41Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "point A",
+      "w": [
+        "point D",
+        "point E",
+        "line segment AB"
+      ],
+      "img": "img/m2-point-a.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "point B",
+      "w": [
+        "point N",
+        "point K",
+        "line segment BD"
+      ],
+      "img": "img/m2-point-b.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "point M",
+      "w": [
+        "point Q",
+        "point B",
+        "line segment MQ"
+      ],
+      "img": "img/m2-point-m.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "point C",
+      "w": [
+        "point P",
+        "point H",
+        "line segment CB"
+      ],
+      "img": "img/m2-point-c.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "point N",
+      "w": [
+        "point D",
+        "point E",
+        "line segment NA"
+      ],
+      "img": "img/m2-point-n.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is point ___.",
+      "a": "D",
+      "w": [
+        "H",
+        "N",
+        "C"
+      ],
+      "img": "img/m2-point-d.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is point ___.",
+      "a": "P",
+      "w": [
+        "K",
+        "N",
+        "H"
+      ],
+      "img": "img/m2-point-p.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is point ___.",
+      "a": "K",
+      "w": [
+        "Q",
+        "A",
+        "N"
+      ],
+      "img": "img/m2-point-k.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "line segment AB",
+      "w": [
+        "point A",
+        "point B",
+        "line segment AC"
+      ],
+      "img": "img/m2-seg-ab.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "line segment CD",
+      "w": [
+        "point C",
+        "point D",
+        "line segment CP"
+      ],
+      "img": "img/m2-seg-cd.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "line segment MN",
+      "w": [
+        "point M",
+        "point N",
+        "line segment ME"
+      ],
+      "img": "img/m2-seg-mn.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "line segment PQ",
+      "w": [
+        "point P",
+        "point Q",
+        "line segment PE"
+      ],
+      "img": "img/m2-seg-pq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "line segment EG",
+      "w": [
+        "point E",
+        "point G",
+        "line segment EK"
+      ],
+      "img": "img/m2-seg-eg.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "line segment HK",
+      "w": [
+        "point H",
+        "point K",
+        "line segment HD"
+      ],
+      "img": "img/m2-seg-hk.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is line segment ___.",
+      "a": "AB",
+      "w": [
+        "A",
+        "B",
+        "AE"
+      ],
+      "img": "img/m2-seg-ab.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is line segment ___.",
+      "a": "CD",
+      "w": [
+        "C",
+        "D",
+        "CB"
+      ],
+      "img": "img/m2-seg-cd.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is line segment ___.",
+      "a": "MN",
+      "w": [
+        "M",
+        "N",
+        "MP"
+      ],
+      "img": "img/m2-seg-mn.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This is line segment ___.",
+      "a": "PQ",
+      "w": [
+        "P",
+        "Q",
+        "PK"
+      ],
+      "img": "img/m2-seg-pq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which points are at the two ends of this line segment?",
+      "a": "point M and point N",
+      "w": [
+        "point M and point P",
+        "point M and point A",
+        "only point M"
+      ],
+      "img": "img/m2-seg-mn.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which points are at the two ends of this line segment?",
+      "a": "point P and point Q",
+      "w": [
+        "point P and point G",
+        "point P and point M",
+        "only point P"
+      ],
+      "img": "img/m2-seg-pq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which points are at the two ends of this line segment?",
+      "a": "point E and point G",
+      "w": [
+        "point E and point I",
+        "point E and point H",
+        "only point E"
+      ],
+      "img": "img/m2-seg-eg.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many points are there?",
+      "a": "2",
+      "w": [
+        "3",
+        "5",
+        "6"
+      ],
+      "img": "img/m2-pts-ab.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many points are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "6"
+      ],
+      "img": "img/m2-pts-abc.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many points are there?",
+      "a": "4",
+      "w": [
+        "1",
+        "3",
+        "5"
+      ],
+      "img": "img/m2-pts-mnpq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many points are there?",
+      "a": "5",
+      "w": [
+        "3",
+        "4",
+        "2"
+      ],
+      "img": "img/m2-pts-abcde.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many points are there?",
+      "a": "3",
+      "w": [
+        "5",
+        "1",
+        "2"
+      ],
+      "img": "img/m2-pts-cde.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many line segments are there?",
+      "a": "1",
+      "w": [
+        "5",
+        "2",
+        "4"
+      ],
+      "img": "img/m2-seg-ab.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many line segments are there?",
+      "a": "2",
+      "w": [
+        "5",
+        "3",
+        "1"
+      ],
+      "img": "img/m2-segs-abcd.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many line segments are there?",
+      "a": "3",
+      "w": [
+        "5",
+        "2",
+        "1"
+      ],
+      "img": "img/m2-segs-mnpqeg.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many line segments are there?",
+      "a": "4",
+      "w": [
+        "2",
+        "3",
+        "1"
+      ],
+      "img": "img/m2-segs-abcdmnpq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a point?",
+      "a": "A",
+      "w": [
+        "AB",
+        "CD",
+        "MN"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a point?",
+      "a": "M",
+      "w": [
+        "AB",
+        "MN",
+        "PQ"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a line segment?",
+      "a": "AB",
+      "w": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a line segment?",
+      "a": "MN",
+      "w": [
+        "M",
+        "N",
+        "P"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We draw a straight line from point A to point B. We get…",
+      "a": "line segment AB",
+      "w": [
+        "point A",
+        "point B",
+        "line segment AC"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We draw a straight line from point C to point D. We get…",
+      "a": "line segment CD",
+      "w": [
+        "point C",
+        "point D",
+        "line segment CM"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Line segment AB has point A and point ___.",
+      "a": "B",
+      "w": [
+        "C",
+        "M",
+        "D"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Line segment MN has point M and point ___.",
+      "a": "N",
+      "w": [
+        "A",
+        "B",
+        "P"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "A line segment has ___ points at its ends.",
+      "a": "2",
+      "w": [
+        "1",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We name a point with ___ letter.",
+      "a": "1",
+      "w": [
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "We name a line segment with ___ letters.",
+      "a": "2",
+      "w": [
+        "1",
+        "3",
+        "4"
+      ]
+    }
+  ]
+}
