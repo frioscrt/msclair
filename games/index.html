@@ -252,6 +252,10 @@ const GAMES = [
     builtin: [
       { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "whack-a-mole/#custom" },
     ] },
+  { id: "star", name: "Star Collector", note: "Fly from planet to planet, answer right to collect its stars; count the stars at the end. A calm game", icon: "star-collector/icon.svg", url: (id) => "star-collector/#bo=" + encodeURIComponent(id),
+    builtin: [
+      { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "star-collector/#custom" },
+    ] },
 ];
 
 let sets = [], game = null;
