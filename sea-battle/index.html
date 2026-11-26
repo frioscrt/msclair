@@ -726,7 +726,7 @@ html[data-look="g"] {
       <div class="start-row">
         <button class="btn-big" id="btnStart">Start game</button>
         <button class="btn-big alt" id="btnResume" hidden>Continue last game</button>
-        <a class="to-kho" href="../kho/">← Game library</a>
+        <a class="to-kho" href="../games/">← Game library</a>
       </div>
     </section>
   </div>
@@ -842,7 +842,7 @@ html[data-look="g"] {
 </div>
 <canvas id="confetti" hidden></canvas>
 
-<script src="../kho/kho.js"></script>
+<script src="../games/kho.js"></script>
 <script>
 "use strict";
 /* =====================================================================
@@ -1250,7 +1250,7 @@ const SETS = {
   lib: { title: "Quiz", grade: "", accent: "#0b9bbf", ships: ["Flagship", "Cruiser", "Destroyer", "Submarine", "Patrol Boat"], make: () => LIB.deck && LIB.deck.next() },
 };
 
-// Question sets from the shared game library (kho/bo/), read by kho/kho.js
+// Question sets from the shared game library (games/bo/), read by games/kho.js
 const LIB = { list: null, id: "", set: null, deck: null, err: "" };
 async function loadLibList() {
   if (!window.KHO) { LIB.list = []; return; }

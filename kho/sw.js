@@ -1,25 +1,10 @@
-// Cho trang kho mở được cả khi mất mạng.
-// Có mạng: lấy bản mới nhất rồi cất. Mất mạng: dùng bản đã cất.
-const CACHE = 'kho-v13';
-const FILES = ['./', './index.html', './kho.js', './icon.svg', './manifest.webmanifest', './hop-bi-an/', './hop-bi-an/index.html', './hop-bi-an/icon.svg', './dua-thuyen/', './dua-thuyen/index.html', './dua-thuyen/icon.svg', './bowling/', './bowling/index.html', './bowling/icon.svg', './land-explorers/', './land-explorers/index.html', './land-explorers/icon.svg', './dap-chuot/', './dap-chuot/index.html', './dap-chuot/icon.svg'];
-
-self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
-});
+// Trang kho đã chuyển sang /games/. Bản này dọn bộ nhớ cũ trên máy rồi tự gỡ,
+// để máy nào từng mở /kho/ không còn hiện bản cũ khi mất mạng.
+self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys()
-    .then((keys) => Promise.all(keys.filter((k) => k.startsWith('kho-') && k !== CACHE).map((k) => caches.delete(k))))
-    .then(() => self.clients.claim()));
-});
-self.addEventListener('fetch', (e) => {
-  const req = e.request, url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== location.origin) return;
-  // bộ câu hỏi có ?t=... để luôn lấy bản mới; cất theo đường dẫn không có ?t
-  const key = url.origin + url.pathname;
-  e.respondWith(
-    fetch(req).then((res) => {
-      if (res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(key, copy)); }
-      return res;
-    }).catch(() => caches.match(key).then((r) => r || caches.match(req)))
-  );
+    .then((keys) => Promise.all(keys.filter((k) => k.startsWith('kho-')).map((k) => caches.delete(k))))
+    .then(() => self.registration.unregister())
+    .then(() => self.clients.matchAll())
+    .then((cs) => cs.forEach((c) => c.navigate(c.url))));
 });

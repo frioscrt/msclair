@@ -1,6 +1,6 @@
 /* Kho game · phần dùng chung cho mọi game.
-   Đọc bộ câu hỏi trong thư mục kho/bo/ và đổi sang dạng game cần.
-   Định dạng bộ câu hỏi: xem kho/DINH-DANG.md. */
+   Đọc bộ câu hỏi trong thư mục games/bo/ và đổi sang dạng game cần.
+   Định dạng bộ câu hỏi: xem games/DINH-DANG.md. */
 (function () {
   "use strict";
   const BASE = new URL("bo/", (document.currentScript && document.currentScript.src) || location.href).href;
@@ -102,6 +102,7 @@
   const SUBJ_ORDER = ["English", "Math", "Science", "Vietnamese"];
   const program = (s) => PROG_ORDER.find((p) => new RegExp("^" + p.replace("-", "-?"), "i").test(String(s.book || "").trim())) || String(s.book || "").trim() || "Other";
   const rank = (arr, x) => { const i = arr.indexOf(x); return i < 0 ? 99 : i; };
+  const subjRank = (x) => rank(SUBJ_ORDER, x);
   const numAfter = (t, w) => { const m = String(t || "").match(new RegExp(w + "\\s*(\\d+)", "i")); return m ? +m[1] : 999; };
   const sortKey = (s) => [rank(PROG_ORDER, program(s)), program(s), rank(SUBJ_ORDER, s.subject), s.subject || "", parseInt(s.grade, 10) || 99,
     numAfter(s.title, "chapter"), /^review/i.test(s.title || "") ? 998 : numAfter(s.title, "unit"), s.title || ""];
@@ -140,5 +141,5 @@
     (document.head || document.documentElement).appendChild(st);
   } catch (e) {}
 
-  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML, sortSets, groupSets, setOptions, program, PROG_ORDER };
+  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML, sortSets, groupSets, setOptions, program, subjRank, PROG_ORDER, SUBJ_ORDER };
 })();
