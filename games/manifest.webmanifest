@@ -1,10 +1,14 @@
 {
   "name": "Chơi mà học",
-  "short_name": "Kho game",
+  "short_name": "Games",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#fff8ec",
   "theme_color": "#fff8ec",
-  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
 }
