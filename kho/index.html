@@ -51,6 +51,14 @@ button { font: inherit; }
 .tag.pending { background: var(--orange-l); color: #a4470d; }
 .tag.approved { background: var(--good-l); color: var(--good); }
 .tag.builtin { background: var(--blue-l); color: var(--blue); }
+.filters { display: grid; gap: 8px; margin: 0 0 14px; }
+.filters [data-chips] { display: grid; gap: 8px; }
+.filters .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-weight: 700; border: 2px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 5px 14px; cursor: pointer; font-size: .92em; }
+.chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+.filters input[type=search] { font: inherit; width: 100%; box-sizing: border-box; padding: 9px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--ink); }
+.grp { font-size: .95em; color: var(--muted); margin: 16px 0 2px; font-weight: 800; }
+.grp:first-child { margin-top: 0; }
 .empty { color: var(--muted); background: var(--card); border-radius: 16px; padding: 16px; }
 .note { color: var(--muted); font-size: .9em; }
 .err { color: var(--bad); font-weight: 700; }
@@ -122,6 +130,7 @@ dialog textarea { width: 100%; min-height: 160px; font: 13px/1.4 ui-monospace, M
     <div class="games" id="games"></div>
     <div id="pickSet" hidden>
       <h2>2. Chọn bộ câu hỏi</h2>
+      <div class="filters" data-filters></div>
       <div class="rows" id="setRows"></div>
     </div>
   </section>
@@ -132,6 +141,7 @@ dialog textarea { width: 100%; min-height: 160px; font: 13px/1.4 ui-monospace, M
     <div class="rows" id="pendingRows"></div>
     <h2>Đã duyệt</h2>
     <p class="note">Muốn sửa hay bỏ bớt câu của một bộ đã duyệt thì bấm "Sửa lại".</p>
+    <div class="filters" data-filters></div>
     <div class="rows" id="approvedRows"></div>
   </section>
 
@@ -264,7 +274,41 @@ async function refresh() {
   renderGames(); renderReviewList();
 }
 const fmtDate = (iso) => { if (!iso) return ""; const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("vi-VN"); };
+const shortLine = (s) => [s.book, s.n ? s.n + " câu" : ""].filter(Boolean).join(" · "); // tiêu đề nhóm đã ghi môn, lớp
 const setLine = (s) => [s.subject, s.grade ? "lớp " + s.grade : "", s.book, s.n ? s.n + " câu" : ""].filter(Boolean).join(" · ");
+
+/* ---------- Lọc + tìm bộ câu hỏi (dùng chung cho mục Chơi và Duyệt) ---------- */
+const FILTER = "kho-filter";
+let flt = Object.assign({ subj: "", grade: "", q: "" }, ls.get(FILTER) || {});
+const fold = (t) => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/gi, "d").toLowerCase();
+function applyFilter(list) {
+  const words = fold(flt.q).split(/\s+/).filter(Boolean);
+  return list.filter((s) => (!flt.subj || s.subject === flt.subj) && (!flt.grade || String(s.grade) === flt.grade) &&
+    words.every((w) => fold([s.title, s.book, KHO.subjName(s.subject, "vi"), s.grade ? "lop " + s.grade : "", s.id].join(" ")).includes(w)));
+}
+function renderFilters() {
+  const lib = sets.filter((s) => s.status === "approved");
+  const subjects = [...new Set(KHO.sortSets(lib).map((s) => s.subject).filter(Boolean))];
+  if (flt.subj && !subjects.includes(flt.subj)) flt.subj = "";
+  const grades = [...new Set(lib.filter((s) => !flt.subj || s.subject === flt.subj).map((s) => String(s.grade || "")).filter(Boolean))].sort((a, b) => a - b);
+  if (flt.grade && !grades.includes(flt.grade)) flt.grade = "";
+  const chip = (k, v, label) => `<button class="chip" data-f="${k}" data-v="${esc(v)}" aria-pressed="${flt[k] === v}">${esc(label)}</button>`;
+  const html = `<div class="chips">${chip("subj", "", "Tất cả môn")}${subjects.map((x) => chip("subj", x, KHO.subjName(x, "vi"))).join("")}</div>` +
+    (grades.length > 1 ? `<div class="chips">${chip("grade", "", "Mọi lớp")}${grades.map((g) => chip("grade", g, "Lớp " + g)).join("")}</div>` : "");
+  // Ô tìm tạo một lần rồi giữ nguyên, để bộ gõ tiếng Việt không bị ngắt khi đang gõ
+  document.querySelectorAll("[data-filters]").forEach((box) => {
+    if (!box.firstElementChild) box.innerHTML = `<div data-chips></div><input type="search" data-q placeholder="Tìm tên bộ, ví dụ: unit 5, colours, shapes…" aria-label="Tìm bộ câu hỏi">`;
+    box.querySelector("[data-chips]").innerHTML = html;
+    const inp = box.querySelector("[data-q]"); if (inp.value !== flt.q) inp.value = flt.q;
+  });
+}
+function setFilter(k, v) { flt[k] = v; if (k === "subj") flt.grade = ""; ls.set(FILTER, flt); renderGames(); renderReviewList(); }
+document.addEventListener("click", (e) => { const c = e.target.closest(".chip[data-f]"); if (c) setFilter(c.dataset.f, c.dataset.v); });
+document.addEventListener("input", (e) => { if (e.target.matches("[data-q]")) setFilter("q", e.target.value); });
+// Danh sách chia nhóm theo Môn · Lớp, mỗi nhóm có tiêu đề
+const groupedRows = (list, row) => KHO.groupSets(list, "vi").map((g) => `<div class="grp">${esc(g.label)} <small>(${g.sets.length})</small></div>` + g.sets.map(row).join("")).join("");
+const noMatch = `<div class="empty">Không có bộ nào khớp. Bấm "Tất cả môn" hoặc xoá chữ trong ô tìm.</div>`;
+const filtering = () => !!(flt.subj || flt.grade || flt.q.trim());
 
 function renderGames() {
   $("games").innerHTML = GAMES.map((g) => `<button class="game" data-g="${g.id}" aria-pressed="${game === g.id}" ${g.soon ? "disabled" : ""}>
@@ -272,11 +316,13 @@ function renderGames() {
   const g = GAMES.find((x) => x.id === game);
   $("pickSet").hidden = !g;
   if (!g) return;
-  const lib = sets.filter((s) => s.status === "approved");
+  const all = sets.filter((s) => s.status === "approved"), lib = applyFilter(all);
+  const builtin = (g.builtin || []).filter((b) => !flt.subj && !flt.grade && fold(b.title + " " + b.note).includes(fold(flt.q.trim())));
+  renderFilters();
   $("setRows").innerHTML =
-    lib.map((s) => `<div class="row"><div class="grow"><b><span class="tag approved">kho</span>${esc(s.title)}</b><small>${esc(setLine(s))}</small></div><a class="btn" href="${g.url(s.id)}">Chơi</a></div>`).join("") +
-    (lib.length ? "" : `<div class="empty">Kho chưa có bộ nào đã duyệt. Bộ mới Claude soạn nằm ở mục <b>Duyệt</b>; duyệt xong sẽ hiện ở đây.</div>`) +
-    (g.builtin || []).map((b) => `<div class="row"><div class="grow"><b><span class="tag builtin">có sẵn</span>${esc(b.title)}</b><small>${esc(b.note)}</small></div><a class="btn alt" href="${b.url}">Chơi</a></div>`).join("");
+    (builtin.length ? `<div class="grp">Có sẵn trong game</div>` + builtin.map((b) => `<div class="row"><div class="grow"><b><span class="tag builtin">có sẵn</span>${esc(b.title)}</b><small>${esc(b.note)}</small></div><a class="btn alt" href="${b.url}">Chơi</a></div>`).join("") : "") +
+    groupedRows(lib, (s) => `<div class="row"><div class="grow"><b>${esc(s.title)}</b><small>${esc(shortLine(s))}</small></div><a class="btn" href="${g.url(s.id)}">Chơi</a></div>`) +
+    (!all.length ? `<div class="empty">Kho chưa có bộ nào đã duyệt. Bộ mới Claude soạn nằm ở mục <b>Duyệt</b>; duyệt xong sẽ hiện ở đây.</div>` : !lib.length && !builtin.length ? noMatch : "");
 }
 $("games").onclick = (e) => { const b = e.target.closest(".game"); if (!b || b.disabled) return; game = b.dataset.g; renderGames(); $("pickSet").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
 
@@ -292,10 +338,11 @@ document.querySelector("nav").onclick = (e) => { const b = e.target.closest("but
 
 /* ---------- Danh sách duyệt ---------- */
 function renderReviewList() {
-  const row = (s, label) => `<div class="row"><div class="grow"><b><span class="tag ${s.status}">${s.status === "pending" ? "chờ duyệt" : "đã duyệt"}</span>${esc(s.title)}</b><small>${esc(setLine(s))}${s.updated ? " · " + fmtDate(s.updated) : ""}${ls.get(DRAFT + s.id) ? " · đang duyệt dở" : ""}</small></div><button class="btn ${s.status === "pending" ? "" : "alt"}" data-open="${esc(s.id)}">${label}</button></div>`;
-  const p = sets.filter((s) => s.status === "pending"), a = sets.filter((s) => s.status === "approved");
+  const row = (s, label) => `<div class="row"><div class="grow"><b><span class="tag ${s.status}">${s.status === "pending" ? "chờ duyệt" : "đã duyệt"}</span>${esc(s.title)}</b><small>${esc(s.status === "pending" ? setLine(s) : shortLine(s))}${s.updated ? " · " + fmtDate(s.updated) : ""}${ls.get(DRAFT + s.id) ? " · đang duyệt dở" : ""}</small></div><button class="btn ${s.status === "pending" ? "" : "alt"}" data-open="${esc(s.id)}">${label}</button></div>`;
+  const p = KHO.sortSets(sets.filter((s) => s.status === "pending")), all = sets.filter((s) => s.status === "approved"), a = applyFilter(all);
+  renderFilters();
   $("pendingRows").innerHTML = p.length ? p.map((s) => row(s, "Duyệt")).join("") : `<div class="empty">Không có bộ nào chờ duyệt.</div>`;
-  $("approvedRows").innerHTML = a.length ? a.map((s) => row(s, "Sửa lại")).join("") : `<div class="empty">Chưa có bộ nào.</div>`;
+  $("approvedRows").innerHTML = a.length ? groupedRows(a, (s) => row(s, "Sửa lại")) : all.length ? noMatch : `<div class="empty">Chưa có bộ nào.</div>`;
 }
 document.addEventListener("click", (e) => { const b = e.target.closest("[data-open]"); if (b) openReview(b.dataset.open); });
 

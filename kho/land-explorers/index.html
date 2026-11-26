@@ -670,7 +670,7 @@ function setTitle() {
 function renderLib() {
   const sel = $("libSel"), lib = LIB.list || [];
   sel.innerHTML = `<option value="${UNITS}">Area &amp; Length Units (Grade 5) · built-in</option>` +
-    (lib.length ? `<optgroup label="Game library">` + lib.map(s => `<option value="${esc(s.id)}">${esc(s.title)}${s.grade ? " · Grade " + esc(s.grade) : ""}${s.n ? " · " + s.n + " questions" : ""}</option>`).join("") + `</optgroup>` : "");
+    (lib.length ? KHO.setOptions(lib, s => `<option value="${esc(s.id)}">${esc(s.title)}${s.n ? " · " + s.n + " questions" : ""}</option>`) : "");
   if (chosen !== UNITS && !lib.some(s => s.id === chosen) && !(LIB.set && LIB.id === chosen))
     sel.insertAdjacentHTML("beforeend", `<option value="${esc(chosen)}">${esc(chosen)}</option>`);
   sel.value = chosen;

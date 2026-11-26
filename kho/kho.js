@@ -96,6 +96,40 @@
     };
   }
 
+  /* Sắp xếp và chia nhóm bộ câu hỏi: Môn → Lớp → Sách → Chapter → Unit (Review xếp sau các Unit).
+     Mọi trang có danh sách bộ đều dùng chung để thứ tự giống nhau. */
+  const SUBJ_ORDER = ["English", "Math", "Science", "Vietnamese"];
+  const SUBJ_VI = { English: "Tiếng Anh", Math: "Toán", Science: "Khoa học", Vietnamese: "Tiếng Việt" };
+  const subjName = (s, lang) => lang === "vi" ? (SUBJ_VI[s] || s || "Khác") : (s || "Other");
+  const numAfter = (t, w) => { const m = String(t || "").match(new RegExp(w + "\\s*(\\d+)", "i")); return m ? +m[1] : 999; };
+  const sortKey = (s) => {
+    const si = SUBJ_ORDER.indexOf(s.subject);
+    return [si < 0 ? 99 : si, s.subject || "", parseInt(s.grade, 10) || 99, s.book || "",
+      numAfter(s.title, "chapter"), /^review/i.test(s.title || "") ? 998 : numAfter(s.title, "unit"), s.title || ""];
+  };
+  function sortSets(list) {
+    const cmp = (a, b) => typeof a === "number" ? a - b : a.localeCompare(b, "vi", { numeric: true });
+    return list.slice().sort((x, y) => { const a = sortKey(x), b = sortKey(y); for (let i = 0; i < a.length; i++) { const c = cmp(a[i], b[i]); if (c) return c; } return 0; });
+  }
+  // [{ key, label, sets }] theo Môn + Lớp. lang "vi" cho trang kho, mặc định tiếng Anh cho game.
+  function groupSets(list, lang) {
+    const out = [], by = {};
+    for (const s of sortSets(list)) {
+      const key = (s.subject || "") + "|" + (s.grade || "");
+      if (!by[key]) {
+        const g = s.grade ? (lang === "vi" ? "lớp " : "Grade ") + s.grade : "";
+        by[key] = { key, label: [subjName(s.subject, lang), g].filter(Boolean).join(" · "), sets: [] };
+        out.push(by[key]);
+      }
+      by[key].sets.push(s);
+    }
+    return out;
+  }
+  // Các <optgroup> cho ô chọn bộ trong game. item(s) trả về nội dung một <option>.
+  function setOptions(list, item) {
+    return groupSets(list).map((g) => `<optgroup label="${esc(g.label)}">${g.sets.map(item).join("")}</optgroup>`).join("");
+  }
+
   /* Nội dung một nút đáp án: chữ, kèm hình bên phải nếu đáp án có hình. Game nào cũng gọi hàm này. */
   function optHTML(q, o) {
     const pic = q && q.optPics && q.optPics[o];
@@ -112,5 +146,5 @@
     (document.head || document.documentElement).appendChild(st);
   } catch (e) {}
 
-  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML };
+  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML, sortSets, groupSets, setOptions, subjName };
 })();

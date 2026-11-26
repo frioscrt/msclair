@@ -1912,7 +1912,8 @@ function renderLib() {
   if (LIB.list === null) { $("libStatus").textContent = "Loading…"; $("btnStart").disabled = true; loadLibList().then(renderLib); return; }
   const list = LIB.list.slice();
   if (prefs.lib && LIB.set && !list.some(s => s.id === prefs.lib)) list.unshift({ id: prefs.lib, title: LIB.set.title, n: LIB.set.questions.length });
-  $("libSel").innerHTML = `<option value="">Choose a set…</option>` + list.map(s => `<option value="${esc(s.id)}" ${s.id === prefs.lib ? "selected" : ""}>${esc(s.title)}${s.n ? " · " + s.n : ""}</option>`).join("");
+  const opt = s => `<option value="${esc(s.id)}" ${s.id === prefs.lib ? "selected" : ""}>${esc(s.title)}${s.n ? " · " + s.n : ""}</option>`;
+  $("libSel").innerHTML = `<option value="">Choose a set…</option>` + (window.KHO ? KHO.setOptions(list, opt) : list.map(opt).join(""));
   const ready = prefs.lib && LIB.id === prefs.lib && LIB.deck;
   $("btnStart").disabled = !ready;
   if (!list.length) $("libStatus").textContent = LIB.err || "No sets in the library yet.";
