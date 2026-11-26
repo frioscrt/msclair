@@ -245,6 +245,10 @@ const GAMES = [
     builtin: [
       { title: "Area & Length Units · Grade 5", note: "Đơn vị đo lớp 5 (m², ha, acre, km², km), câu tự sinh có hình", url: "land-explorers/#units" },
     ] },
+  { id: "mole", name: "Đập chuột", note: "Chọn ổ chuột, đúng thì được cầm búa đập chuột; bé lớp 1 chơi được", icon: "dap-chuot/icon.svg", url: (id) => "dap-chuot/#bo=" + encodeURIComponent(id),
+    builtin: [
+      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "dap-chuot/#custom" },
+    ] },
 ];
 
 let sets = [], game = null;
