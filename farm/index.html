@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sunny Farm</title>
+<meta name="description" content="A cozy farm game for friends: plant, water, harvest, raise animals and visit each other's farms.">
+<meta name="theme-color" content="#7cc35a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sunny Farm">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap">
+<style>
+:root {
+  color-scheme: light;
+  --sky1: #bfe8ff; --sky2: #e9f8ff;
+  --grass: #86c75d; --grass-d: #5fa53c; --grass-l: #a6d97e;
+  --soil: #a8703f; --soil-d: #7a4d27; --soil-wet: #6e4322;
+  --ink: #33281c; --ink-soft: #6d5d48;
+  --card: #fffaf0; --line: #ead9b8;
+  --coin: #f5b417; --accent: #f0661e; --good: #1f9a5c; --bad: #d63650; --water: #2d8fe0;
+  --display: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; min-height: 100%; }
+html { touch-action: manipulation; }
+body {
+  min-height: 100vh;
+  background: linear-gradient(var(--sky1), var(--sky2) 220px, var(--grass-l) 221px, var(--grass) 900px) var(--grass) no-repeat;
+  color: var(--ink); font-family: var(--body); font-weight: 800; font-size: 16px;
+  -webkit-user-select: none; user-select: none;
+  padding: env(safe-area-inset-top, 0) max(16px, env(safe-area-inset-right, 0)) 24px max(16px, env(safe-area-inset-left, 0));
+}
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+h1, h2, h3 { font-family: var(--display); margin: 0; font-weight: 700; }
+
+/* ---------- top bar ---------- */
+.top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 12px 0 8px; max-width: 1100px; margin: 0 auto; }
+.who { display: flex; align-items: center; gap: 10px; background: var(--card); border-radius: 18px; padding: 6px 14px 6px 6px; box-shadow: 0 3px 0 var(--line); }
+.who .av { font-size: 34px; width: 48px; height: 48px; display: grid; place-items: center; background: #ffe9b8; border-radius: 14px; }
+.who .nm { font-family: var(--display); font-size: 20px; line-height: 1.1; }
+.lvl { font-size: 13px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+.xpbar { width: 90px; height: 8px; background: #efe2c6; border-radius: 6px; overflow: hidden; }
+.xpbar i { display: block; height: 100%; background: linear-gradient(90deg, #7bd35a, #3fae4a); }
+.pill { background: var(--card); border-radius: 16px; padding: 10px 14px; box-shadow: 0 3px 0 var(--line); font-family: var(--display); font-size: 20px; display: flex; align-items: center; gap: 6px; }
+.spacer { flex: 1; }
+.tbtn { background: var(--card); border-radius: 16px; padding: 8px 12px; box-shadow: 0 3px 0 var(--line); display: flex; flex-direction: column; align-items: center; min-width: 64px; font-size: 12px; position: relative; }
+.tbtn b { font-size: 26px; line-height: 1.1; font-weight: 400; }
+.tbtn:active, .btn:active, .plot:active, .pen:active { transform: translateY(2px); }
+.badge { position: absolute; top: -6px; right: -6px; background: var(--bad); color: #fff; border-radius: 10px; min-width: 20px; height: 20px; font-size: 12px; display: grid; place-items: center; padding: 0 5px; }
+.net { font-size: 12px; color: var(--ink-soft); width: 100%; text-align: right; margin-top: -4px; }
+
+/* ---------- visiting banner ---------- */
+.visit { max-width: 1100px; margin: 4px auto 10px; background: #fff3c4; border: 3px dashed #e9b949; border-radius: 18px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.visit .t { flex: 1; font-family: var(--display); font-size: 19px; min-width: 200px; }
+
+/* ---------- farm ---------- */
+.farm { max-width: 1100px; margin: 0 auto; display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .farm { grid-template-columns: 1.6fr 1fr; } }
+.area { background: rgba(255,255,255,.22); border-radius: 26px; padding: 14px; position: relative; }
+.area h2 { font-size: 20px; color: #2f5a1c; margin: 0 0 10px 4px; display: flex; align-items: center; gap: 8px; }
+.house { position: absolute; top: -54px; right: 18px; font-size: 64px; pointer-events: none; filter: drop-shadow(0 4px 0 rgba(0,0,0,.08)); }
+.decor { max-width: 1100px; margin: 0 auto 6px; min-height: 40px; display: flex; gap: 6px; flex-wrap: wrap; font-size: 34px; padding: 0 8px; }
+.decor span { animation: sway 3s ease-in-out infinite; display: inline-block; transform-origin: bottom center; }
+.decor span:nth-child(2n) { animation-delay: -1.2s; }
+@keyframes sway { 50% { transform: rotate(-4deg); } }
+
+.plots { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.plot {
+  aspect-ratio: 1; border-radius: 20px; position: relative; display: grid; place-items: center;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.07) 0 6px, transparent 6px 18px),
+    radial-gradient(circle at 30% 25%, #c08650, var(--soil) 70%);
+  box-shadow: inset 0 -6px 0 var(--soil-d), 0 4px 0 rgba(0,0,0,.08);
+  font-size: 46px; overflow: hidden;
+}
+.plot.wet { background: repeating-linear-gradient(0deg, rgba(0,0,0,.1) 0 6px, transparent 6px 18px), radial-gradient(circle at 30% 25%, #8a5630, var(--soil-wet) 70%); }
+.plot.locked { background: rgba(255,255,255,.35); box-shadow: inset 0 0 0 3px rgba(255,255,255,.7); font-size: 15px; color: #2f5a1c; text-align: center; line-height: 1.2; font-family: var(--display); }
+.plot.locked b { font-size: 28px; display: block; font-weight: 400; }
+.plot .em { line-height: 1; transition: transform .3s; }
+.plot .em.s0 { transform: scale(.55); }
+.plot .em.s1 { transform: scale(.75); }
+.plot .em.s2 { transform: scale(1); }
+.plot.ready .em { animation: bob 1.1s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px) scale(1.06); } }
+.plot.ready::after { content: "✨"; position: absolute; top: 4px; right: 6px; font-size: 20px; animation: twinkle 1.2s infinite; }
+@keyframes twinkle { 50% { opacity: .3; transform: scale(.8); } }
+.tag { position: absolute; left: 50%; transform: translateX(-50%); bottom: 8px; font-size: 12px; font-family: var(--display); background: rgba(255,255,255,.9); color: var(--ink); padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+.tag.thirsty { background: #dff0ff; color: var(--water); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { transform: translateX(-50%) scale(1.08); } }
+.prog { position: absolute; left: 12px; right: 12px; bottom: 8px; height: 8px; background: rgba(0,0,0,.25); border-radius: 6px; overflow: hidden; }
+.prog i { display: block; height: 100%; background: #9be36b; border-radius: 6px; }
+.drop { position: absolute; top: 6px; left: 8px; font-size: 18px; }
+.plus { font-size: 34px; color: rgba(255,255,255,.75); font-family: var(--display); }
+
+.pens { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.pen {
+  aspect-ratio: 1.15; border-radius: 20px; position: relative; display: grid; place-items: center; font-size: 50px;
+  background: #d9b77b; box-shadow: inset 0 0 0 6px #b98c4c, inset 0 -10px 0 6px #c7a065, 0 4px 0 rgba(0,0,0,.08);
+}
+.pen.empty { background: rgba(255,255,255,.35); box-shadow: inset 0 0 0 3px rgba(255,255,255,.7); font-size: 15px; color: #2f5a1c; font-family: var(--display); text-align: center; line-height: 1.2; }
+.pen.empty b { font-size: 28px; display: block; font-weight: 400; }
+.pen .em { line-height: 1; }
+.pen.hungry .em { filter: grayscale(.2); }
+.pen.ready .prod { animation: bob 1.1s ease-in-out infinite; }
+.prod { position: absolute; top: 6px; right: 10px; font-size: 30px; }
+.pen.busy .em { animation: munch 1.6s ease-in-out infinite; }
+@keyframes munch { 50% { transform: rotate(-6deg) translateY(-2px); } }
+
+/* ---------- modal ---------- */
+.veil { position: fixed; inset: 0; background: rgba(40,30,15,.45); display: grid; place-items: center; padding: 16px; z-index: 20; }
+.sheet { background: var(--card); border-radius: 26px; width: min(560px, 100%); max-height: 88vh; overflow: auto; padding: 18px; box-shadow: 0 10px 0 rgba(0,0,0,.12); position: relative; }
+.sheet h2 { font-size: 24px; margin-bottom: 4px; padding-right: 50px; }
+.sheet .sub { color: var(--ink-soft); font-size: 14px; margin-bottom: 12px; }
+.x { position: absolute; top: 12px; right: 12px; width: 44px; height: 44px; border-radius: 14px; background: #f1e4c8; font-size: 22px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+.card { background: #fff; border: 3px solid var(--line); border-radius: 18px; padding: 10px 8px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.card .ic { font-size: 40px; line-height: 1.15; }
+.card .n { font-family: var(--display); font-size: 17px; }
+.card .d { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.card.off { opacity: .45; }
+.card.pick { border-color: var(--good); }
+.btn { background: var(--accent); color: #fff; border-radius: 14px; padding: 10px 14px; font-family: var(--display); font-size: 17px; box-shadow: 0 3px 0 #b8460c; }
+.btn.g { background: var(--good); box-shadow: 0 3px 0 #136b3e; }
+.btn.b { background: var(--water); box-shadow: 0 3px 0 #1b62a0; }
+.btn.s { background: #efe2c6; color: var(--ink); box-shadow: 0 3px 0 #d6c39c; }
+.btn.sm { padding: 6px 10px; font-size: 14px; }
+.btn[disabled] { opacity: .45; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tabs { display: flex; gap: 6px; margin: 6px 0 12px; flex-wrap: wrap; }
+.tabs button { padding: 8px 14px; border-radius: 12px; background: #f1e4c8; font-family: var(--display); font-size: 16px; }
+.tabs button.on { background: var(--accent); color: #fff; }
+.list { display: flex; flex-direction: column; gap: 8px; }
+.li { display: flex; align-items: center; gap: 10px; background: #fff; border: 3px solid var(--line); border-radius: 18px; padding: 8px 10px; }
+.li .ic { font-size: 34px; width: 46px; text-align: center; }
+.li .grow { flex: 1; min-width: 0; }
+.li .n { font-family: var(--display); font-size: 18px; }
+.li .d { font-size: 13px; color: var(--ink-soft); font-weight: 700; }
+.empty-note { text-align: center; color: var(--ink-soft); padding: 18px; }
+input[type=text] { font: inherit; font-size: 18px; padding: 10px 12px; border-radius: 12px; border: 3px solid var(--line); width: 100%; background: #fff; color: var(--ink); -webkit-user-select: text; user-select: text; }
+.avs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.avs button { font-size: 28px; width: 46px; height: 46px; border-radius: 12px; background: #f6ecd6; }
+.avs button.on { background: #ffd36b; box-shadow: inset 0 0 0 3px var(--accent); }
+
+/* ---------- start screen ---------- */
+.start { max-width: 760px; margin: 0 auto; padding-top: 30px; text-align: center; }
+.logo { font-family: var(--display); font-size: clamp(40px, 9vw, 68px); color: #fff; text-shadow: 0 4px 0 #e98b1d, 0 8px 0 rgba(0,0,0,.12); line-height: 1; }
+.logo small { display: block; font-size: 20px; text-shadow: none; color: #2f5a1c; margin-top: 10px; }
+.players { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin: 34px 0 20px; }
+.pcard { background: var(--card); border-radius: 24px; padding: 16px 10px; box-shadow: 0 5px 0 var(--line); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.pcard .av { font-size: 58px; line-height: 1.1; }
+.pcard .nm { font-family: var(--display); font-size: 22px; }
+.pcard .d { font-size: 13px; color: var(--ink-soft); }
+.pcard:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
+
+/* ---------- toast + floaters ---------- */
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #33281c; color: #fff; padding: 12px 18px; border-radius: 16px; font-size: 16px; z-index: 40; max-width: 92vw; text-align: center; animation: tin .25s; }
+@keyframes tin { from { opacity: 0; transform: translate(-50%, 10px); } }
+.fly { position: fixed; z-index: 30; pointer-events: none; font-family: var(--display); font-size: 22px; color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.35); animation: up 1s ease-out forwards; }
+@keyframes up { to { transform: translateY(-60px); opacity: 0; } }
+.confetti { position: fixed; top: -20px; z-index: 50; font-size: 26px; pointer-events: none; animation: fall 2.2s linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div id="modal"></div>
+
+<script src="config.js"></script>
+<script>
+/* Sunny Farm. Pure-fun farm game for a few friends.
+   Data lives in a Store: Firebase Realtime Database when config.js has a config,
+   otherwise this browser's localStorage (all farms on one iPad).
+   Growth is computed from timestamps, so crops keep growing while the game is closed. */
+"use strict";
+
+// ---------------- game data ----------------
+const CROPS = [
+  { id: "carrot",     em: "🥕", name: "Carrot",     lvl: 1,  cost: 2,  sell: 5,   time: 20,   xp: 1 },
+  { id: "corn",       em: "🌽", name: "Corn",       lvl: 1,  cost: 4,  sell: 9,   time: 40,   xp: 2 },
+  { id: "potato",     em: "🥔", name: "Potato",     lvl: 2,  cost: 6,  sell: 14,  time: 60,   xp: 3 },
+  { id: "tomato",     em: "🍅", name: "Tomato",     lvl: 3,  cost: 10, sell: 24,  time: 120,  xp: 5 },
+  { id: "strawberry", em: "🍓", name: "Strawberry", lvl: 4,  cost: 15, sell: 38,  time: 180,  xp: 7 },
+  { id: "sunflower",  em: "🌻", name: "Sunflower",  lvl: 5,  cost: 20, sell: 55,  time: 300,  xp: 10 },
+  { id: "eggplant",   em: "🍆", name: "Eggplant",   lvl: 6,  cost: 30, sell: 85,  time: 480,  xp: 14 },
+  { id: "pumpkin",    em: "🎃", name: "Pumpkin",    lvl: 8,  cost: 50, sell: 160, time: 900,  xp: 25 },
+  { id: "watermelon", em: "🍉", name: "Watermelon", lvl: 10, cost: 80, sell: 260, time: 1500, xp: 40 },
+];
+const ANIMALS = [
+  { id: "chicken", em: "🐔", name: "Chicken", lvl: 2,  cost: 60,  prod: "egg",   time: 60,  xp: 4 },
+  { id: "cow",     em: "🐄", name: "Cow",     lvl: 4,  cost: 200, prod: "milk",  time: 180, xp: 9 },
+  { id: "sheep",   em: "🐑", name: "Sheep",   lvl: 6,  cost: 350, prod: "wool",  time: 300, xp: 14 },
+  { id: "pig",     em: "🐖", name: "Pig",     lvl: 8,  cost: 500, prod: "truffle", time: 480, xp: 20 },
+  { id: "bee",     em: "🐝", name: "Bees",    lvl: 10, cost: 700, prod: "honey", time: 600, xp: 30 },
+];
+const PRODUCTS = {
+  egg: { em: "🥚", name: "Egg", sell: 18 }, milk: { em: "🥛", name: "Milk", sell: 45 },
+  wool: { em: "🧶", name: "Wool", sell: 80 }, truffle: { em: "🍄", name: "Truffle", sell: 130 },
+  honey: { em: "🍯", name: "Honey", sell: 200 },
+};
+const DECOR = [
+  { id: "tulips", em: "🌷", name: "Tulips", cost: 25 },
+  { id: "tree", em: "🌳", name: "Oak tree", cost: 40 },
+  { id: "pine", em: "🌲", name: "Pine tree", cost: 60 },
+  { id: "rose", em: "🌹", name: "Roses", cost: 80 },
+  { id: "dog", em: "🐕", name: "Farm dog", cost: 150 },
+  { id: "cat", em: "🐈", name: "Farm cat", cost: 150 },
+  { id: "scare", em: "🎃", name: "Lantern", cost: 220 },
+  { id: "tractor", em: "🚜", name: "Tractor", cost: 500 },
+  { id: "fountain", em: "⛲", name: "Fountain", cost: 800 },
+  { id: "rainbow", em: "🌈", name: "Rainbow", cost: 1500 },
+];
+const HOUSES = ["🛖", "🏠", "🏡", "🏘️", "🏰"];          // farmhouse grows with level
+const AVATARS = ["🐰", "🐻", "🐼", "🐱", "🐶", "🦊", "🐸", "🐷", "🐯", "🦁", "🐨", "🐹", "🦄", "🐧", "👩‍🌾", "👨‍🌾"];
+const PLAYER_IDS = ["p1", "p2", "p3", "teacher"];
+const DEFAULT_PLAYERS = {
+  p1: { name: "Player 1", av: "🐰" }, p2: { name: "Player 2", av: "🐻" },
+  p3: { name: "Player 3", av: "🐱" }, teacher: { name: "Ms Clair", av: "👩‍🌾" },
+};
+const START_PLOTS = 6, MAX_PLOTS = 20, START_PENS = 1, MAX_PENS = 6;
+const PLOT_COST = [50, 80, 120, 170, 230, 300, 380, 470, 570, 680, 800, 950, 1100, 1300];
+const PEN_COST = [100, 250, 450, 700, 1000];
+const FEED_COINS = 3;        // feeding uses 1 corn from the barn, or costs this many coins
+const HELP_XP = 1, HELP_COINS = 1;
+
+const ALL_ITEMS = {};
+CROPS.forEach(c => ALL_ITEMS[c.id] = { em: c.em, name: c.name, sell: c.sell });
+Object.entries(PRODUCTS).forEach(([k, p]) => ALL_ITEMS[k] = p);
+const byId = (arr, id) => arr.find(x => x.id === id);
+
+const xpFor = L => 6 * L * (L - 1);                  // total xp needed to reach level L
+const levelOf = xp => { let L = 1; while (xp >= xpFor(L + 1)) L++; return L; };
+const houseOf = L => HOUSES[Math.min(HOUSES.length - 1, Math.floor((L - 1) / 3))];
+
+function newFarm(id) {
+  const d = DEFAULT_PLAYERS[id];
+  return {
+    name: d.name, av: d.av, coins: 30, xp: 0, helped: 0,
+    plots: Array.from({ length: START_PLOTS }, () => ({ c: "" })),
+    pens: Array.from({ length: START_PENS }, () => ({ a: "" })),
+    barn: {}, decor: [], created: Date.now(),
+  };
+}
+// Firebase drops empty arrays/objects and may turn arrays into objects: tidy what we read.
+function fixFarm(f, id) {
+  if (!f) return newFarm(id);
+  const arr = v => Array.isArray(v) ? v : v ? Object.keys(v).sort((a, b) => a - b).map(k => v[k]) : [];
+  f.plots = arr(f.plots).map(p => p || { c: "" });
+  f.pens = arr(f.pens).map(p => p || { a: "" });
+  f.decor = arr(f.decor);
+  f.barn = f.barn || {};
+  f.inbox = f.inbox || {};
+  f.coins = f.coins || 0; f.xp = f.xp || 0; f.helped = f.helped || 0;
+  if (!f.plots.length) f.plots = newFarm(id).plots;
+  if (!f.pens.length) f.pens = newFarm(id).pens;
+  return f;
+}
+
+// ---------------- crop growth ----------------
+// plot: { c: cropId, g: grown ms, t: last update ts, w: has water }
+// A crop needs water when planted, and long crops (>= 60 s) get thirsty again at half way.
+// Growth stops while thirsty, so a friend's watering really helps.
+function cropInfo(p, now) {
+  const crop = byId(CROPS, p.c);
+  if (!crop) return null;
+  const total = crop.time * 1000, half = crop.time >= 60 ? total / 2 : null;
+  let g = p.g || 0, w = !!p.w;
+  if (w) {
+    const stop = half !== null && g < half ? half : total;
+    g = Math.min(stop, g + Math.max(0, now - (p.t || now)));
+    if (g >= stop && stop === half) w = false;
+  }
+  const ready = g >= total;
+  return { crop, g, w, ready, thirsty: !ready && !w, frac: g / total, left: Math.max(0, total - g) };
+}
+function settle(p, now) {          // write the computed growth back into the plot
+  const i = cropInfo(p, now);
+  if (!i) return;
+  p.g = i.g; p.w = i.w; p.t = now;
+}
+function animalInfo(pen, now) {
+  const an = byId(ANIMALS, pen.a);
+  if (!an) return null;
+  if (!pen.f) return { an, hungry: true };
+  const left = pen.f + an.time * 1000 - now;
+  return { an, hungry: false, ready: left <= 0, left: Math.max(0, left), frac: 1 - Math.max(0, left) / (an.time * 1000) };
+}
+const fmt = ms => { const s = Math.ceil(ms / 1000); return s < 60 ? s + "s" : Math.floor(s / 60) + "m " + String(s % 60).padStart(2, "0") + "s"; };
+
+// ---------------- storage ----------------
+const ROOT = "sunnyfarm";
+const LocalStore = {
+  key: "sunnyfarm:v1", online: false, label: "Saved on this iPad",
+  read() { try { return JSON.parse(localStorage.getItem(this.key)) || {}; } catch (e) { return {}; } },
+  write(all) { try { localStorage.setItem(this.key, JSON.stringify(all)); } catch (e) {} },
+  start(onData) {
+    this.onData = onData;
+    onData(this.read());
+    window.addEventListener("storage", e => { if (e.key === this.key) onData(this.read()); });
+  },
+  saveFarm(id, farm) { const all = this.read(); all[id] = farm; this.write(all); },
+  patch(id, path, val) {      // path like "plots/3"
+    const all = this.read(); all[id] = fixFarm(all[id], id);
+    const keys = path.split("/"); let o = all[id];
+    keys.slice(0, -1).forEach(k => { o[k] = o[k] || {}; o = o[k]; });
+    if (val === null) delete o[keys[keys.length - 1]]; else o[keys[keys.length - 1]] = val;
+    this.write(all); this.onData(all);
+  },
+  push(id, path, val) { this.patch(id, path + "/" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), val); },
+};
+const FireStore = {
+  online: true, label: "Online",
+  start(onData) {
+    firebase.initializeApp(window.FARM_FIREBASE);
+    this.db = firebase.database();
+    this.ref = this.db.ref(ROOT + "/farms");
+    this.ref.on("value", s => onData(s.val() || {}), err => toast("Can't reach the farm server: " + err.message));
+    this.db.ref(".info/connected").on("value", s => { this.label = s.val() ? "Online" : "Offline, will sync"; renderNet(); });
+  },
+  saveFarm(id, farm) { const f = Object.assign({}, farm); delete f.inbox; this.ref.child(id).update(f); },
+  patch(id, path, val) { this.ref.child(id + "/" + path).set(val); },
+  push(id, path, val) { this.ref.child(id + "/" + path).push(val); },
+};
+function loadScript(src) {
+  return new Promise((ok, bad) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s); });
+}
+
+// ---------------- state ----------------
+let Store = LocalStore;
+let farms = {};                 // id -> farm (as last read)
+let me = null;                  // player id playing on this iPad
+let viewing = null;             // farm id on screen (me, or a friend when visiting)
+let modalFn = null;             // re-render function of the open modal
+
+function onData(all) {
+  PLAYER_IDS.forEach(id => { farms[id] = fixFarm(all[id], id); });
+  if (all && me && !all[me]) Store.saveFarm(me, farms[me]);
+  render();
+  if (modalFn) modalFn();
+}
+const mine = () => farms[me];
+function save() { Store.saveFarm(me, mine()); }
+
+// ---------------- helpers ----------------
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let toastT;
+function toast(msg) {
+  document.querySelectorAll(".toast").forEach(t => t.remove());
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t);
+  clearTimeout(toastT); toastT = setTimeout(() => t.remove(), 2600);
+}
+function fly(text, ev) {
+  const x = ev && ev.clientX != null ? ev.clientX : innerWidth / 2, y = ev && ev.clientY != null ? ev.clientY : innerHeight / 2;
+  const f = document.createElement("div"); f.className = "fly"; f.textContent = text;
+  f.style.left = (x - 20) + "px"; f.style.top = (y - 30) + "px"; document.body.appendChild(f);
+  setTimeout(() => f.remove(), 1000);
+}
+function confetti() {
+  const em = ["🎉", "⭐", "🌟", "🍀", "🌼", "✨"];
+  for (let i = 0; i < 26; i++) {
+    const c = document.createElement("div"); c.className = "confetti"; c.textContent = em[i % em.length];
+    c.style.left = Math.random() * 100 + "vw"; c.style.animationDelay = Math.random() * .6 + "s";
+    document.body.appendChild(c); setTimeout(() => c.remove(), 3000);
+  }
+}
+let actx;
+function beep(kind) {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const notes = { plant: [520], water: [700, 900], harvest: [660, 880, 1040], coin: [990, 1320], level: [523, 659, 784, 1046], no: [220] }[kind] || [600];
+    notes.forEach((f, i) => {
+      const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + i * .08;
+      o.type = kind === "no" ? "square" : "triangle"; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.18, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + .16);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t + .18);
+    });
+  } catch (e) {}
+}
+function gainXP(n) {
+  const f = mine(), before = levelOf(f.xp);
+  f.xp += n;
+  const after = levelOf(f.xp);
+  if (after > before) {
+    const bonus = 10 * after; f.coins += bonus;
+    setTimeout(() => { beep("level"); confetti(); toast(`Level ${after}! +${bonus} coins 🎉 ${unlocksAt(after)}`); }, 250);
+  }
+}
+function unlocksAt(L) {
+  const n = [...CROPS.filter(c => c.lvl === L), ...ANIMALS.filter(a => a.lvl === L)].map(x => x.em + " " + x.name);
+  return n.length ? "New: " + n.join(", ") : "";
+}
+function spend(n) {
+  const f = mine();
+  if (f.coins < n) { beep("no"); toast(`Not enough coins. You need ${n} 🪙`); return false; }
+  f.coins -= n; return true;
+}
+const addBarn = (f, item, n = 1) => { f.barn[item] = (f.barn[item] || 0) + n; };
+const barnCount = f => Object.values(f.barn || {}).reduce((a, b) => a + b, 0);
+const inboxList = f => Object.entries(f.inbox || {}).sort((a, b) => (a[1].ts || 0) - (b[1].ts || 0));
+
+// ---------------- main render ----------------
+function render() {
+  const app = $("#app");
+  if (!me) { app.innerHTML = startScreen(); return; }
+  const f = farms[viewing], my = mine(), visiting = viewing !== me;
+  const L = levelOf(f.xp), xpA = xpFor(L), xpB = xpFor(L + 1);
+  const now = Date.now();
+  const inbox = inboxList(my).length;
+  app.innerHTML = `
+    <div class="top">
+      <div class="who"><div class="av">${esc(my.av)}</div>
+        <div><div class="nm">${esc(my.name)}</div>
+          <div class="lvl">Lv ${levelOf(my.xp)} <span class="xpbar"><i style="width:${Math.round((my.xp - xpFor(levelOf(my.xp))) / (xpFor(levelOf(my.xp) + 1) - xpFor(levelOf(my.xp))) * 100)}%"></i></span></div></div></div>
+      <div class="pill">🪙 ${my.coins}</div>
+      <div class="spacer"></div>
+      <button class="tbtn" data-act="barn"><b>🧺</b>Barn</button>
+      <button class="tbtn" data-act="shop"><b>🛒</b>Shop</button>
+      <button class="tbtn" data-act="friends"><b>👫</b>Friends</button>
+      <button class="tbtn" data-act="mail"><b>📬</b>Mail${inbox ? `<span class="badge">${inbox}</span>` : ""}</button>
+      <button class="tbtn" data-act="switch"><b>🔁</b>Switch</button>
+      <div class="net" id="net">${esc(Store.label)}</div>
+    </div>
+    ${visiting ? `<div class="visit"><div class="t">${esc(f.av)} You're visiting <b>${esc(f.name)}</b>'s farm · Lv ${L}<br><small style="font-family:var(--body);font-size:14px">Tap a 💧 thirsty plant to help. Tap a ✨ ready one to sneak a pick 🤭</small></div>
+      <button class="btn" data-act="gift">🎁 Send a gift</button><button class="btn g" data-act="home">🏠 Back home</button></div>` : ""}
+    <div class="decor">${(f.decor || []).map(d => { const x = byId(DECOR, d); return x ? `<span>${x.em}</span>` : ""; }).join("")}</div>
+    <div class="farm">
+      <section class="area"><div class="house">${houseOf(L)}</div>
+        <h2>🌾 ${visiting ? esc(f.name) + "'s fields" : "My fields"}</h2>
+        <div class="plots">${f.plots.map((p, i) => plotHTML(p, i, now, visiting)).join("")}${!visiting && f.plots.length < MAX_PLOTS ? `<button class="plot locked" data-act="buyplot"><span><b>➕</b>New plot<br>🪙 ${PLOT_COST[f.plots.length - START_PLOTS]}</span></button>` : ""}</div>
+      </section>
+      <section class="area">
+        <h2>🐾 ${visiting ? "Animals" : "My animals"}</h2>
+        <div class="pens">${f.pens.map((p, i) => penHTML(p, i, now, visiting)).join("")}${!visiting && f.pens.length < MAX_PENS ? `<button class="pen empty" data-act="buypen"><span><b>➕</b>New pen<br>🪙 ${PEN_COST[f.pens.length - START_PENS]}</span></button>` : ""}</div>
+        ${!visiting ? `<p style="font-size:13px;color:#2f5a1c;margin:10px 4px 0">Feeding uses 1 🌽 corn from your barn, or ${FEED_COINS} coins if you have none.</p>` : ""}
+      </section>
+    </div>`;
+  lastSig = signature();
+}
+function plotHTML(p, i, now, visiting) {
+  const info = cropInfo(p, now);
+  if (!info) return `<button class="plot" data-plot="${i}">${visiting ? "" : `<span class="plus">＋</span>`}</button>`;
+  const stage = info.ready ? 2 : info.frac < .45 ? 0 : 1;
+  const em = stage === 0 ? "🌱" : stage === 1 && info.crop.time >= 40 ? "🌿" : info.crop.em;
+  let foot;
+  if (info.ready) foot = `<span class="tag">Harvest!</span>`;
+  else if (info.thirsty) foot = `<span class="tag thirsty">💧 Water me</span>`;
+  else foot = `<span class="prog"><i data-prog="${i}" style="width:${Math.round(info.frac * 100)}%"></i></span>`;
+  return `<button class="plot ${info.ready ? "ready" : ""} ${info.w ? "wet" : ""}" data-plot="${i}">
+    ${info.w && !info.ready ? `<span class="drop">💧</span>` : ""}<span class="em s${stage}">${em}</span>${foot}</button>`;
+}
+function penHTML(p, i, now, visiting) {
+  const info = animalInfo(p, now);
+  if (!info) return visiting ? `<div class="pen empty"></div>` : `<button class="pen empty" data-pen="${i}"><span><b>🐣</b>Empty pen<br>Tap to buy</span></button>`;
+  const prod = PRODUCTS[info.an.prod];
+  let cls = "pen", top = "", foot;
+  if (info.hungry) { cls += " hungry"; foot = `<span class="tag thirsty">🌽 Feed me</span>`; }
+  else if (info.ready) { cls += " ready"; top = `<span class="prod">${prod.em}</span>`; foot = `<span class="tag">Collect!</span>`; }
+  else { cls += " busy"; foot = `<span class="prog"><i style="width:${Math.round(info.frac * 100)}%"></i></span>`; }
+  return `<button class="${cls}" data-pen="${i}">${top}<span class="em">${info.an.em}</span>${foot}</button>`;
+}
+function renderNet() { const n = $("#net"); if (n) n.textContent = Store.label; }
+
+// Cheap tick: re-render only when some plot/pen changes state, otherwise just move progress bars.
+let lastSig = "";
+function signature() {
+  const f = farms[viewing]; if (!f) return "";
+  const now = Date.now();
+  return f.plots.map(p => { const i = cropInfo(p, now); return i ? (i.ready ? "R" : i.thirsty ? "T" : i.frac < .45 ? "0" : "1") : "-"; }).join("") + "|" +
+    f.pens.map(p => { const i = animalInfo(p, now); return i ? (i.hungry ? "H" : i.ready ? "R" : "B") : "-"; }).join("");
+}
+setInterval(() => {
+  if (!me || !farms[viewing]) return;
+  if (signature() !== lastSig) { render(); return; }
+  const now = Date.now();
+  document.querySelectorAll("[data-prog]").forEach(el => {
+    const info = cropInfo(farms[viewing].plots[+el.dataset.prog], now);
+    if (info) el.style.width = Math.round(info.frac * 100) + "%";
+  });
+  document.querySelectorAll(".pen.busy .prog i").forEach((el, k) => {
+    const pens = farms[viewing].pens.map(p => animalInfo(p, now)).filter(x => x && !x.hungry && !x.ready);
+    if (pens[k]) el.style.width = Math.round(pens[k].frac * 100) + "%";
+  });
+}, 500);
+
+// ---------------- start screen ----------------
+function startScreen() {
+  return `<div class="start">
+    <div class="logo">🌻 Sunny Farm<small>Who's playing?</small></div>
+    <div class="players">${PLAYER_IDS.map(id => { const f = farms[id] || newFarm(id); return `
+      <button class="pcard" data-pick="${id}"><div class="av">${esc(f.av)}</div><div class="nm">${esc(f.name)}</div>
+      <div class="d">Lv ${levelOf(f.xp)} · 🪙 ${f.coins}</div></button>`; }).join("")}</div>
+    <button class="btn s" data-act="settings">⚙️ Names & settings</button>
+    <p style="font-size:13px;color:#2f5a1c;margin-top:18px">${esc(Store.label)}</p>
+  </div>`;
+}
+
+// ---------------- actions ----------------
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("button"); if (!t) return;
+  if (t.dataset.pick) { me = viewing = t.dataset.pick; try { localStorage.setItem("sunnyfarm:me", me); } catch (e) {} if (!farms[me].created) save(); render(); return; }
+  if (t.dataset.plot != null) return tapPlot(+t.dataset.plot, ev);
+  if (t.dataset.pen != null) return tapPen(+t.dataset.pen, ev);
+  const a = t.dataset.act;
+  if (!a) return;
+  ({
+    barn: openBarn, shop: () => openShop("seeds"), friends: openFriends, mail: openMail, settings: openSettings,
+    switch: () => { me = viewing = null; try { localStorage.removeItem("sunnyfarm:me"); } catch (e) {} closeModal(); render(); },
+    home: () => { viewing = me; render(); window.scrollTo(0, 0); },
+    gift: () => openGift(viewing),
+    buyplot: buyPlot, buypen: buyPen, close: closeModal,
+  }[a] || (() => {}))(ev, t);
+});
+
+function tapPlot(i, ev) {
+  const now = Date.now();
+  if (viewing !== me) return helpWater(viewing, i, ev);
+  const f = mine(), p = f.plots[i], info = cropInfo(p, now);
+  if (!info) return openSeeds(i);
+  if (info.ready) {
+    f.plots[i] = { c: "" }; addBarn(f, info.crop.id); gainXP(info.crop.xp);
+    beep("harvest"); fly(`${info.crop.em} +1  ⭐+${info.crop.xp}`, ev); save(); render(); return;
+  }
+  if (info.thirsty) {
+    settle(p, now); p.w = true; p.t = now;
+    beep("water"); fly("💧", ev); save(); render(); return;
+  }
+  toast(`${info.crop.em} ${info.crop.name}: ${fmt(info.left)} to go`);
+}
+function helpWater(id, i, ev) {
+  const f = farms[id], p = f.plots[i], now = Date.now(), info = cropInfo(p, now);
+  if (!info) return toast("This plot is empty.");
+  if (info.ready) return trySteal(id, i, info, ev);
+  if (!info.thirsty) return toast("This plant has water already 💧");
+  Store.patch(id, "plots/" + i, { c: p.c, g: info.g, w: true, t: now });   // only touch that one plot
+  const my = mine(); my.coins += HELP_COINS; my.helped = (my.helped || 0) + 1; gainXP(HELP_XP); save();
+  beep("water"); fly(`💧 Thanks! 🪙+${HELP_COINS}`, ev);
+}
+// Picking from a friend's farm: max STEAL_MAX per friend per day. A farm dog may catch you.
+const STEAL_MAX = 2, CAUGHT_FINE = 5;
+const today = () => new Date().toDateString();
+function trySteal(id, i, info, ev) {
+  const my = mine(), f = farms[id];
+  if (!my.steals || my.steals.d !== today()) my.steals = { d: today(), n: {} };
+  const used = my.steals.n[id] || 0;
+  if (used >= STEAL_MAX) { beep("no"); return toast(`You already picked ${STEAL_MAX} times from ${f.name} today. Be nice! 😇`); }
+  my.steals.n[id] = used + 1;
+  if (f.decor.includes("dog") && Math.random() < .5) {
+    const fine = Math.min(CAUGHT_FINE, my.coins); my.coins -= fine; save();
+    Store.push(id, "inbox", { from: me, kind: "caught", item: info.crop.id, coins: fine, ts: Date.now() });
+    beep("no"); fly("🐕 WOOF!", ev); toast(`🐕 ${f.name}'s dog caught you! You paid ${fine} coins.`); render(); return;
+  }
+  addBarn(my, info.crop.id); gainXP(1); save();
+  Store.patch(id, "plots/" + i, { c: "" });
+  Store.push(id, "inbox", { from: me, kind: "stolen", item: info.crop.id, ts: Date.now() });
+  beep("harvest"); fly(`🤭 ${info.crop.em} +1`, ev);
+}
+function tapPen(i, ev) {
+  if (viewing !== me) return;
+  const f = mine(), pen = f.pens[i], now = Date.now(), info = animalInfo(pen, now);
+  if (!info) return openShop("animals", i);
+  if (info.hungry) {
+    if (f.barn.corn > 0) { f.barn.corn--; if (!f.barn.corn) delete f.barn.corn; fly("🌽 Yum!", ev); }
+    else { if (!spend(FEED_COINS)) return; fly(`🪙 -${FEED_COINS}  Yum!`, ev); }
+    pen.f = now; beep("plant"); save(); render(); return;
+  }
+  if (info.ready) {
+    const prod = PRODUCTS[info.an.prod]; pen.f = 0; addBarn(f, info.an.prod); gainXP(info.an.xp);
+    beep("harvest"); fly(`${prod.em} +1  ⭐+${info.an.xp}`, ev); save(); render(); return;
+  }
+  toast(`${info.an.em} ${info.an.name}: ${fmt(info.left)} until ${PRODUCTS[info.an.prod].name.toLowerCase()}`);
+}
+function buyPlot(ev) {
+  const f = mine(), cost = PLOT_COST[f.plots.length - START_PLOTS];
+  if (!spend(cost)) return;
+  f.plots.push({ c: "" }); beep("coin"); fly("New plot!", ev); save(); render();
+}
+function buyPen(ev) {
+  const f = mine(), cost = PEN_COST[f.pens.length - START_PENS];
+  if (!spend(cost)) return;
+  f.pens.push({ a: "" }); beep("coin"); fly("New pen!", ev); save(); render();
+}
+
+// ---------------- modals ----------------
+function openModal(fn) { modalFn = fn; fn(); }
+function closeModal() { modalFn = null; $("#modal").innerHTML = ""; }
+function sheet(title, sub, body) {
+  $("#modal").innerHTML = `<div class="veil" data-veil><div class="sheet"><button class="x" data-act="close">✕</button>
+    <h2>${title}</h2>${sub ? `<div class="sub">${sub}</div>` : ""}${body}</div></div>`;
+}
+document.getElementById("modal").addEventListener("click", e => { if (e.target.dataset.veil != null) closeModal(); });
+
+function openSeeds(i) {
+  openModal(() => {
+    const f = mine(), L = levelOf(f.xp);
+    sheet("🌱 Plant a seed", `You have 🪙 ${f.coins}. Plant, water, wait, harvest!`,
+      `<div class="grid">${CROPS.map(c => {
+        const lock = c.lvl > L, poor = c.cost > f.coins;
+        return `<button class="card ${lock || poor ? "off" : ""}" data-seed="${c.id}" ${lock ? "disabled" : ""}>
+          <div class="ic">${lock ? "🔒" : c.em}</div><div class="n">${c.name}</div>
+          <div class="d">${lock ? "Level " + c.lvl : `🪙 ${c.cost} · ⏱ ${fmt(c.time * 1000)}<br>Sells for ${c.sell}`}</div></button>`;
+      }).join("")}</div>`);
+    document.querySelectorAll("[data-seed]").forEach(b => b.onclick = ev => {
+      const c = byId(CROPS, b.dataset.seed);
+      if (!spend(c.cost)) return;
+      f.plots[i] = { c: c.id, g: 0, t: Date.now(), w: false };
+      closeModal(); beep("plant"); save(); render();
+      toast(`${c.em} Planted! Now tap it to water 💧`);
+    });
+  });
+}
+function openBarn() {
+  openModal(() => {
+    const f = mine(), items = Object.entries(f.barn).filter(([, n]) => n > 0);
+    sheet("🧺 My barn", items.length ? "Sell things for coins, or keep them to send as gifts." : "",
+      items.length ? `<div class="list">${items.map(([k, n]) => { const it = ALL_ITEMS[k]; if (!it) return "";
+        return `<div class="li"><div class="ic">${it.em}</div><div class="grow"><div class="n">${it.name} × ${n}</div><div class="d">🪙 ${it.sell} each</div></div>
+          <button class="btn g sm" data-sell="${k}" data-n="1">Sell 1</button><button class="btn sm" data-sell="${k}" data-n="${n}">Sell all · ${it.sell * n}</button></div>`; }).join("")}</div>`
+      : `<div class="empty-note">Your barn is empty.<br>Harvest crops and collect from animals to fill it!</div>`);
+    document.querySelectorAll("[data-sell]").forEach(b => b.onclick = ev => {
+      const k = b.dataset.sell, n = Math.min(+b.dataset.n, f.barn[k] || 0), it = ALL_ITEMS[k];
+      if (!n) return;
+      f.barn[k] -= n; if (!f.barn[k]) delete f.barn[k]; f.coins += it.sell * n;
+      beep("coin"); fly(`🪙 +${it.sell * n}`, ev); save(); render(); modalFn();
+    });
+  });
+}
+let shopTab = "seeds";
+function openShop(tab, penIndex) {
+  shopTab = tab || shopTab;
+  openModal(() => {
+    const f = mine(), L = levelOf(f.xp);
+    const tabs = `<div class="tabs">${[["seeds", "🌱 Seeds"], ["animals", "🐾 Animals"], ["decor", "🌳 Decorations"]].map(([k, l]) =>
+      `<button class="${shopTab === k ? "on" : ""}" data-tab="${k}">${l}</button>`).join("")}</div>`;
+    let body = "";
+    if (shopTab === "seeds") body = `<p class="sub">Tap an empty plot on your farm to plant. Here is what you can grow:</p><div class="grid">${CROPS.map(c =>
+      `<div class="card ${c.lvl > L ? "off" : ""}"><div class="ic">${c.lvl > L ? "🔒" : c.em}</div><div class="n">${c.name}</div><div class="d">${c.lvl > L ? "Level " + c.lvl : `Seed 🪙 ${c.cost} · ⏱ ${fmt(c.time * 1000)}<br>Sells for ${c.sell}`}</div></div>`).join("")}</div>`;
+    if (shopTab === "animals") {
+      const free = f.pens.findIndex(p => !p.a);
+      body = `<p class="sub">${free < 0 ? "All your pens are full. Buy a new pen on your farm first." : "Your new animal goes into an empty pen."}</p><div class="grid">${ANIMALS.map(a => {
+        const lock = a.lvl > L, pr = PRODUCTS[a.prod];
+        return `<button class="card ${lock || a.cost > f.coins || free < 0 ? "off" : ""}" data-animal="${a.id}" ${lock || free < 0 ? "disabled" : ""}>
+          <div class="ic">${lock ? "🔒" : a.em}</div><div class="n">${a.name}</div>
+          <div class="d">${lock ? "Level " + a.lvl : `🪙 ${a.cost}<br>Gives ${pr.em} every ${fmt(a.time * 1000)}`}</div></button>`; }).join("")}</div>`;
+    }
+    if (shopTab === "decor") body = `<p class="sub">Make your farm pretty! Friends see it when they visit.</p><div class="grid">${DECOR.map(d =>
+      `<button class="card ${d.cost > f.coins ? "off" : ""}" data-decor="${d.id}"><div class="ic">${d.em}</div><div class="n">${d.name}</div><div class="d">🪙 ${d.cost}${f.decor.includes(d.id) ? " · ✅ owned" : ""}</div></button>`).join("")}</div>`;
+    sheet("🛒 Shop", `You have 🪙 ${f.coins}`, tabs + body);
+    document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { shopTab = b.dataset.tab; modalFn(); });
+    document.querySelectorAll("[data-animal]").forEach(b => b.onclick = ev => {
+      const a = byId(ANIMALS, b.dataset.animal);
+      let slot = penIndex != null && !f.pens[penIndex].a ? penIndex : f.pens.findIndex(p => !p.a);
+      if (slot < 0 || !spend(a.cost)) return;
+      f.pens[slot] = { a: a.id, f: 0 }; penIndex = null;
+      beep("coin"); closeModal(); save(); render(); toast(`${a.em} Welcome, ${a.name}! Tap it to feed 🌽`);
+    });
+    document.querySelectorAll("[data-decor]").forEach(b => b.onclick = ev => {
+      const d = byId(DECOR, b.dataset.decor);
+      if (f.decor.length >= 24) return toast("Your farm is full of decorations!");
+      if (!spend(d.cost)) return;
+      f.decor.push(d.id); beep("coin"); fly(d.em, ev); save(); render(); modalFn();
+    });
+  });
+}
+function openFriends() {
+  openModal(() => {
+    const now = Date.now();
+    const rows = PLAYER_IDS.map(id => ({ id, f: farms[id] })).sort((a, b) => b.f.xp - a.f.xp);
+    sheet("👫 Friends' farms", "Visit a farm to water plants and send gifts.",
+      `<div class="list">${rows.map(({ id, f }, k) => {
+        const thirsty = f.plots.filter(p => { const i = cropInfo(p, now); return i && i.thirsty; }).length;
+        return `<div class="li"><div class="ic">${k === 0 ? "🏆" : esc(f.av)}</div>
+          <div class="grow"><div class="n">${esc(f.av)} ${esc(f.name)}${id === me ? " (you)" : ""}</div>
+          <div class="d">Lv ${levelOf(f.xp)} · ${f.plots.length} plots · ${f.pens.filter(p => p.a).length} animals · helped ${f.helped || 0}×${thirsty && id !== me ? ` · 💧 ${thirsty} thirsty` : ""}</div></div>
+          ${id === me ? "" : `<button class="btn b sm" data-visit="${id}">Visit</button>`}</div>`; }).join("")}</div>`);
+    document.querySelectorAll("[data-visit]").forEach(b => b.onclick = () => { viewing = b.dataset.visit; closeModal(); render(); window.scrollTo(0, 0); });
+  });
+}
+function openGift(to) {
+  openModal(() => {
+    const f = mine(), t = farms[to], items = Object.entries(f.barn).filter(([, n]) => n > 0);
+    sheet(`🎁 Gift for ${esc(t.name)}`, "Tap something from your barn to send 1. It goes to their 📬 mail.",
+      items.length ? `<div class="grid">${items.map(([k, n]) => { const it = ALL_ITEMS[k]; return it ? `<button class="card" data-give="${k}"><div class="ic">${it.em}</div><div class="n">${it.name}</div><div class="d">You have ${n}</div></button>` : ""; }).join("")}</div>`
+      : `<div class="empty-note">Your barn is empty. Harvest something first!</div>`);
+    document.querySelectorAll("[data-give]").forEach(b => b.onclick = ev => {
+      const k = b.dataset.give; if (!f.barn[k]) return;
+      f.barn[k]--; if (!f.barn[k]) delete f.barn[k];
+      gainXP(1); save();
+      Store.push(to, "inbox", { from: me, item: k, n: 1, ts: Date.now() });
+      beep("coin"); fly(`${ALL_ITEMS[k].em} sent!`, ev); render(); modalFn();
+    });
+  });
+}
+function openMail() {
+  openModal(() => {
+    const f = mine(), list = inboxList(f);
+    sheet("📬 Mail", list.length ? "Gifts from your friends!" : "",
+      list.length ? `<div class="list">${list.map(([key, g]) => { const it = ALL_ITEMS[g.item], from = farms[g.from] || { name: "A friend", av: "🎁" };
+        if (!it) return "";
+        const who = `${esc(from.av)} ${esc(from.name)}`;
+        if (g.kind === "stolen") return `<div class="li"><div class="ic">🤭</div><div class="grow"><div class="n">${who} picked your ${it.em} ${it.name}!</div><div class="d">Get a 🐕 farm dog in the Shop to guard your fields.</div></div><button class="btn s sm" data-take="${key}">OK</button></div>`;
+        if (g.kind === "caught") return `<div class="li"><div class="ic">🐕</div><div class="grow"><div class="n">Your dog caught ${who}!</div><div class="d">They tried to pick your ${it.em}. You get 🪙 ${g.coins || 0}.</div></div><button class="btn g sm" data-take="${key}">Take</button></div>`;
+        return `<div class="li"><div class="ic">${it.em}</div><div class="grow"><div class="n">${it.name} × ${g.n || 1}</div><div class="d">From ${who}</div></div>
+        <button class="btn g sm" data-take="${key}">Take</button></div>`; }).join("")}</div>
+        <div class="row" style="margin-top:12px;justify-content:flex-end"><button class="btn g" data-takeall>Take all</button></div>`
+      : `<div class="empty-note">No mail yet. Visit friends and send them gifts — they might send some back!</div>`);
+    const take = keys => {
+      keys.forEach(k => { const g = f.inbox[k]; if (!g) return;
+        if (g.kind === "caught") f.coins += g.coins || 0;
+        else if (g.kind !== "stolen" && ALL_ITEMS[g.item]) addBarn(f, g.item, g.n || 1);
+        delete f.inbox[k]; });
+      save();                                   // save first: a patch reloads farms from storage
+      keys.forEach(k => Store.patch(me, "inbox/" + k, null));
+      beep("harvest"); render(); modalFn();
+    };
+    document.querySelectorAll("[data-take]").forEach(b => b.onclick = () => take([b.dataset.take]));
+    const all = document.querySelector("[data-takeall]"); if (all) all.onclick = () => take(list.map(([k]) => k));
+  });
+}
+function openSettings() {
+  let edit = PLAYER_IDS[0];
+  openModal(() => {
+    const f = farms[edit];
+    sheet("⚙️ Names & settings", "Each player picks a name and an animal.",
+      `<div class="tabs">${PLAYER_IDS.map(id => `<button class="${id === edit ? "on" : ""}" data-ed="${id}">${esc(farms[id].av)} ${esc(farms[id].name)}</button>`).join("")}</div>
+      <input type="text" id="nm" maxlength="14" value="${esc(f.name)}">
+      <div class="avs">${AVATARS.map(a => `<button class="${a === f.av ? "on" : ""}" data-av="${a}">${a}</button>`).join("")}</div>
+      <div class="row" style="margin-top:14px"><button class="btn g" data-savename>Save</button></div>
+      <hr style="border:0;border-top:3px dashed var(--line);margin:20px 0">
+      <div class="sub">Start this farm again from zero. Type RESET to confirm.</div>
+      <div class="row"><input type="text" id="rs" placeholder="RESET" style="max-width:160px"><button class="btn sm" style="background:var(--bad);box-shadow:0 3px 0 #94142b" data-reset>Reset ${esc(f.name)}'s farm</button></div>
+      <p class="sub" style="margin-top:18px">${esc(Store.label)}${Store.online ? "" : " · Farms are not shared with other iPads yet."}</p>`);
+    let av = f.av;
+    document.querySelectorAll("[data-ed]").forEach(b => b.onclick = () => { edit = b.dataset.ed; modalFn(); });
+    document.querySelectorAll("[data-av]").forEach(b => b.onclick = () => { av = b.dataset.av; document.querySelectorAll("[data-av]").forEach(x => x.classList.toggle("on", x === b)); });
+    document.querySelector("[data-savename]").onclick = () => {
+      const nm = $("#nm").value.trim().slice(0, 14) || DEFAULT_PLAYERS[edit].name;
+      Store.patch(edit, "name", nm); Store.patch(edit, "av", av);
+      farms[edit].name = nm; farms[edit].av = av; toast("Saved ✅"); render(); modalFn();
+    };
+    document.querySelector("[data-reset]").onclick = () => {
+      if ($("#rs").value.trim().toUpperCase() !== "RESET") return toast("Type RESET first");
+      const fresh = newFarm(edit); fresh.name = farms[edit].name; fresh.av = farms[edit].av;
+      farms[edit] = fresh; Store.saveFarm(edit, fresh); Store.patch(edit, "inbox", null); toast("Farm reset"); render(); modalFn();
+    };
+  });
+}
+
+// ---------------- boot ----------------
+(async function boot() {
+  try { me = localStorage.getItem("sunnyfarm:me"); } catch (e) {}
+  if (me && !PLAYER_IDS.includes(me)) me = null;
+  viewing = me;
+  if (window.FARM_FIREBASE && window.FARM_FIREBASE.apiKey) {
+    try {
+      await loadScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js");
+      await loadScript("https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js");
+      Store = FireStore;
+    } catch (e) { toast("Offline: playing on this iPad only"); }
+  }
+  PLAYER_IDS.forEach(id => farms[id] = newFarm(id));
+  render();
+  Store.start(onData);
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>
