@@ -120,7 +120,8 @@ dialog textarea { width: 100%; min-height: 160px; font: 13px/1.4 ui-monospace, M
     <div><h1>Kho game</h1><p>Chọn game, chọn bộ câu hỏi, rồi chơi trên màn hình lớn.</p></div>
     <a class="back" href="../">← App học</a>
   </div>
-  <nav>
+  <!-- Mục Duyệt + Chìa khoá ẩn từ 26/11 (Claude tự duyệt). Mở lại bằng link có đuôi #duyet -->
+  <nav id="mainNav" hidden>
     <button data-tab="play" aria-pressed="true">Chơi</button>
     <button data-tab="review">Duyệt<span class="badge" id="pendingBadge" hidden>0</span></button>
     <button data-tab="key">Chìa khoá</button>
@@ -325,7 +326,7 @@ function renderGames() {
   $("setRows").innerHTML =
     (builtin.length ? `<div class="grp">Có sẵn trong game</div>` + builtin.map((b) => `<div class="row"><div class="grow"><b><span class="tag builtin">có sẵn</span>${esc(b.title)}</b><small>${esc(b.note)}</small></div><a class="btn alt" href="${b.url}">Chơi</a></div>`).join("") : "") +
     groupedRows(lib, (s) => `<div class="row"><div class="grow"><b>${esc(s.title)}</b><small>${esc(shortLine(s))}</small></div><a class="btn" href="${g.url(s.id)}">Chơi</a></div>`) +
-    (!all.length ? `<div class="empty">Kho chưa có bộ nào đã duyệt. Bộ mới Claude soạn nằm ở mục <b>Duyệt</b>; duyệt xong sẽ hiện ở đây.</div>` : !lib.length && !builtin.length ? noMatch : "");
+    (!all.length ? `<div class="empty">Kho chưa có bộ câu hỏi nào.</div>` : !lib.length && !builtin.length ? noMatch : "");
 }
 $("games").onclick = (e) => { const b = e.target.closest(".game"); if (!b || b.disabled) return; game = b.dataset.g; renderGames(); $("pickSet").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
 
@@ -571,6 +572,7 @@ $("keyDel").onclick = () => dialog(`<h3>Xoá chìa khoá khỏi máy này?</h3><
   [["Thôi", closeDlg, "alt"], ["Xoá", () => { ls.del(KEY); closeDlg(); renderKey(); }]]);
 
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+if (location.hash === "#duyet") $("mainNav").hidden = false;
 refresh();
 </script>
 </body>

@@ -462,6 +462,7 @@ details.custom code { background: var(--paper); padding: 1px 5px; border-radius:
     </div>
     <div class="result" id="qResult"></div>
     <div class="qfoot">
+      <button class="btn ghost small" id="qSwap">Different question</button>
       <button class="btn ghost small" id="qCancel">Back to map</button>
       <button class="btn steal" id="qSteal" hidden></button>
       <button class="btn" id="qNext" hidden>Next team ▶</button>
@@ -1137,7 +1138,7 @@ function openQuestion(id) {
   $("qChoices").innerHTML = Q.choices.map((c, i) =>
     `<button class="choice" data-i="${i}" style="--cc:${CC[i]}"><span class="k">${"ABCDE"[i]}</span><span class="ct">${Q.optPics && window.KHO ? KHO.optHTML(Q, c) : esc(c)}</span></button>`).join("");
   $("qResult").className = "result"; $("qResult").innerHTML = "";
-  $("qNext").hidden = true; $("qSteal").hidden = true; $("qCancel").hidden = false;
+  $("qNext").hidden = true; $("qSteal").hidden = true; $("qCancel").hidden = false; $("qSwap").hidden = false;
   $("qOverlay").classList.add("on");
   startTimer();
   setTimeout(() => $("qChoices").querySelector(".choice")?.focus({ preventScroll: true }), 50);
@@ -1197,7 +1198,7 @@ function answer(i) {
   r.className = "result on " + (good ? "good" : "bad");
   r.innerHTML = `<h3>${head}</h3>` + (canSteal || !Q.why ? "" : `<div class="why">${esc(Q.why)}</div>`) + (mini ? `<div class="mini">${mini}</div>` : "");
   if (good) { sfx("good"); confetti(60); } else sfx("bad");
-  $("qCancel").hidden = true;
+  $("qCancel").hidden = true; $("qSwap").hidden = true;
   const over = gameOverAfterThisTurn();
   $("qNext").textContent = canSteal ? "No steal, next team ▶" : over ? "See the winner 🏆" : "Next team ▶";
   $("qNext").hidden = false;
@@ -1228,6 +1229,7 @@ $("qNext").onclick = () => {
   $("qOverlay").classList.remove("on"); Q = null;
   endTurn();
 };
+$("qSwap").onclick = () => { if (Q && !Q.done) { clearInterval(timerId); openQuestion(Q.pl.id); } };
 $("qCancel").onclick = () => { clearInterval(timerId); Q = null; $("qOverlay").classList.remove("on"); };
 document.addEventListener("keydown", e => {
   if ($("intro").classList.contains("on")) {
