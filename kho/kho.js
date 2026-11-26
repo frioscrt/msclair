@@ -40,7 +40,7 @@
     : { t: "True", f: "False", match: (x) => `Which one goes with “${x}”?` };
 
   /* Đổi cả bộ thành câu trắc nghiệm (dạng mọi game đều chơi được).
-     Trả về [{ text, options, answer, explain, figure, optPics }]. Câu nào không đổi được thì bỏ.
+     Trả về [{ text, options, answer, explain, figure, optPics, kind }]. kind = dạng gốc của câu (mc, tf, fill, match). Câu nào không đổi được thì bỏ.
      optPics: { "chữ đáp án": "link ảnh" } khi câu trắc nghiệm có đáp án kèm hình (trường "pics"). */
   function toMC(set) {
     const W = words(set.lang), out = [];
@@ -51,7 +51,7 @@
       const wr = [...new Set(wrongs.map(String))].filter((w) => w && w !== String(right)).slice(0, 4);
       if (!text || right === undefined || right === "" || !wr.length) return;
       const options = shuffle([String(right), ...wr]);
-      const item = { text, options, answer: options.indexOf(String(right)), explain: why ? `${right}. ${why}` : String(right), figure: fig(q) };
+      const item = { text, options, answer: options.indexOf(String(right)), explain: why ? `${right}. ${why}` : String(right), figure: fig(q), kind: q.type };
       if (q.pics && typeof q.pics === "object") {
         const optPics = {};
         for (const o of options) if (q.pics[o]) optPics[o] = imgURL(q.pics[o]);
@@ -63,7 +63,7 @@
       if (q.type === "mc") add(q, q.q, q.a, q.w || [], q.explain);
       else if (q.type === "tf") {
         const options = [W.t, W.f], answer = q.a ? 0 : 1;
-        if (q.q) out.push({ text: q.q, options, answer, explain: options[answer] + (q.explain ? ". " + q.explain : ""), figure: fig(q), fixed: true });
+        if (q.q) out.push({ text: q.q, options, answer, explain: options[answer] + (q.explain ? ". " + q.explain : ""), figure: fig(q), fixed: true, kind: "tf" });
       } else if (q.type === "fill") {
         const pool = q.w && q.w.length ? q.w : shuffle(fillAnswers.filter((a) => a !== String(q.a))).slice(0, 3);
         add(q, q.q, q.a, pool, q.explain);

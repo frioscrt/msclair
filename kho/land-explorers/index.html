@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Land Explorers</title>
+<meta name="description" content="Classroom game: teams claim land on an island by answering questions. Plays any question set from the game library, or the built-in Grade 5 area and length units.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* One screen for a classroom TV. One light look (projectors wash out dark themes). */
+:root {
+  color-scheme: light;
+  --sea: #bfe9f2;
+  --sea-deep: #7fcfe0;
+  --sand: #f6e3b4;
+  --paper: #fffaf0;
+  --ink: #23324a;
+  --ink-soft: #5e6b80;
+  --line: #e6d7b0;
+  --card: #ffffff;
+  --accent: #ff7a3d;
+  --gold: #ffc93c;
+  --good: #17915f;
+  --bad: #d63650;
+  --display: "Fredoka", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: var(--body); font-weight: 700; font-size: 16px; color: var(--ink);
+  background: radial-gradient(circle at 20% 10%, #d8f4fa 0, var(--sea) 45%, var(--sea-deep) 100%);
+  min-height: 100vh; overflow-x: hidden;
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; text-wrap: balance; }
+button { font: inherit; cursor: pointer; border: 0; color: inherit; }
+button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
+.btn {
+  background: var(--accent); color: #fff; font-family: var(--display); font-weight: 600;
+  font-size: 1.25rem; padding: 12px 26px; border-radius: 16px; box-shadow: 0 5px 0 #c4501d;
+  transition: transform .08s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #c4501d; }
+.btn.ghost { background: #fff; color: var(--ink); box-shadow: 0 5px 0 #c9bfa5; }
+.btn.small { font-size: 1rem; padding: 8px 16px; border-radius: 12px; }
+.screen { display: none; min-height: 100vh; padding: 20px 16px; }
+.screen.on { display: block; }
+
+/* ---------- Setup ---------- */
+#setup .wrap { max-width: 880px; margin: 0 auto; }
+.hero { text-align: center; margin: 10px 0 18px; }
+.hero svg { width: min(440px, 100%); height: auto; }
+.hero h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); color: #10506a; letter-spacing: .02em; }
+.hero p { margin: 6px 0 0; font-size: 1.15rem; color: #2c5d70; }
+.card { background: var(--paper); border-radius: 22px; padding: 20px; box-shadow: 0 8px 0 rgba(16,80,106,.18); margin-bottom: 18px; }
+.card h3 { font-size: 1.35rem; margin-bottom: 12px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.pill {
+  background: #fff; border: 3px solid var(--line); border-radius: 999px; padding: 8px 18px;
+  font-weight: 800; font-size: 1.05rem;
+}
+.pill[aria-pressed="true"] { border-color: var(--accent); background: #fff0e6; color: #b2440f; }
+.teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 12px; }
+.teams label { display: flex; align-items: center; gap: 8px; background: #fff; border-radius: 14px; padding: 8px 10px; border: 3px solid var(--tc); }
+.teams .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--tc); flex: none; }
+.teams input { border: 0; font: inherit; font-size: 1.1rem; width: 100%; min-width: 0; background: transparent; color: var(--ink); }
+.teams input:focus { outline: none; }
+.start-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 6px 0 30px; }
+.start-row .btn { font-size: 1.5rem; padding: 14px 36px; }
+
+/* ---------- Game ---------- */
+#game { padding: 12px 16px; }
+.topbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.topbar h2 { font-size: 1.7rem; color: #10506a; margin-right: auto; }
+.layout { display: grid; grid-template-columns: 1fr 280px; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+.island {
+  background: var(--sand); border-radius: 40px; padding: 18px;
+  box-shadow: 0 0 0 10px #f9edcd, 0 0 0 18px rgba(255,255,255,.35), 0 14px 30px rgba(16,80,106,.25);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+}
+@media (max-width: 640px) { .island { grid-template-columns: repeat(2, 1fr); border-radius: 26px; padding: 12px; gap: 10px; } }
+.tile {
+  position: relative; background: #fff; border-radius: 18px; padding: 6px 6px 8px; text-align: center;
+  box-shadow: 0 5px 0 #d8c08a; transition: transform .12s; overflow: hidden;
+}
+.tile:hover:not(:disabled) { transform: translateY(-3px) rotate(-.5deg); }
+.tile svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+.tile .nm { font-family: var(--display); font-weight: 600; font-size: 1.05rem; margin-top: 4px; line-height: 1.1; }
+.tile .pts {
+  position: absolute; top: 10px; right: 10px; background: var(--gold); color: #5a3d00; font-weight: 900;
+  border-radius: 999px; padding: 2px 10px; font-size: .95rem; box-shadow: 0 2px 0 #c99500;
+}
+.tile.owned { box-shadow: 0 5px 0 var(--tc), 0 0 0 5px var(--tc); cursor: default; }
+.tile.owned::after {
+  content: ""; position: absolute; inset: 0; background: var(--tc); opacity: .28; pointer-events: none;
+}
+.tile.raidable { cursor: pointer; }
+.tile.raidable:hover { transform: translateY(-3px); }
+.tile .lock, .tile .sword {
+  position: absolute; top: 10px; right: 10px; z-index: 3; background: #fff; border-radius: 999px; padding: 2px 9px;
+  font-size: .95rem; font-weight: 900; box-shadow: 0 2px 0 rgba(0,0,0,.2);
+}
+.tile .sword { background: var(--gold); color: #5a3d00; }
+.tile .flag {
+  position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 2;
+  background: var(--tc); color: #fff; font-family: var(--display); font-weight: 600; font-size: 1.1rem;
+  padding: 4px 14px; border-radius: 12px; box-shadow: 0 3px 0 rgba(0,0,0,.25); white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis;
+}
+.side { display: flex; flex-direction: column; gap: 12px; }
+.panel { background: var(--paper); border-radius: 20px; padding: 14px; box-shadow: 0 6px 0 rgba(16,80,106,.18); }
+.panel h3 { font-size: 1.2rem; margin-bottom: 8px; }
+.team { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 14px; border: 3px solid transparent; margin-bottom: 6px; background: #fff; }
+.team.turn { border-color: var(--tc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--tc) 25%, transparent); }
+.team .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--tc); flex: none; }
+.team .tn { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.1rem; }
+.team .tl { font-size: .85rem; color: var(--ink-soft); }
+.team .tp { font-family: var(--display); font-weight: 600; font-size: 1.8rem; color: var(--tc); font-variant-numeric: tabular-nums; }
+.turnbox { text-align: center; font-size: 1.15rem; }
+.turnbox .rnd { font-size: .95rem; color: var(--ink-soft); margin-bottom: 4px; }
+.rules-note { font-size: .95rem; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.45; }
+.turnbox b { display: block; font-family: var(--display); font-size: 1.6rem; color: var(--tc); }
+.legend { font-size: .95rem; color: var(--ink-soft); line-height: 1.5; }
+
+/* ---------- Question ---------- */
+.overlay { position: fixed; inset: 0; background: rgba(15,40,60,.55); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 20; }
+.overlay.on { display: flex; }
+.qcard {
+  background: var(--paper); border-radius: 26px; width: min(1100px, 100%); max-height: 100%; overflow: auto;
+  padding: 22px; box-shadow: 0 14px 0 rgba(0,0,0,.18); animation: pop .25s ease-out;
+}
+@keyframes pop { from { transform: scale(.9); opacity: 0; } to { transform: none; opacity: 1; } }
+.qhead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.qhead .who { background: var(--tc); color: #fff; padding: 4px 14px; border-radius: 999px; font-family: var(--display); font-weight: 600; font-size: 1.15rem; }
+.qhead .place { font-family: var(--display); font-weight: 600; font-size: 1.3rem; }
+.qhead .ptag { background: var(--gold); padding: 3px 12px; border-radius: 999px; font-weight: 900; color: #5a3d00; }
+.qhead .timer { margin-left: auto; font-family: var(--display); font-weight: 600; font-size: 1.8rem; font-variant-numeric: tabular-nums; min-width: 3ch; text-align: right; }
+.qhead .timer.low { color: var(--bad); }
+.qbody { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 20px; align-items: center; }
+@media (max-width: 760px) { .qbody { grid-template-columns: 1fr; } }
+.qpic { background: #fff; border-radius: 18px; padding: 8px; }
+.qpic svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+.qpic img { width: 100%; height: auto; max-height: 52vh; object-fit: contain; display: block; border-radius: 12px; }
+.choice .ct { flex: 1; min-width: 0; overflow-wrap: break-word; hyphens: auto; }
+.choice .ct .kho-opt-t { overflow-wrap: break-word; }
+.qbody.picopts { grid-template-columns: minmax(0, 3fr) minmax(0, 7fr); }
+.qbody.picopts .choice { font-size: clamp(1.1rem, 2vw, 1.55rem); }
+@media (max-width: 760px) { .qbody.picopts { grid-template-columns: 1fr; } }
+.choices.two .choice { justify-content: center; }
+.libsel { font: inherit; font-size: 1.1rem; padding: 10px 12px; border-radius: 14px; border: 3px solid var(--line); background: #fff; color: var(--ink); width: 100%; max-width: 100%; }
+.libnote { font-size: .95rem; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.45; }
+.libnote.err { color: var(--bad); }
+.to-kho { color: #10506a; font-weight: 800; align-self: center; }
+.topbar h2 small { display: block; font-family: var(--body); font-size: .95rem; color: var(--ink-soft); font-weight: 800; }
+.qtext { font-size: clamp(1.4rem, 2.6vw, 2.1rem); line-height: 1.3; font-weight: 800; margin-bottom: 16px; }
+.choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 500px) { .choices { grid-template-columns: 1fr; } }
+.choice {
+  background: #fff; border: 4px solid var(--line); border-radius: 18px; padding: 14px 12px;
+  font-size: clamp(1.25rem, 2.3vw, 1.8rem); font-weight: 900; text-align: left; display: flex; align-items: center; gap: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.choice .k { flex: none; width: 2em; height: 2em; border-radius: 50%; display: grid; place-items: center; background: var(--cc); color: #fff; font-size: .75em; }
+.choice:hover:not(:disabled) { border-color: var(--cc); }
+.choice.right { border-color: var(--good); background: #e2f7ec; }
+.choice.wrong { border-color: var(--bad); background: #fde6ea; }
+.choice:disabled { cursor: default; }
+.result { margin-top: 16px; padding: 14px 16px; border-radius: 16px; font-size: 1.25rem; display: none; }
+.result.on { display: block; }
+.result.good { background: #e2f7ec; border: 3px solid var(--good); }
+.result.bad { background: #fde6ea; border: 3px solid var(--bad); }
+.result .mini { margin-top: 6px; font-size: 1.05rem; color: var(--ink-soft); }
+.btn.steal { background: #2f7fd6; box-shadow: 0 5px 0 #1d5aa0; }
+.qhead .mode { background: #23324a; color: #fff; padding: 3px 12px; border-radius: 999px; font-weight: 900; }
+.result h3 { font-size: 1.6rem; margin-bottom: 4px; }
+.result .why { color: var(--ink); line-height: 1.45; }
+.qfoot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+
+/* ---------- Guide ---------- */
+.guide { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.gitem { background: #fff; border-radius: 16px; padding: 12px; text-align: center; }
+.gitem svg { width: 100%; height: auto; max-height: 170px; }
+.gitem h4 { font-family: var(--display); font-weight: 600; font-size: 1.3rem; margin: 6px 0 4px; }
+.gitem p { margin: 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.4; }
+.ladder { margin-top: 16px; background: #fff; border-radius: 16px; padding: 14px; font-size: 1.15rem; line-height: 1.8; }
+.ladder b { color: #10506a; }
+
+/* ---------- End ---------- */
+#end .wrap { max-width: 760px; margin: 0 auto; text-align: center; }
+#end h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); color: #10506a; margin: 16px 0 6px; }
+.podium { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+.podium .team { font-size: 1.3rem; padding: 14px; }
+.podium .medal { font-family: var(--display); font-size: 1.6rem; width: 1.6em; }
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 40; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+
+<!-- ============ SETUP ============ -->
+<section id="setup" class="screen on">
+  <div class="wrap">
+    <div class="hero">
+      <svg viewBox="0 0 440 150" aria-hidden="true">
+        <ellipse cx="220" cy="118" rx="200" ry="26" fill="#7fcfe0"/>
+        <path d="M40 116 Q80 60 160 70 Q220 30 300 64 Q380 60 404 116 Z" fill="#f6e3b4"/>
+        <path d="M70 110 Q110 74 170 80 Q222 50 290 76 Q356 72 376 110 Z" fill="#8fd16a"/>
+        <rect x="120" y="82" width="60" height="22" fill="#5fb548" stroke="#3e8a2e" stroke-width="2"/>
+        <path d="M125 87h50M125 93h50M125 99h50" stroke="#3e8a2e" stroke-width="1.5"/>
+        <rect x="206" y="66" width="34" height="26" fill="#e85d4a"/><path d="M202 68 L223 52 L244 68 Z" fill="#a8322a"/>
+        <rect x="218" y="78" width="10" height="14" fill="#fff"/>
+        <circle cx="280" cy="80" r="12" fill="#3e8a2e"/><rect x="278" y="88" width="4" height="10" fill="#7a4b26"/>
+        <circle cx="304" cy="86" r="10" fill="#4fa63a"/><rect x="302" y="92" width="4" height="8" fill="#7a4b26"/>
+        <rect x="236" y="28" width="3" height="40" fill="#5a3d1a"/><path d="M239 30 L268 38 L239 46 Z" fill="#ff7a3d"/>
+        <circle cx="390" cy="30" r="16" fill="#ffd34d"/>
+      </svg>
+      <h1>Land Explorers</h1>
+      <p id="heroSub">Grade 5 Math · Area &amp; Length Units · m², hectares, acres, km², km</p>
+    </div>
+
+    <div class="card">
+      <h3>How to play</h3>
+      <div class="legend" style="font-size:1.1rem;color:var(--ink)">
+        Teams take turns. Pick a place on the island and answer the question.
+        Right answer: the land is yours and you win its points. Wrong answer: the land stays free.
+        When every place has an owner, the team with the most points wins.
+        (Turn on <b>Steal</b> and <b>Raid</b> below for more action!)
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Questions</h3>
+      <select class="libsel" id="libSel" aria-label="Question set"></select>
+      <p class="libnote" id="libNote"></p>
+    </div>
+
+    <div class="card">
+      <h3>Teams</h3>
+      <div class="row" id="teamCount" role="group" aria-label="Number of teams">
+        <button class="pill" data-n="2">2 teams</button>
+        <button class="pill" data-n="3">3 teams</button>
+        <button class="pill" data-n="4">4 teams</button>
+      </div>
+      <div class="teams" id="teamNames"></div>
+    </div>
+
+    <div class="card">
+      <h3>Timer</h3>
+      <div class="row" id="timerPick" role="group" aria-label="Timer">
+        <button class="pill" data-t="0">No timer</button>
+        <button class="pill" data-t="20">20 seconds</button>
+        <button class="pill" data-t="30">30 seconds</button>
+        <button class="pill" data-t="45">45 seconds</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Rules</h3>
+      <div class="row">
+        <button class="pill" id="optSteal">🔁 Steal on wrong answer</button>
+        <button class="pill" id="optRaid">⚔️ Raid other teams' land</button>
+      </div>
+      <p class="rules-note"><b>Steal:</b> if a team answers wrong, the next team can answer the same question and win the land for half the points.<br>
+      <b>Raid:</b> a team may attack land owned by another team with a harder question. Right: the land and its points change owner, and that land is locked 🔒. Wrong: the raiding team loses half the land's points.</p>
+      <div id="roundsBox" hidden style="margin-top:12px">
+        <div class="row" id="roundsPick" role="group" aria-label="Number of rounds">
+          <b style="margin-right:6px">Rounds:</b>
+          <button class="pill" data-r="6">6</button>
+          <button class="pill" data-r="8">8</button>
+          <button class="pill" data-r="10">10</button>
+        </div>
+        <p class="rules-note">One round = every team plays one turn. The game ends after the last round.</p>
+      </div>
+    </div>
+
+    <div class="start-row">
+      <button class="btn ghost" id="openGuide">📏 Unit Guide</button>
+      <button class="btn" id="startBtn">Start exploring ▶</button>
+      <a class="to-kho" href="../">← Game library</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GAME ============ -->
+<section id="game" class="screen">
+  <div class="topbar">
+    <h2>🏝️ Land Explorers<small id="setName"></small></h2>
+    <button class="btn ghost small" id="guideBtn">📏 Unit Guide</button>
+    <button class="btn ghost small" id="soundBtn" aria-pressed="true">🔊 Sound</button>
+    <button class="btn ghost small" id="finishBtn">🏁 Finish</button>
+  </div>
+  <div class="layout">
+    <div class="island" id="island"></div>
+    <div class="side">
+      <div class="panel turnbox" id="turnBox"></div>
+      <div class="panel"><h3>Scores</h3><div id="scores"></div></div>
+      <div class="panel legend">
+        <b style="color:var(--ink)">Points</b><br>
+        <span id="ptsLegend">⭐ 100 = easy · ⭐⭐ 200 = medium · ⭐⭐⭐ 300 = hard</span><br>
+        Keys 1–5 or A–E choose an answer.
+        <div id="ruleLegend"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ END ============ -->
+<section id="end" class="screen">
+  <div class="wrap">
+    <h1 id="winTitle">We have a winner!</h1>
+    <div class="podium" id="podium"></div>
+    <div class="start-row">
+      <button class="btn ghost" id="againSame">Play again (same teams)</button>
+      <button class="btn" id="newGame">New game</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUESTION ============ -->
+<div class="overlay" id="qOverlay" role="dialog" aria-modal="true" aria-labelledby="qText">
+  <div class="qcard">
+    <div class="qhead">
+      <span class="who" id="qWho"></span>
+      <span class="place" id="qPlace"></span>
+      <span class="ptag" id="qPts"></span>
+      <span class="mode" id="qMode" hidden></span>
+      <span class="timer" id="qTimer"></span>
+    </div>
+    <div class="qbody">
+      <div class="qpic" id="qPic"></div>
+      <div>
+        <div class="qtext" id="qText"></div>
+        <div class="choices" id="qChoices"></div>
+      </div>
+    </div>
+    <div class="result" id="qResult"></div>
+    <div class="qfoot">
+      <button class="btn ghost small" id="qCancel">Back to map</button>
+      <button class="btn steal" id="qSteal" hidden></button>
+      <button class="btn" id="qNext" hidden>Next team ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ GUIDE ============ -->
+<div class="overlay" id="gOverlay" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <div class="qcard">
+    <div class="qhead"><h2 id="gTitle" style="font-size:1.8rem">📏 Unit Guide</h2></div>
+    <div class="guide" id="guideGrid"></div>
+    <div class="ladder">
+      <b>Length:</b> 1 km = 1,000 m<br>
+      <b>Area:</b> 1 ha = 10,000 m² &nbsp;·&nbsp; 1 km² = 100 ha = 1,000,000 m²<br>
+      <b>Acre:</b> 1 acre ≈ 4,047 m² ≈ 0.4 ha &nbsp;·&nbsp; 1 ha ≈ 2.5 acres (a hectare is bigger)<br>
+      <b>Area of a rectangle</b> = length × width
+    </div>
+    <div class="qfoot"><button class="btn" id="gClose">Got it!</button></div>
+  </div>
+</div>
+
+<canvas id="confetti" hidden></canvas>
+
+<script src="../kho.js"></script>
+<script>
+"use strict";
+/* =========================================================
+   Pictures (inline SVG, viewBox 200×130)
+   ========================================================= */
+const SKY = '<rect width="200" height="130" fill="#cfefff"/>';
+const SUN = '<circle cx="176" cy="20" r="11" fill="#ffd34d"/>';
+const tree = (x, y, s = 1, c = "#3e8a2e") =>
+  `<rect x="${x - 2 * s}" y="${y}" width="${4 * s}" height="${12 * s}" fill="#7a4b26"/><circle cx="${x}" cy="${y - 2 * s}" r="${10 * s}" fill="${c}"/>`;
+const pine = (x, y, s = 1) =>
+  `<rect x="${x - 2 * s}" y="${y + 14 * s}" width="${4 * s}" height="${7 * s}" fill="#6b4120"/><path d="M${x} ${y - 10 * s} L${x + 11 * s} ${y + 15 * s} L${x - 11 * s} ${y + 15 * s} Z" fill="#2f7a3a"/>`;
+const house = (x, y, c = "#e85d4a") =>
+  `<rect x="${x}" y="${y}" width="24" height="18" fill="${c}"/><path d="M${x - 3} ${y + 1} L${x + 12} ${y - 11} L${x + 27} ${y + 1} Z" fill="#8b3a2a"/><rect x="${x + 9}" y="${y + 8}" width="6" height="10" fill="#fff4dc"/>`;
+
+const PICS = {
+  rice: () => SKY + SUN +
+    '<path d="M0 50 Q60 40 120 50 T200 46 V130 H0Z" fill="#9fd36b"/>' +
+    '<path d="M0 72 Q60 62 120 72 T200 68 V130 H0Z" fill="#7cc35a"/>' +
+    '<path d="M0 96 Q60 86 120 96 T200 92 V130 H0Z" fill="#5fae47"/>' +
+    [58, 80, 104].map(y => Array.from({ length: 12 }, (_, i) => `<path d="M${10 + i * 16} ${y + 6} v-8 M${8 + i * 16} ${y} l2 -3 l2 3" stroke="#2f6e22" stroke-width="1.6" fill="none"/>`).join("")).join("") +
+    '<path d="M150 64 l10 -10 l10 10 Z" fill="#e2c46a"/><circle cx="160" cy="68" r="4" fill="#f2c9a0"/><rect x="157" y="72" width="6" height="10" fill="#3b78c4"/>',
+  farm: () => SKY + SUN +
+    '<rect y="60" width="200" height="70" fill="#a7d97a"/>' +
+    '<path d="M0 82 H200 M0 100 H200 M0 118 H200" stroke="#8cc45f" stroke-width="6"/>' +
+    '<rect x="26" y="34" width="50" height="40" fill="#c8372d"/><path d="M20 36 L51 14 L82 36 Z" fill="#8f2620"/>' +
+    '<rect x="42" y="50" width="18" height="24" fill="#fff"/><path d="M42 50 L60 74 M60 50 L42 74" stroke="#c8372d" stroke-width="2"/>' +
+    '<rect x="86" y="24" width="16" height="50" fill="#d9d9d9"/><ellipse cx="94" cy="24" rx="8" ry="5" fill="#b5b5b5"/>' +
+    '<g transform="translate(140 72)"><ellipse cx="0" cy="0" rx="16" ry="9" fill="#fff"/><circle cx="-5" cy="-2" r="3" fill="#333"/><circle cx="6" cy="2" r="3.5" fill="#333"/><circle cx="17" cy="-5" r="6" fill="#fff"/><rect x="-11" y="6" width="3" height="9" fill="#555"/><rect x="8" y="6" width="3" height="9" fill="#555"/></g>' +
+    '<path d="M110 76 h80" stroke="#8b5a2b" stroke-width="2"/><path d="M114 70 v12 M134 70 v12 M154 70 v12 M174 70 v12 M194 70 v12" stroke="#8b5a2b" stroke-width="3"/>',
+  football: () => '<rect width="200" height="130" fill="#58b84a"/>' +
+    Array.from({ length: 5 }, (_, i) => `<rect x="${i * 40}" width="20" height="130" fill="#4fab42"/>`).join("") +
+    '<g fill="none" stroke="#fff" stroke-width="2.5"><rect x="10" y="10" width="180" height="110"/><path d="M100 10 V120"/><circle cx="100" cy="65" r="18"/>' +
+    '<rect x="10" y="38" width="26" height="54"/><rect x="164" y="38" width="26" height="54"/></g>' +
+    '<circle cx="100" cy="65" r="3" fill="#fff"/><circle cx="128" cy="80" r="6" fill="#fff" stroke="#222" stroke-width="1.5"/><path d="M125 77 l3 3 l3 -3" stroke="#222" stroke-width="1.5" fill="none"/>',
+  park: () => SKY + SUN +
+    '<rect y="56" width="200" height="74" fill="#8fd16a"/>' +
+    '<path d="M60 130 Q90 92 140 80 T200 70" stroke="#ead7a6" stroke-width="16" fill="none"/>' +
+    tree(30, 60, 1.3) + tree(170, 54, 1.1, "#4fa63a") + tree(80, 70, .9, "#5cb848") +
+    '<rect x="104" y="96" width="34" height="5" fill="#8b5a2b"/><rect x="106" y="101" width="3" height="8" fill="#5a3a1a"/><rect x="133" y="101" width="3" height="8" fill="#5a3a1a"/><rect x="104" y="88" width="34" height="4" fill="#8b5a2b"/>' +
+    '<circle cx="40" cy="104" r="4" fill="#ff6fa5"/><circle cx="50" cy="110" r="4" fill="#ffd34d"/><circle cx="34" cy="114" r="4" fill="#ff6fa5"/>' +
+    '<path d="M150 40 c0 -10 14 -10 14 0 c0 10 -14 10 -14 0" fill="#ff7a3d"/><path d="M157 50 v16" stroke="#555"/>',
+  forest: () => SKY + '<path d="M0 54 L40 26 L80 50 L120 20 L160 46 L200 30 V130 H0Z" fill="#9cc9a2"/>' +
+    '<rect y="70" width="200" height="60" fill="#5ea24d"/>' +
+    [[16, 52], [44, 46], [72, 54], [100, 44], [128, 52], [156, 46], [184, 54], [30, 74], [60, 80], [90, 72], [120, 80], [150, 74], [180, 82], [14, 96], [46, 100], [76, 94], [108, 102], [140, 96], [170, 102]]
+      .map(([x, y]) => pine(x, y, 1)).join(""),
+  lake: () => SKY + '<path d="M0 48 L50 30 L90 46 L140 24 L200 44 V130 H0Z" fill="#a8d29b"/>' +
+    '<rect y="52" width="200" height="78" fill="#86c770"/>' +
+    '<ellipse cx="100" cy="92" rx="88" ry="30" fill="#3fa7d6"/><ellipse cx="100" cy="92" rx="88" ry="30" fill="none" stroke="#e9f7fb" stroke-width="2" opacity=".6"/>' +
+    '<path d="M50 88 q10 -4 20 0 M120 100 q10 -4 20 0 M90 80 q8 -3 16 0" stroke="#bfe9f7" stroke-width="2" fill="none"/>' +
+    '<path d="M108 92 h28 l-6 8 h-16 Z" fill="#8b5a2b"/><path d="M122 92 V72 L136 88 Z" fill="#fff"/>' +
+    tree(20, 60, .9) + tree(186, 58, .9, "#4fa63a"),
+  school: () => SKY + SUN + '<rect y="96" width="200" height="34" fill="#8fd16a"/>' +
+    '<rect x="40" y="44" width="120" height="56" fill="#ffd27a"/><path d="M34 46 L100 18 L166 46 Z" fill="#e2603e"/>' +
+    [52, 76, 112, 136].map(x => `<rect x="${x}" y="54" width="14" height="14" fill="#9fd8f0" stroke="#fff" stroke-width="2"/>`).join("") +
+    '<rect x="90" y="72" width="20" height="28" fill="#8b5a2b"/><circle cx="100" cy="34" r="7" fill="#fff" stroke="#e2603e" stroke-width="2"/>' +
+    '<path d="M100 34 v-4 M100 34 h3" stroke="#333" stroke-width="1.5"/>' +
+    '<rect x="172" y="40" width="2" height="60" fill="#666"/><rect x="174" y="40" width="18" height="12" fill="#da251d"/><path d="M183 43 l1 2.5 h2.6 l-2.1 1.5 l.8 2.5 l-2.3 -1.6 l-2.3 1.6 l.8 -2.5 l-2.1 -1.5 h2.6 Z" fill="#ffd34d"/>',
+  road: () => SKY + SUN + '<path d="M0 52 L60 36 L110 50 L160 30 L200 44 V130 H0Z" fill="#b6dba0"/>' +
+    '<rect y="58" width="200" height="72" fill="#94cc72"/>' +
+    '<path d="M86 58 Q60 80 100 96 T70 130 H130 Q160 100 120 90 T104 58 Z" fill="#6b6f78"/>' +
+    '<path d="M95 60 Q78 80 108 94 T100 128" stroke="#fff" stroke-width="2.5" stroke-dasharray="8 7" fill="none"/>' +
+    '<rect x="148" y="66" width="4" height="34" fill="#666"/><rect x="132" y="60" width="38" height="20" rx="4" fill="#1f7a3f" stroke="#fff" stroke-width="2"/>' +
+    '<text x="151" y="75" font-size="10" font-family="sans-serif" font-weight="700" fill="#fff" text-anchor="middle">Town</text>' +
+    house(20, 74) + tree(52, 74, .8),
+  city: () => '<rect width="200" height="130" fill="#ffe2c2"/><circle cx="40" cy="26" r="13" fill="#ffb15c"/>' +
+    [[8, 50, 26, 80, "#5a7bb5"], [36, 30, 30, 100, "#3f5f99"], [70, 56, 24, 74, "#7b95c8"], [98, 20, 32, 110, "#2f4c80"], [134, 44, 26, 86, "#5a7bb5"], [164, 34, 30, 96, "#3f5f99"]]
+      .map(([x, y, w, h, c]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>` +
+        Array.from({ length: Math.floor(h / 14) }, (_, r) => `<rect x="${x + 5}" y="${y + 6 + r * 14}" width="${w - 10}" height="5" fill="#ffe9a8" opacity=".85"/>`).join("")).join("") +
+    '<rect y="118" width="200" height="12" fill="#555"/><path d="M0 124 H200" stroke="#ffd34d" stroke-width="1.5" stroke-dasharray="10 8"/>',
+  orchard: () => SKY + SUN + '<rect y="60" width="200" height="70" fill="#9bd36e"/>' +
+    [[24, 66], [64, 62], [104, 66], [144, 62], [184, 66], [44, 98], [84, 96], [124, 98], [164, 96]].map(([x, y]) =>
+      tree(x, y, 1.15, "#3f9636") + [[-5, -6], [4, -1], [-2, 4], [6, -8]].map(([dx, dy]) => `<circle cx="${x + dx}" cy="${y + dy}" r="2.4" fill="#e8402f"/>`).join("")).join("") +
+    '<path d="M150 118 l8 -12 l8 12 Z" fill="#c48a3a"/>',
+  airport: () => SKY + '<rect y="66" width="200" height="64" fill="#9fcf7c"/>' +
+    '<path d="M0 110 L200 82 V100 L0 128 Z" fill="#5c6068"/><path d="M10 117 L190 92" stroke="#fff" stroke-width="2" stroke-dasharray="10 8"/>' +
+    '<rect x="150" y="40" width="10" height="34" fill="#ddd"/><rect x="144" y="32" width="22" height="10" fill="#7fb7d8"/>' +
+    '<g transform="translate(70 34) rotate(-10)"><path d="M0 8 h56 q8 0 8 4 t-8 4 h-56 Z" fill="#fff" stroke="#9aa" /><path d="M22 10 L36 -8 h6 L36 10 Z M22 16 L34 32 h6 L34 16 Z" fill="#3a78c4"/><path d="M2 8 L-4 -4 h6 L10 8 Z" fill="#3a78c4"/></g>',
+  beach: () => '<rect width="200" height="130" fill="#cfefff"/>' + SUN +
+    '<rect y="44" width="200" height="40" fill="#3fa7d6"/><path d="M0 80 Q30 72 60 80 T120 80 T200 78 V130 H0Z" fill="#f6dc9c"/>' +
+    '<path d="M10 56 q8 -4 16 0 M80 62 q8 -4 16 0 M140 52 q8 -4 16 0" stroke="#bfe9f7" stroke-width="2" fill="none"/>' +
+    '<path d="M60 100 L66 64" stroke="#777" stroke-width="2.5"/><path d="M40 70 Q66 46 92 64 Z" fill="#ff5d6c"/><path d="M53 66 Q66 52 79 66" fill="#fff" opacity=".7"/>' +
+    '<rect x="96" y="96" width="44" height="18" rx="3" fill="#ffd34d" transform="rotate(-6 118 105)"/><rect x="96" y="102" width="44" height="5" fill="#3a78c4" transform="rotate(-6 118 105)"/>' +
+    '<path d="M170 110 v-40" stroke="#8b5a2b" stroke-width="4"/><path d="M170 70 q-16 -6 -24 4 M170 70 q16 -6 24 4 M170 70 q-10 -14 -22 -10 M170 70 q10 -14 22 -10" stroke="#3e8a2e" stroke-width="4" fill="none"/>'
+};
+const svg = (inner, label) => `<svg viewBox="0 0 200 130" role="img" aria-label="${label}">${inner}</svg>`;
+
+/* Rectangle diagram for "length × width" questions */
+function rectPic(scene, L, W) {
+  return `<svg viewBox="0 0 200 130" role="img" aria-label="Rectangle ${L} m by ${W} m">${PICS[scene]()}
+    <rect x="0" y="0" width="200" height="130" fill="#fff" opacity=".55"/>
+    <rect x="30" y="24" width="140" height="78" fill="#ffe08a" fill-opacity=".55" stroke="#c8372d" stroke-width="3" stroke-dasharray="7 4"/>
+    <rect x="62" y="104" width="76" height="20" rx="6" fill="#fff"/><text x="100" y="119" font-family="sans-serif" font-weight="800" font-size="14" text-anchor="middle" fill="#c8372d">${fmt(L)} m</text>
+    <rect x="152" y="54" width="46" height="20" rx="6" fill="#fff"/><text x="175" y="69" font-family="sans-serif" font-weight="800" font-size="13" text-anchor="middle" fill="#c8372d">${fmt(W)} m</text>
+  </svg>`;
+}
+/* Square diagram for a route around a square park */
+function squarePic(scene, s) {
+  return `<svg viewBox="0 0 200 130" role="img" aria-label="Square path, side ${s} m">${PICS[scene]()}
+    <rect x="0" y="0" width="200" height="130" fill="#fff" opacity=".5"/>
+    <rect x="55" y="18" width="90" height="90" fill="none" stroke="#3a78c4" stroke-width="4" stroke-dasharray="8 5"/>
+    <circle cx="55" cy="108" r="6" fill="#ff7a3d"/>
+    <path d="M70 114 h20 l-5 -4 m5 4 l-5 4" stroke="#ff7a3d" stroke-width="2.5" fill="none"/>
+    <rect x="150" y="52" width="48" height="20" rx="6" fill="#fff"/><text x="174" y="67" font-family="sans-serif" font-weight="800" font-size="13" text-anchor="middle" fill="#3a78c4">${fmt(s)} m</text>
+  </svg>`;
+}
+
+/* ---------- Unit Guide pictures ---------- */
+const GUIDE = [
+  { t: "Square meter (m²)", p: "A square 1 m long and 1 m wide. About the size of a big floor tile or a beach towel.",
+    s: '<rect width="200" height="130" fill="#fff"/><rect x="60" y="15" width="80" height="80" fill="#ffe08a" stroke="#c8372d" stroke-width="3"/><text x="100" y="62" font-size="20" font-weight="800" font-family="sans-serif" text-anchor="middle" fill="#c8372d">1 m²</text><text x="100" y="116" font-size="13" font-weight="700" font-family="sans-serif" text-anchor="middle" fill="#555">1 m</text><text x="152" y="60" font-size="13" font-weight="700" font-family="sans-serif" fill="#555">1 m</text>' },
+  { t: "Hectare (ha)", p: "A square 100 m × 100 m = 10,000 m². About one and a half football fields.",
+    s: '<rect width="200" height="130" fill="#fff"/><rect x="50" y="10" width="100" height="100" fill="#8fd16a" stroke="#3e8a2e" stroke-width="3"/>' + Array.from({ length: 9 }, (_, i) => `<path d="M${60 + i * 10} 10 V110 M50 ${20 + i * 10} H150" stroke="#3e8a2e" stroke-width=".6" opacity=".6"/>`).join("") + '<text x="100" y="66" font-size="18" font-weight="800" font-family="sans-serif" text-anchor="middle" fill="#1f5e14">1 ha</text><text x="100" y="125" font-size="12" font-weight="700" font-family="sans-serif" text-anchor="middle" fill="#555">100 m</text><text x="156" y="64" font-size="12" font-weight="700" font-family="sans-serif" fill="#555">100 m</text>' },
+  { t: "Acre", p: "Used in the USA and the UK. 1 acre ≈ 4,047 m², a bit less than half a hectare.",
+    s: '<rect width="200" height="130" fill="#fff"/><rect x="40" y="10" width="100" height="100" fill="#d8eecb" stroke="#3e8a2e" stroke-width="2" stroke-dasharray="5 3"/><rect x="40" y="46.4" width="63.6" height="63.6" fill="#f2b84b" stroke="#a46a00" stroke-width="3"/><text x="72" y="84" font-size="14" font-weight="800" font-family="sans-serif" text-anchor="middle" fill="#6b4300">1 acre</text><text x="120" y="32" font-size="13" font-weight="800" font-family="sans-serif" text-anchor="middle" fill="#3e8a2e">1 ha</text><text x="150" y="80" font-size="11" font-weight="700" font-family="sans-serif" fill="#555">≈ 2.5 acres</text><text x="150" y="94" font-size="11" font-weight="700" font-family="sans-serif" fill="#555">in 1 ha</text>' },
+  { t: "Square kilometer (km²)", p: "A square 1 km × 1 km. 1 km² = 100 ha = 1,000,000 m². We use it for cities, lakes and forests.",
+    s: '<rect width="200" height="130" fill="#fff"/><rect x="50" y="10" width="100" height="100" fill="#cfe6ff" stroke="#2f4c80" stroke-width="3"/>' + Array.from({ length: 9 }, (_, i) => `<path d="M${60 + i * 10} 10 V110 M50 ${20 + i * 10} H150" stroke="#2f4c80" stroke-width=".7" opacity=".5"/>`).join("") + '<rect x="50" y="10" width="10" height="10" fill="#8fd16a"/><text x="100" y="66" font-size="16" font-weight="800" font-family="sans-serif" text-anchor="middle" fill="#2f4c80">1 km² = 100 ha</text><text x="100" y="125" font-size="12" font-weight="700" font-family="sans-serif" text-anchor="middle" fill="#555">1 km = 1,000 m</text><text x="64" y="18" font-size="7" font-weight="800" font-family="sans-serif" fill="#1f5e14">1 ha</text>' },
+  { t: "Kilometer (km)", p: "A length, not an area! 1 km = 1,000 m. About 12–15 minutes of walking.",
+    s: '<rect width="200" height="130" fill="#fff"/><path d="M20 80 H180" stroke="#6b6f78" stroke-width="14" stroke-linecap="round"/><path d="M24 80 H176" stroke="#fff" stroke-width="2" stroke-dasharray="8 6"/><circle cx="20" cy="80" r="9" fill="#ff7a3d"/><circle cx="180" cy="80" r="9" fill="#17915f"/><text x="100" y="50" font-size="20" font-weight="800" font-family="sans-serif" text-anchor="middle" fill="#23324a">1 km = 1,000 m</text><text x="20" y="108" font-size="11" font-weight="700" font-family="sans-serif" text-anchor="middle" fill="#555">home</text><text x="180" y="108" font-size="11" font-weight="700" font-family="sans-serif" text-anchor="middle" fill="#555">school</text>' }
+];
+
+/* =========================================================
+   Places on the island
+   ========================================================= */
+const PLACES = [
+  { id: "rice", name: "Rice Field", pts: 100, unit: "ha", sent: "This rice field covers about 2 ___.", why: "Fields and farms are measured in hectares (ha)." },
+  { id: "school", name: "School", pts: 100, unit: "m²", sent: "The floor of our classroom is about 60 ___.", why: "A room is small, so we use square meters (m²)." },
+  { id: "beach", name: "Beach", pts: 100, unit: "m²", sent: "A beach towel covers about 2 ___.", why: "A towel is very small, so we use square meters (m²)." },
+  { id: "road", name: "Long Road", pts: 100, unit: "km", sent: "The road from the village to the town is 15 ___ long.", why: "“Long” is about length, not area. Long distances use kilometers (km)." },
+  { id: "football", name: "Football Field", pts: 200, unit: "m²", sent: "A football field covers about 7,000 ___.", why: "A football field is about 100 m × 70 m = 7,000 m²." },
+  { id: "park", name: "City Park", pts: 200, unit: "ha", sent: "The city park covers about 12 ___.", why: "A park is bigger than a building but much smaller than a city: hectares (ha)." },
+  { id: "farm", name: "Big Farm", pts: 200, unit: "acres", sent: "In the USA, people often measure land in acres. This farm is 150 ___.", why: "In the USA and the UK, farm land is often measured in acres." },
+  { id: "orchard", name: "Orchard", pts: 200, unit: "ha", sent: "The fruit orchard covers about 3 ___.", why: "An orchard is farm land, so we use hectares (ha)." },
+  { id: "lake", name: "Big Lake", pts: 300, unit: "km²", sent: "This big lake covers about 25 ___.", why: "A very big lake is measured in square kilometers (km²)." },
+  { id: "forest", name: "Forest", pts: 300, unit: "km²", sent: "The national forest covers about 300 ___.", why: "A national forest is huge: square kilometers (km²)." },
+  { id: "airport", name: "Airport", pts: 300, unit: "km", sent: "The airport runway is about 3 ___ long.", why: "“Long” means length. A runway is about 3 km (3,000 m) long." },
+  { id: "city", name: "Big City", pts: 300, unit: "km²", sent: "The whole city covers about 2,000 ___.", why: "Cities are measured in square kilometers (km²). Ho Chi Minh City is about 2,095 km²." }
+];
+const AREA_UNITS = ["m²", "ha", "km²", "acres"];
+const LEN_UNITS = ["m", "km"];
+
+/* =========================================================
+   Question generators
+   Each returns { text, choices:[...strings], answer: string, why, pic? }
+   ========================================================= */
+const fmt = n => Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function numQ(text, ans, wrongs, unit, why) {
+  const vals = [ans];
+  for (const w of wrongs) if (w > 0 && !vals.includes(w) && vals.length < 4) vals.push(w);
+  let k = 2; while (vals.length < 4) { const w = ans * k + (k % 2 ? 0 : 5); if (!vals.includes(w)) vals.push(w); k++; }
+  const s = v => fmt(v) + (unit ? " " + unit : "");
+  return { text, choices: vals.map(s), answer: s(ans), why };
+}
+
+const GEN = {
+  /* ---- easy ---- */
+  bestUnit(pl) {
+    const pool = pl.unit === "km" ? ["km", "m²", "ha", "km²"] : [pl.unit, ...shuffle(AREA_UNITS.concat(["km"]).filter(u => u !== pl.unit)).slice(0, 3)];
+    return { text: "Choose the best unit: " + pl.sent, choices: pool, answer: pl.unit, why: pl.why };
+  },
+  haToM2() {
+    const n = rnd(2, 9);
+    return numQ(`${n} ha = ___ m²`, n * 10000, [n * 1000, n * 100, n * 100000], "m²", `1 ha = 10,000 m², so ${n} ha = ${n} × 10,000 = ${fmt(n * 10000)} m².`);
+  },
+  kmToM() {
+    const n = rnd(2, 9);
+    return numQ(`${n} km = ___ m`, n * 1000, [n * 100, n * 10, n * 10000], "m", `1 km = 1,000 m, so ${n} km = ${fmt(n * 1000)} m.`);
+  },
+  km2ToHa() {
+    const n = rnd(2, 9);
+    return numQ(`${n} km² = ___ ha`, n * 100, [n * 10, n * 1000, n * 10000], "ha", `1 km² = 100 ha, so ${n} km² = ${n} × 100 = ${fmt(n * 100)} ha.`);
+  },
+  acreVsHa() {
+    return { text: "Which is bigger: 1 acre or 1 hectare?", choices: ["1 acre", "1 hectare", "They are the same", "We cannot tell"], answer: "1 hectare",
+      why: "1 hectare = 10,000 m². 1 acre ≈ 4,047 m². So 1 hectare is bigger (about 2.5 acres)." };
+  },
+  /* ---- medium ---- */
+  m2ToHa() {
+    const n = rnd(2, 9);
+    return numQ(`${fmt(n * 10000)} m² = ___ ha`, n, [n * 10, n * 100, n * 1000], "ha", `10,000 m² = 1 ha, so ${fmt(n * 10000)} m² = ${fmt(n * 10000)} ÷ 10,000 = ${n} ha.`);
+  },
+  haToKm2() {
+    const n = rnd(2, 9);
+    return numQ(`${n * 100} ha = ___ km²`, n, [n * 10, n * 100, n * 1000], "km²", `100 ha = 1 km², so ${n * 100} ha = ${n * 100} ÷ 100 = ${n} km².`);
+  },
+  kmMToM() {
+    const a = rnd(1, 9), b = rnd(1, 19) * 50, ans = a * 1000 + b;
+    return numQ(`${a} km ${b} m = ___ m`, ans, [a * 100 + b, a * 10000 + b, a * 1000 + b * 10], "m", `${a} km = ${fmt(a * 1000)} m. ${fmt(a * 1000)} + ${b} = ${fmt(ans)} m.`);
+  },
+  compare() {
+    const a = rnd(1, 5);
+    const opt = pick([
+      { m: a * 10000, ans: "They are equal" },
+      { m: a * 10000 + 5000, ans: "m" },
+      { m: a * 1000 * pick([5, 8]), ans: "ha" },
+      { m: (a + 1) * 10000, ans: "m" }
+    ]);
+    const L = `${a} ha`, R = `${fmt(opt.m)} m²`;
+    const answer = opt.ans === "ha" ? L : opt.ans === "m" ? R : "They are equal";
+    return { text: `Which is bigger: ${L} or ${R}?`, choices: [L, R, "They are equal"], answer,
+      why: `${a} ha = ${fmt(a * 10000)} m². Compare ${fmt(a * 10000)} m² with ${fmt(opt.m)} m².` };
+  },
+  acreM2() {
+    return { text: "1 acre is about how many square meters?", choices: ["400 m²", "4,000 m²", "40,000 m²", "400,000 m²"], answer: "4,000 m²",
+      why: "1 acre ≈ 4,047 m², so about 4,000 m². That is a bit less than half a hectare (10,000 m²)." };
+  },
+  haInAcres() {
+    const n = pick([2, 4, 10]);
+    return { text: `${n} hectares is about how many acres? (1 ha ≈ 2.5 acres)`, choices: shuffle([n * 2.5, n, n * 10, n * 0.4]).map(v => fmt(v) + " acres"),
+      answer: fmt(n * 2.5) + " acres", why: `1 ha ≈ 2.5 acres, so ${n} ha ≈ ${n} × 2.5 = ${fmt(n * 2.5)} acres.` };
+  },
+  /* ---- hard ---- */
+  rectHa(pl) {
+    const pairs = [[200, 100], [250, 200], [400, 250], [500, 200], [300, 200], [500, 400], [400, 300], [1000, 300]];
+    const [L, W] = pick(pairs), m2 = L * W, ha = m2 / 10000;
+    const q = numQ(`The ${pl.name.toLowerCase()} is a rectangle ${fmt(L)} m long and ${fmt(W)} m wide. What is its area in hectares?`,
+      ha, [ha * 10, ha * 100, m2 / 1000], "ha", `Area = ${fmt(L)} × ${fmt(W)} = ${fmt(m2)} m². ${fmt(m2)} ÷ 10,000 = ${fmt(ha)} ha.`);
+    q.pic = rectPic(pl.id, L, W);
+    return q;
+  },
+  mixedSum() {
+    const a = rnd(1, 6), b = rnd(1, 9) * 1000, ans = a * 10000 + b;
+    return numQ(`${a} ha + ${fmt(b)} m² = ___ m²`, ans, [a * 1000 + b, a * 100 + b, a * 10000 + b * 10], "m²", `${a} ha = ${fmt(a * 10000)} m². ${fmt(a * 10000)} + ${fmt(b)} = ${fmt(ans)} m².`);
+  },
+  timesBigger() {
+    const n = rnd(2, 6), m = pick([10, 20, 25, 50]), ans = n * 100 / m;
+    return numQ(`A forest covers ${n} km². A farm covers ${m} ha. How many times bigger is the forest than the farm?`,
+      ans, [ans * 10, n * m, n * 100 - m], "times",
+      `${n} km² = ${n * 100} ha. ${n * 100} ÷ ${m} = ${fmt(ans)}. The forest is ${fmt(ans)} times bigger.`);
+  },
+  acresToHa() {
+    const n = pick([5, 10, 20, 25, 50]), ans = n * 0.4;
+    return numQ(`A farm in the USA is ${n} acres. About how many hectares is it? (1 acre ≈ 0.4 ha)`,
+      ans, [n * 2.5, n * 4, n * 0.04], "ha", `1 acre ≈ 0.4 ha, so ${n} acres ≈ ${n} × 0.4 = ${fmt(ans)} ha.`);
+  },
+  squareLaps(pl) {
+    const s = pick([250, 500, 125]), k = pick([2, 4]), m = s * 4 * k, km = m / 1000;
+    const q = numQ(`Nam runs around a square path with sides of ${s} m. He runs ${k} times around. How many kilometers does he run?`,
+      km, [m / 100, km * 4, s * k / 1000], "km", `One lap = ${s} × 4 = ${fmt(s * 4)} m. ${k} laps = ${fmt(m)} m = ${fmt(km)} km.`);
+    q.pic = squarePic(pl.id, s);
+    return q;
+  },
+  m2ToKm2() {
+    const n = rnd(2, 5);
+    return numQ(`${fmt(n * 1000000)} m² = ___ km²`, n, [n * 10, n * 100, n * 1000], "km²", `1 km² = 1,000,000 m², so ${fmt(n * 1000000)} m² = ${n} km².`);
+  }
+};
+const POOLS = {
+  100: ["bestUnit", "bestUnit", "haToM2", "kmToM", "km2ToHa", "acreVsHa"],
+  200: ["bestUnit", "m2ToHa", "haToKm2", "kmMToM", "compare", "acreM2", "haInAcres"],
+  300: ["bestUnit", "rectHa", "rectHa", "mixedSum", "timesBigger", "acresToHa", "squareLaps", "m2ToKm2"]
+};
+
+/* =========================================================
+   Question sets: the built-in units questions above, or a set from the
+   game library (kho/bo/, read by kho.js).
+   Library sets: tile points follow the question type
+   100 = True/False · 200 = Multiple choice · 300 = Fill in the blank
+   (kho.js turns fill-in into multiple choice, like in the other games).
+   Matching questions are skipped. Missing type → the nearest type.
+   No question repeats in a game; when a type runs out it is shuffled again.
+   ========================================================= */
+const UNITS = "units";
+const TIER_KIND = { 100: "tf", 200: "mc", 300: "fill" };
+const NEAREST = { 100: ["tf", "mc", "fill"], 200: ["mc", "fill", "tf"], 300: ["fill", "mc", "tf"] };
+const LIB = { list: [], id: "", set: null, byKind: null, piles: {}, err: "", listErr: "", loading: false };
+const PREF_KEY = "land-explorers-set";
+const prefGet = () => { try { return localStorage.getItem(PREF_KEY) || UNITS; } catch (e) { return UNITS; } };
+const prefSet = v => { try { localStorage.setItem(PREF_KEY, v); } catch (e) {} };
+let chosen = prefGet();
+
+async function loadLibList() {
+  if (!window.KHO) return;
+  try { LIB.list = await KHO.list(); } catch (e) { LIB.list = []; LIB.listErr = "Can't load the game library. Check the internet. The units questions still work."; }
+}
+async function loadLib(id) {
+  if (LIB.id === id && LIB.byKind) return true;
+  LIB.loading = true; renderLib();
+  try {
+    const set = await KHO.load(id);
+    const byKind = { tf: [], mc: [], fill: [] };
+    for (const q of KHO.toMC(set)) if (byKind[q.kind]) byKind[q.kind].push(q);
+    if (!byKind.tf.length && !byKind.mc.length && !byKind.fill.length) throw new Error("only matching");
+    Object.assign(LIB, { id, set, byKind, piles: {}, err: "" });
+    return true;
+  } catch (e) {
+    Object.assign(LIB, { id: "", set: null, byKind: null, err: e.message === "only matching" ? "This set only has matching questions. Land Explorers can't play it yet. Pick another set." : "Can't load this question set. Check the internet." });
+    return false;
+  } finally { LIB.loading = false; renderLib(); }
+}
+function libQuestion(level) {
+  const kind = NEAREST[level].find(k => LIB.byKind[k].length);
+  if (!LIB.piles[kind] || !LIB.piles[kind].length) LIB.piles[kind] = shuffle(LIB.byKind[kind]);
+  const q = LIB.piles[kind].pop();
+  const right = q.options[q.answer];
+  const choices = q.fixed ? q.options.slice() : shuffle(q.options);
+  let why = String(q.explain || "");
+  if (why === right) why = ""; else if (why.startsWith(right + ". ")) why = why.slice(right.length + 2);
+  return { text: q.text, choices, answer: right, why, pic: q.figure || "", optPics: q.optPics, kind };
+}
+function setTitle() {
+  return chosen === UNITS ? "Area & Length Units · Grade 5" : LIB.set ? (LIB.set.short || LIB.set.title || "") : "";
+}
+function renderLib() {
+  const sel = $("libSel"), lib = LIB.list || [];
+  sel.innerHTML = `<option value="${UNITS}">Area &amp; Length Units (Grade 5) · built-in</option>` +
+    (lib.length ? `<optgroup label="Game library">` + lib.map(s => `<option value="${esc(s.id)}">${esc(s.title)}${s.grade ? " · Grade " + esc(s.grade) : ""}${s.n ? " · " + s.n + " questions" : ""}</option>`).join("") + `</optgroup>` : "");
+  if (chosen !== UNITS && !lib.some(s => s.id === chosen) && !(LIB.set && LIB.id === chosen))
+    sel.insertAdjacentHTML("beforeend", `<option value="${esc(chosen)}">${esc(chosen)}</option>`);
+  sel.value = chosen;
+  const note = $("libNote");
+  note.classList.toggle("err", !LIB.loading && (chosen === UNITS ? !!LIB.listErr : !!LIB.err));
+  if (LIB.loading) note.textContent = "Loading questions…";
+  else if (chosen === UNITS) note.textContent = (LIB.listErr ? LIB.listErr + " " : "") + "Questions made by the game: m², ha, acres, km², km. ⭐ 100 easy · 200 medium · 300 hard.";
+  else if (LIB.err) note.textContent = LIB.err;
+  else if (LIB.byKind) { const b = LIB.byKind; note.textContent = `⭐ 100 = True/False (${b.tf.length}) · 200 = Multiple choice (${b.mc.length}) · 300 = Fill in the blank (${b.fill.length}).` + (!b.tf.length || !b.mc.length || !b.fill.length ? " Missing types use the nearest type." : ""); }
+  else note.textContent = "";
+  const units = chosen === UNITS;
+  $("heroSub").textContent = units ? "Grade 5 Math · Area & Length Units · m², hectares, acres, km², km" : setTitle() || "Claim the island, one question at a time!";
+  $("openGuide").hidden = units ? false : true;
+  $("startBtn").disabled = !units && (LIB.loading || !LIB.byKind);
+  $("startBtn").style.opacity = $("startBtn").disabled ? .5 : "";
+}
+const onLibChange = async e => {
+  chosen = e.target.value; prefSet(chosen); LIB.err = "";
+  if (chosen === UNITS) return renderLib();
+  await loadLib(chosen);
+};
+
+/* =========================================================
+   Game state
+   ========================================================= */
+const TEAM_COLORS = ["#e8402f", "#2f7fd6", "#17915f", "#9b4fd1"];
+const DEFAULT_NAMES = ["Red Team", "Blue Team", "Green Team", "Purple Team"];
+const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, steal: true, raid: false, rounds: 8, teams: [], owners: {}, locked: {}, turn: 0, turnsTaken: 0, used: {}, sound: true };
+const $ = id => document.getElementById(id);
+
+function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); window.scrollTo(0, 0); }
+
+/* ---------- Setup ---------- */
+function renderSetup() {
+  document.querySelectorAll("#teamCount .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.n === S.n));
+  document.querySelectorAll("#timerPick .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.t === S.timer));
+  $("optSteal").setAttribute("aria-pressed", S.steal);
+  $("optRaid").setAttribute("aria-pressed", S.raid);
+  $("roundsBox").hidden = !S.raid;
+  document.querySelectorAll("#roundsPick .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.r === S.rounds));
+  $("teamNames").innerHTML = Array.from({ length: S.n }, (_, i) =>
+    `<label style="--tc:${TEAM_COLORS[i]}"><span class="dot"></span><input data-i="${i}" value="${esc(S.names[i])}" maxlength="18" aria-label="Team ${i + 1} name"></label>`).join("");
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+$("teamCount").onclick = e => { const b = e.target.closest("[data-n]"); if (b) { S.n = +b.dataset.n; renderSetup(); } };
+$("timerPick").onclick = e => { const b = e.target.closest("[data-t]"); if (b) { S.timer = +b.dataset.t; renderSetup(); } };
+$("optSteal").onclick = () => { S.steal = !S.steal; renderSetup(); };
+$("optRaid").onclick = () => { S.raid = !S.raid; renderSetup(); };
+$("roundsPick").onclick = e => { const b = e.target.closest("[data-r]"); if (b) { S.rounds = +b.dataset.r; renderSetup(); } };
+$("teamNames").oninput = e => { if (e.target.dataset.i) S.names[+e.target.dataset.i] = e.target.value; };
+
+function startGame() {
+  S.teams = Array.from({ length: S.n }, (_, i) => ({ name: (S.names[i] || "").trim() || DEFAULT_NAMES[i], color: TEAM_COLORS[i], pts: 0, land: 0 }));
+  S.owners = {}; S.locked = {}; S.turn = 0; S.turnsTaken = 0; S.used = {};
+  if (chosen !== UNITS && !LIB.byKind) return;
+  LIB.piles = {};
+  const units = chosen === UNITS;
+  $("setName").textContent = setTitle();
+  $("guideBtn").hidden = !units;
+  $("ptsLegend").textContent = units ? "⭐ 100 = easy · ⭐⭐ 200 = medium · ⭐⭐⭐ 300 = hard" : "⭐ 100 = True/False · 200 = Multiple choice · 300 = Fill in the blank";
+  show("game"); renderBoard(); sfx("start");
+}
+$("startBtn").onclick = startGame;
+
+/* ---------- Board ---------- */
+function renderBoard() {
+  $("island").innerHTML = PLACES.map(pl => {
+    const o = S.owners[pl.id];
+    const tm = o != null ? S.teams[o] : null;
+    const raidable = tm && canRaid(pl.id);
+    const badge = !tm ? `<span class="pts">${pl.pts}</span>` : S.locked[pl.id] ? `<span class="lock">🔒 ${pl.pts}</span>` : raidable ? `<span class="sword">⚔️ ${pl.pts}</span>` : "";
+    return `<button class="tile${tm ? " owned" : ""}${raidable ? " raidable" : ""}" data-id="${pl.id}" ${tm ? `style="--tc:${tm.color}"` : ""} ${tm && !raidable ? "disabled" : ""} aria-label="${pl.name}, ${pl.pts} points${tm ? ", owned by " + esc(tm.name) : ""}${raidable ? ", can be raided" : ""}">
+      ${svg(PICS[pl.id](), pl.name)}
+      <div class="nm">${pl.name}</div>
+      ${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : ""}${badge}
+    </button>`;
+  }).join("");
+  const t = S.teams[S.turn];
+  $("turnBox").style.setProperty("--tc", t.color);
+  const free = PLACES.some(p => S.owners[p.id] == null);
+  const canPlay = PLACES.some(p => S.owners[p.id] == null || canRaid(p.id));
+  const hint = !canPlay ? `Nothing to pick this turn.<br><button class="btn small" id="skipBtn" style="margin-top:8px">Skip turn ▶</button>` : free ? (S.raid ? "Pick a free place, or ⚔️ raid!" : "Pick a place on the island!") : "No free land left. ⚔️ Raid a place!";
+  $("turnBox").innerHTML = (S.raid ? `<div class="rnd">Round ${Math.min(Math.floor(S.turnsTaken / S.teams.length) + 1, S.rounds)} of ${S.rounds}</div>` : "") + `Your turn:<b>${esc(t.name)}</b>${hint}`;
+  if ($("skipBtn")) $("skipBtn").onclick = () => { const over = gameOverAfterThisTurn(); S.turnsTaken++; if (over) return finish(); S.turn = (S.turn + 1) % S.teams.length; renderBoard(); };
+  $("ruleLegend").innerHTML = (S.steal ? "<br>🔁 Steal is ON: wrong answer → next team may steal (half points)." : "") +
+    (S.raid ? "<br>⚔️ Raid is ON: harder question. Wrong raid = lose half the points. 🔒 = locked." : "");
+  $("scores").innerHTML = S.teams.map((tm, i) =>
+    `<div class="team${i === S.turn ? " turn" : ""}" style="--tc:${tm.color}"><span class="dot"></span><span class="tn">${esc(tm.name)}<br><span class="tl">${tm.land} ${tm.land === 1 ? "place" : "places"}</span></span><span class="tp">${tm.pts}</span></div>`).join("");
+}
+function canRaid(id) {
+  const o = S.owners[id];
+  return S.raid && o != null && o !== S.turn && !S.locked[id];
+}
+$("island").onclick = e => { const b = e.target.closest(".tile"); if (b && !b.disabled) openQuestion(b.dataset.id); };
+
+/* ---------- Question ---------- */
+let Q = null, timerId = null;
+function makeQuestion(pl, level) {
+  const pool = POOLS[level];
+  const used = S.used[pl.id] || [];
+  let key = pick(pool.filter(k => !used.includes(k)));
+  if (!key) { S.used[pl.id] = []; key = pick(pool); }
+  (S.used[pl.id] = S.used[pl.id] || []).push(key);
+  const q = GEN[key](pl);
+  if (key !== "compare" && key !== "acreVsHa") q.choices = shuffle(q.choices);
+  return q;
+}
+function openQuestion(id) {
+  const pl = PLACES.find(p => p.id === id), t = S.teams[S.turn];
+  const raid = S.owners[id] != null;
+  const level = raid ? Math.min(pl.pts + 100, 300) : pl.pts;
+  Q = { pl, ...(chosen === UNITS ? makeQuestion(pl, level) : libQuestion(level)), done: false, raid, team: S.turn, stealing: false };
+  setWho(t);
+  $("qPlace").textContent = pl.name;
+  $("qPts").textContent = "⭐ " + pl.pts;
+  $("qMode").hidden = !raid;
+  $("qMode").textContent = raid ? `⚔️ Raid on ${S.teams[S.owners[id]].name} · harder question` : "";
+  $("qPic").innerHTML = Q.pic || svg(PICS[pl.id](), pl.name);
+  $("qText").textContent = Q.text;
+  const CC = ["#e8402f", "#2f7fd6", "#e8a700", "#17915f", "#9b4fd1"];
+  $("qChoices").classList.toggle("two", Q.choices.length === 2);
+  $("qOverlay").querySelector(".qbody").classList.toggle("picopts", !!Q.optPics);
+  $("qChoices").innerHTML = Q.choices.map((c, i) =>
+    `<button class="choice" data-i="${i}" style="--cc:${CC[i]}"><span class="k">${"ABCDE"[i]}</span><span class="ct">${Q.optPics && window.KHO ? KHO.optHTML(Q, c) : esc(c)}</span></button>`).join("");
+  $("qResult").className = "result"; $("qResult").innerHTML = "";
+  $("qNext").hidden = true; $("qSteal").hidden = true; $("qCancel").hidden = false;
+  $("qOverlay").classList.add("on");
+  startTimer();
+  setTimeout(() => $("qChoices").querySelector(".choice")?.focus({ preventScroll: true }), 50);
+}
+function setWho(t) {
+  $("qOverlay").querySelector(".qcard").style.setProperty("--tc", t.color);
+  $("qWho").textContent = t.name;
+}
+function startTimer() {
+  clearInterval(timerId);
+  const el = $("qTimer");
+  if (!S.timer) { el.textContent = ""; return; }
+  let left = S.timer; el.textContent = left; el.classList.remove("low");
+  timerId = setInterval(() => {
+    left--; el.textContent = Math.max(left, 0);
+    el.classList.toggle("low", left <= 5);
+    if (left > 0 && left <= 5) sfx("tick");
+    if (left <= 0) { clearInterval(timerId); answer(null); }
+  }, 1000);
+}
+function answer(i) {
+  if (!Q || Q.done) return;
+  Q.done = true; clearInterval(timerId);
+  const btns = [...$("qChoices").children];
+  btns.forEach(b => b.disabled = true);
+  const ok = i != null && Q.choices[i] === Q.answer;
+  if (i != null && !ok) btns[i].classList.add("wrong");
+  const pl = Q.pl, t = S.teams[Q.team], r = $("qResult");
+  const half = pl.pts / 2;
+  const canSteal = !ok && S.steal && !Q.raid && !Q.stealing && S.teams.length > 1;
+  if (ok || !canSteal) btns.forEach((b, j) => { if (Q.choices[j] === Q.answer) b.classList.add("right"); });
+  let head, mini = "", good = ok;
+  if (ok && Q.raid) {
+    const victim = S.teams[S.owners[pl.id]];
+    victim.pts = Math.max(0, victim.pts - pl.pts); victim.land--;
+    t.pts += pl.pts; t.land++; S.owners[pl.id] = Q.team; S.locked[pl.id] = true;
+    head = `⚔️ Raid success! ${esc(t.name)} takes ${esc(pl.name)} from ${esc(victim.name)} (+${pl.pts})`;
+    mini = "This land is now locked 🔒. Nobody can raid it again.";
+  } else if (ok) {
+    const gain = Q.stealing ? half : pl.pts;
+    t.pts += gain; t.land++; S.owners[pl.id] = Q.team;
+    head = Q.stealing ? `🔁 Stolen! ${esc(pl.name)} belongs to ${esc(t.name)} (+${gain})` : `✅ Correct! ${esc(pl.name)} belongs to ${esc(t.name)} (+${gain})`;
+  } else if (Q.raid) {
+    t.pts = Math.max(0, t.pts - half);
+    head = `${i == null ? "⏰ Time is up!" : "❌ Raid failed!"} ${esc(t.name)} loses ${half} points. The answer is ${esc(Q.answer)}.`;
+  } else if (canSteal) {
+    const nxt = (Q.team + 1) % S.teams.length;
+    head = `${i == null ? "⏰ Time is up!" : "❌ Not this time."} Can ${esc(S.teams[nxt].name)} steal it?`;
+    mini = `Steal = answer the same question and win ${esc(pl.name)} for ${half} points.`;
+    $("qSteal").textContent = `🔁 ${S.teams[nxt].name} steals!`;
+    $("qSteal").style.background = S.teams[nxt].color;
+    $("qSteal").hidden = false;
+  } else {
+    head = `${i == null ? "⏰ Time is up!" : "❌ Not this time."} The answer is ${esc(Q.answer)}.`;
+  }
+  r.className = "result on " + (good ? "good" : "bad");
+  r.innerHTML = `<h3>${head}</h3>` + (canSteal || !Q.why ? "" : `<div class="why">${esc(Q.why)}</div>`) + (mini ? `<div class="mini">${mini}</div>` : "");
+  if (good) { sfx("good"); confetti(60); } else sfx("bad");
+  $("qCancel").hidden = true;
+  const over = gameOverAfterThisTurn();
+  $("qNext").textContent = canSteal ? "No steal, next team ▶" : over ? "See the winner 🏆" : "Next team ▶";
+  $("qNext").hidden = false;
+  (canSteal ? $("qSteal") : $("qNext")).focus({ preventScroll: true });
+}
+function gameOverAfterThisTurn() {
+  if (S.raid) {
+    if (S.turnsTaken + 1 >= S.rounds * S.teams.length) return true;
+    const free = PLACES.some(p => S.owners[p.id] == null);
+    const raidLeft = PLACES.some(p => S.owners[p.id] != null && !S.locked[p.id]);
+    return !free && !raidLeft;
+  }
+  return PLACES.every(p => S.owners[p.id] != null);
+}
+$("qSteal").onclick = () => {
+  if (!Q) return;
+  Q.stealing = true; Q.done = false; Q.team = (Q.team + 1) % S.teams.length;
+  setWho(S.teams[Q.team]);
+  [...$("qChoices").children].forEach(b => { if (!b.classList.contains("wrong")) b.disabled = false; });
+  $("qResult").className = "result"; $("qResult").innerHTML = "";
+  $("qSteal").hidden = true; $("qNext").hidden = true;
+  $("qMode").hidden = false; $("qMode").textContent = `🔁 Steal · ${pl2half(Q.pl)} points`;
+  startTimer();
+};
+const pl2half = pl => pl.pts / 2;
+$("qChoices").onclick = e => { const b = e.target.closest(".choice"); if (b) answer(+b.dataset.i); };
+$("qNext").onclick = () => {
+  const over = gameOverAfterThisTurn();
+  $("qOverlay").classList.remove("on"); Q = null;
+  S.turnsTaken++;
+  if (over) return finish();
+  S.turn = (S.turn + 1) % S.teams.length; renderBoard();
+};
+$("qCancel").onclick = () => { clearInterval(timerId); Q = null; $("qOverlay").classList.remove("on"); };
+document.addEventListener("keydown", e => {
+  if ($("gOverlay").classList.contains("on") && e.key === "Escape") return closeGuide();
+  if (!$("qOverlay").classList.contains("on") || !Q) return;
+  if (e.target.tagName === "INPUT") return;
+  const map = { "1": 0, "2": 1, "3": 2, "4": 3, "5": 4, a: 0, b: 1, c: 2, d: 3, e: 4 };
+  const k = e.key.toLowerCase();
+  if (!Q.done && k in map && map[k] < Q.choices.length && !$("qChoices").children[map[k]].disabled) answer(map[k]);
+  else if (Q.done && (e.key === "Enter" || e.key === " ") && document.activeElement.tagName !== "BUTTON") { e.preventDefault(); $("qNext").click(); }
+  else if (!Q.done && e.key === "Escape") $("qCancel").click();
+});
+
+/* ---------- End ---------- */
+function finish() {
+  clearInterval(timerId); $("qOverlay").classList.remove("on");
+  const ranked = S.teams.slice().sort((a, b) => b.pts - a.pts || b.land - a.land);
+  const top = ranked[0], tie = ranked.filter(t => t.pts === top.pts && t.land === top.land);
+  $("winTitle").textContent = tie.length > 1 ? "It’s a tie! Great explorers!" : `🏆 ${top.name} wins!`;
+  const medals = ["🥇", "🥈", "🥉", "🎖️"];
+  $("podium").innerHTML = ranked.map((t, i) =>
+    `<div class="team" style="--tc:${t.color}"><span class="medal">${medals[i]}</span><span class="dot"></span><span class="tn">${esc(t.name)}<br><span class="tl">${t.land} ${t.land === 1 ? "place" : "places"} on the island</span></span><span class="tp">${t.pts}</span></div>`).join("");
+  show("end"); sfx("win"); confetti(180);
+}
+$("finishBtn").onclick = () => { if (confirm("Finish the game now and show the winner?")) finish(); };
+$("againSame").onclick = startGame;
+$("newGame").onclick = () => { show("setup"); renderSetup(); };
+
+/* ---------- Guide ---------- */
+$("guideGrid").innerHTML = GUIDE.map(g => `<div class="gitem">${svg(g.s, g.t)}<h4>${g.t}</h4><p>${g.p}</p></div>`).join("");
+function openGuide() { $("gOverlay").classList.add("on"); $("gClose").focus({ preventScroll: true }); }
+function closeGuide() { $("gOverlay").classList.remove("on"); }
+$("openGuide").onclick = openGuide; $("guideBtn").onclick = openGuide; $("gClose").onclick = closeGuide;
+
+/* ---------- Sound (tiny Web Audio beeps, no files) ---------- */
+let ac = null;
+function tone(f, d, type = "sine", delay = 0, vol = .18) {
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    const o = ac.createOscillator(), g = ac.createGain(), t0 = ac.currentTime + delay;
+    o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, t0); g.gain.exponentialRampToValueAtTime(.001, t0 + d);
+    o.connect(g).connect(ac.destination); o.start(t0); o.stop(t0 + d);
+  } catch (_) { /* no audio */ }
+}
+function sfx(k) {
+  if (!S.sound) return;
+  if (k === "good") [523, 659, 784].forEach((f, i) => tone(f, .25, "triangle", i * .1));
+  else if (k === "bad") { tone(220, .35, "sawtooth", 0, .1); tone(165, .4, "sawtooth", .15, .1); }
+  else if (k === "tick") tone(880, .06, "square", 0, .06);
+  else if (k === "start") [392, 523].forEach((f, i) => tone(f, .2, "triangle", i * .12));
+  else if (k === "win") [523, 659, 784, 1047, 784, 1047].forEach((f, i) => tone(f, .3, "triangle", i * .13));
+}
+$("soundBtn").onclick = () => { S.sound = !S.sound; $("soundBtn").setAttribute("aria-pressed", S.sound); $("soundBtn").textContent = S.sound ? "🔊 Sound" : "🔇 Muted"; };
+
+/* ---------- Confetti ---------- */
+function confetti(count = 120) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = $("confetti"), x = c.getContext("2d");
+  c.hidden = false; c.width = innerWidth; c.height = innerHeight;
+  const cols = ["#e8402f", "#2f7fd6", "#17915f", "#ffc93c", "#9b4fd1", "#ff7a3d"];
+  const P = Array.from({ length: count }, () => ({ x: Math.random() * c.width, y: -20 - Math.random() * c.height * .4, vx: (Math.random() - .5) * 4, vy: 2 + Math.random() * 4, r: Math.random() * 6.28, s: 6 + Math.random() * 6, c: pick(cols) }));
+  let f = 0;
+  (function step() {
+    x.clearRect(0, 0, c.width, c.height);
+    P.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .05; p.r += .1; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); });
+    if (++f < 200) requestAnimationFrame(step); else { x.clearRect(0, 0, c.width, c.height); c.hidden = true; }
+  })();
+}
+
+renderSetup();
+(async function boot() {
+  // a link ending in #bo=<set id> or #units opens with those questions chosen
+  const h = (location.hash || "").slice(1);
+  if (h === UNITS) chosen = UNITS;
+  else if (h.startsWith("bo=")) chosen = decodeURIComponent(h.slice(3));
+  if (h) { prefSet(chosen); history.replaceState(null, "", location.pathname + location.search); }
+  $("libSel").onchange = onLibChange;
+  renderLib();
+  await loadLibList();
+  renderLib();
+  if (chosen !== UNITS) await loadLib(chosen);
+})();
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("../sw.js").catch(() => {});
+</script>
+</body>
+</html>

@@ -228,6 +228,10 @@ const GAMES = [
     builtin: [
       { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "bowling/#custom" },
     ] },
+  { id: "land", name: "Land Explorers", note: "Chọn đất trên đảo, đúng thì chiếm đất; ô 100 / 200 / 300 theo dạng câu", icon: "land-explorers/icon.svg", url: (id) => "land-explorers/#bo=" + encodeURIComponent(id),
+    builtin: [
+      { title: "Area & Length Units · Grade 5", note: "Đơn vị đo lớp 5 (m², ha, acre, km², km), câu tự sinh có hình", url: "land-explorers/#units" },
+    ] },
 ];
 
 let sets = [], game = null;
