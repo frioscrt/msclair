@@ -96,38 +96,32 @@
     };
   }
 
-  /* Sắp xếp và chia nhóm bộ câu hỏi: Môn → Lớp → Sách → Chapter → Unit (Review xếp sau các Unit).
-     Mọi trang có danh sách bộ đều dùng chung để thứ tự giống nhau. */
+  /* Sắp xếp và chia nhóm bộ câu hỏi: Chương trình → Môn → Lớp → Chapter → Unit (Review xếp sau các Unit).
+     Chương trình lấy từ trường "book": "E-project Math" → E-project. Mọi trang có danh sách bộ đều dùng chung. */
+  const PROG_ORDER = ["E-project", "Global Success", "Communication"];
   const SUBJ_ORDER = ["English", "Math", "Science", "Vietnamese"];
-  const SUBJ_VI = { English: "Tiếng Anh", Math: "Toán", Science: "Khoa học", Vietnamese: "Tiếng Việt" };
-  const subjName = (s, lang) => lang === "vi" ? (SUBJ_VI[s] || s || "Khác") : (s || "Other");
+  const program = (s) => PROG_ORDER.find((p) => new RegExp("^" + p.replace("-", "-?"), "i").test(String(s.book || "").trim())) || String(s.book || "").trim() || "Other";
+  const rank = (arr, x) => { const i = arr.indexOf(x); return i < 0 ? 99 : i; };
   const numAfter = (t, w) => { const m = String(t || "").match(new RegExp(w + "\\s*(\\d+)", "i")); return m ? +m[1] : 999; };
-  const sortKey = (s) => {
-    const si = SUBJ_ORDER.indexOf(s.subject);
-    return [si < 0 ? 99 : si, s.subject || "", parseInt(s.grade, 10) || 99, s.book || "",
-      numAfter(s.title, "chapter"), /^review/i.test(s.title || "") ? 998 : numAfter(s.title, "unit"), s.title || ""];
-  };
+  const sortKey = (s) => [rank(PROG_ORDER, program(s)), program(s), rank(SUBJ_ORDER, s.subject), s.subject || "", parseInt(s.grade, 10) || 99,
+    numAfter(s.title, "chapter"), /^review/i.test(s.title || "") ? 998 : numAfter(s.title, "unit"), s.title || ""];
   function sortSets(list) {
     const cmp = (a, b) => typeof a === "number" ? a - b : a.localeCompare(b, "vi", { numeric: true });
     return list.slice().sort((x, y) => { const a = sortKey(x), b = sortKey(y); for (let i = 0; i < a.length; i++) { const c = cmp(a[i], b[i]); if (c) return c; } return 0; });
   }
-  // [{ key, label, sets }] theo Môn + Lớp. lang "vi" cho trang kho, mặc định tiếng Anh cho game.
-  function groupSets(list, lang) {
+  // [{ key, prog, label, sets }]: mỗi nhóm là một Môn + Lớp trong một Chương trình. label ví dụ "Math · Grade 1".
+  function groupSets(list) {
     const out = [], by = {};
     for (const s of sortSets(list)) {
-      const key = (s.subject || "") + "|" + (s.grade || "");
-      if (!by[key]) {
-        const g = s.grade ? (lang === "vi" ? "lớp " : "Grade ") + s.grade : "";
-        by[key] = { key, label: [subjName(s.subject, lang), g].filter(Boolean).join(" · "), sets: [] };
-        out.push(by[key]);
-      }
+      const prog = program(s), key = prog + "|" + (s.subject || "") + "|" + (s.grade || "");
+      if (!by[key]) { by[key] = { key, prog, label: [s.subject, s.grade ? "Grade " + s.grade : ""].filter(Boolean).join(" · ") || "Other", sets: [] }; out.push(by[key]); }
       by[key].sets.push(s);
     }
     return out;
   }
-  // Các <optgroup> cho ô chọn bộ trong game. item(s) trả về nội dung một <option>.
+  // Các <optgroup> cho ô chọn bộ trong game, nhãn "E-project · Math · Grade 1". item(s) trả về nội dung một <option>.
   function setOptions(list, item) {
-    return groupSets(list).map((g) => `<optgroup label="${esc(g.label)}">${g.sets.map(item).join("")}</optgroup>`).join("");
+    return groupSets(list).map((g) => `<optgroup label="${esc(g.prog + " · " + g.label)}">${g.sets.map(item).join("")}</optgroup>`).join("");
   }
 
   /* Nội dung một nút đáp án: chữ, kèm hình bên phải nếu đáp án có hình. Game nào cũng gọi hàm này. */
@@ -146,5 +140,5 @@
     (document.head || document.documentElement).appendChild(st);
   } catch (e) {}
 
-  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML, sortSets, groupSets, setOptions, subjName };
+  window.KHO = { BASE, list, load, toMC, deck, imgURL, esc, optHTML, sortSets, groupSets, setOptions, program, PROG_ORDER };
 })();
