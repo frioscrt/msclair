@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chơi mà học</title>
+<title>Game Library</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -120,8 +120,8 @@ dialog textarea { width: 100%; min-height: 160px; font: 13px/1.4 ui-monospace, M
 <body>
 <main>
   <div class="top">
-    <div><h1>Kho game</h1><p>Chọn game, chọn bộ câu hỏi, rồi chơi trên màn hình lớn.</p></div>
-    <a class="back" href="../">← App học</a>
+    <div><h1>Game Library</h1><p>Pick a game, pick a question set, then play on the big screen.</p></div>
+    <a class="back" href="../">← All apps</a>
   </div>
   <!-- Mục Duyệt + Chìa khoá ẩn từ 26/11 (Claude tự duyệt). Mở lại bằng link có đuôi #duyet -->
   <nav id="mainNav" hidden>
@@ -132,10 +132,10 @@ dialog textarea { width: 100%; min-height: 160px; font: 13px/1.4 ui-monospace, M
 
   <!-- CHƠI -->
   <section id="tab-play">
-    <h2>1. Chọn game</h2>
+    <h2>1. Choose a game</h2>
     <div class="games" id="games"></div>
     <div id="pickSet" hidden>
-      <h2>2. Chọn bộ câu hỏi</h2>
+      <h2>2. Choose a question set</h2>
       <div class="filters" data-filters></div>
       <div class="rows" id="setRows"></div>
     </div>
@@ -226,31 +226,31 @@ const ls = {
 /* ---------- Game trong kho ---------- */
 // builtin: bộ câu hỏi có sẵn trong code của game (không nằm ở games/bo/)
 const GAMES = [
-  { id: "sea", name: "Sea Battle", note: "Bắn tàu, trả lời đúng mới được bắn", icon: "../sea-battle/icon.svg", url: (id) => "../sea-battle/#bo=" + encodeURIComponent(id),
+  { id: "sea", name: "Sea Battle", note: "Answer right to fire at the enemy ships", icon: "../sea-battle/icon.svg", url: (id) => "../sea-battle/#bo=" + encodeURIComponent(id),
     builtin: [
-      { title: "Triangles · Grade 5", note: "Tam giác lớp 5, câu tự sinh có hình", url: "../sea-battle/#triangles" },
-      { title: "Angles · Grade 3", note: "Góc lớp 3, có hình góc và đồng hồ", url: "../sea-battle/#angles" },
-      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "../sea-battle/#custom" },
+      { title: "Triangles · Grade 5", note: "Grade 5 triangles, auto-made questions with pictures", url: "../sea-battle/#triangles" },
+      { title: "Angles · Grade 3", note: "Grade 3 angles, with angle and clock pictures", url: "../sea-battle/#angles" },
+      { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "../sea-battle/#custom" },
     ] },
-  { id: "box", name: "Mystery Box", note: "Chọn hộp, trả lời đúng mới được mở", icon: "mystery-box/icon.svg", url: (id) => "mystery-box/#bo=" + encodeURIComponent(id),
+  { id: "box", name: "Mystery Box", note: "Pick a box, answer right to open it", icon: "mystery-box/icon.svg", url: (id) => "mystery-box/#bo=" + encodeURIComponent(id),
     builtin: [
-      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "mystery-box/#custom" },
+      { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "mystery-box/#custom" },
     ] },
-  { id: "boat", name: "Boat Race", note: "Trả lời đúng thì thuyền tiến, về đích trước thắng", icon: "boat-race/icon.svg", url: (id) => "boat-race/#bo=" + encodeURIComponent(id),
+  { id: "boat", name: "Boat Race", note: "Answer right to move your boat, first to the finish wins", icon: "boat-race/icon.svg", url: (id) => "boat-race/#bo=" + encodeURIComponent(id),
     builtin: [
-      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "boat-race/#custom" },
+      { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "boat-race/#custom" },
     ] },
-  { id: "bowl", name: "Bowling", note: "Trả lời đúng thì được ném bóng, tự ngắm và chọn lực", icon: "bowling/icon.svg", url: (id) => "bowling/#bo=" + encodeURIComponent(id),
+  { id: "bowl", name: "Bowling", note: "Answer right to bowl, aim and choose your power", icon: "bowling/icon.svg", url: (id) => "bowling/#bo=" + encodeURIComponent(id),
     builtin: [
-      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "bowling/#custom" },
+      { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "bowling/#custom" },
     ] },
-  { id: "land", name: "Land Explorers", note: "Chọn đất trên đảo, đúng thì chiếm đất; ô 100 / 200 / 300 theo dạng câu", icon: "land-explorers/icon.svg", url: (id) => "land-explorers/#bo=" + encodeURIComponent(id),
+  { id: "land", name: "Land Explorers", note: "Pick a place, answer right to claim it; 100 / 200 / 300 points by question type", icon: "land-explorers/icon.svg", url: (id) => "land-explorers/#bo=" + encodeURIComponent(id),
     builtin: [
-      { title: "Area & Length Units · Grade 5", note: "Đơn vị đo lớp 5 (m², ha, acre, km², km), câu tự sinh có hình", url: "land-explorers/#units" },
+      { title: "Area & Length Units · Grade 5", note: "Grade 5 units (m², ha, acre, km², km), auto-made questions with pictures", url: "land-explorers/#units" },
     ] },
-  { id: "mole", name: "Whack-a-Mole", note: "Chọn ổ chuột, đúng thì được cầm búa đập chuột; có 3 mức Easy (lớp 1) · Medium · Hard", icon: "whack-a-mole/icon.svg", url: (id) => "whack-a-mole/#bo=" + encodeURIComponent(id),
+  { id: "mole", name: "Whack-a-Mole", note: "Pick a hole, answer right to whack the moles; 3 levels: Easy (Grade 1) · Medium · Hard", icon: "whack-a-mole/icon.svg", url: (id) => "whack-a-mole/#bo=" + encodeURIComponent(id),
     builtin: [
-      { title: "My questions", note: "Câu cô tự gõ trong game (chỉ lưu trên máy đó)", url: "whack-a-mole/#custom" },
+      { title: "My questions", note: "Questions you type in the game (saved on that device only)", url: "whack-a-mole/#custom" },
     ] },
 ];
 
@@ -278,13 +278,13 @@ async function loadSet(id) {
 
 async function refresh() {
   try { sets = mergeRecent(await KHO.list({ all: true })); }
-  catch (e) { sets = []; $("setRows").innerHTML = $("pendingRows").innerHTML = `<p class="err">Không tải được danh sách bộ câu hỏi. Kiểm tra mạng rồi tải lại trang.</p>`; }
+  catch (e) { sets = []; $("setRows").innerHTML = $("pendingRows").innerHTML = `<p class="err">Can't load the question sets. Check the internet, then reload the page.</p>`; }
   const n = sets.filter((s) => s.status === "pending").length;
   $("pendingBadge").hidden = !n; $("pendingBadge").textContent = n;
   renderGames(); renderReviewList();
 }
 const fmtDate = (iso) => { if (!iso) return ""; const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString("vi-VN"); };
-const shortLine = (s) => s.n ? s.n + " câu" : ""; // tiêu đề nhóm đã ghi chương trình, môn, lớp
+const shortLine = (s) => s.n ? s.n + " questions" : ""; // tiêu đề nhóm đã ghi chương trình, môn, lớp
 const setLine = (s) => [s.subject, s.grade ? "lớp " + s.grade : "", s.book, s.n ? s.n + " câu" : ""].filter(Boolean).join(" · ");
 
 /* ---------- Lọc + tìm bộ câu hỏi (dùng chung cho mục Chơi và Duyệt) ---------- */
@@ -312,7 +312,7 @@ function renderFilters() {
     (grades.length > 1 ? `<div class="chips">${chip("grade", "", "All grades")}${grades.map((g) => chip("grade", g, "Grade " + g)).join("")}</div>` : "");
   // Ô tìm tạo một lần rồi giữ nguyên, để bộ gõ tiếng Việt không bị ngắt khi đang gõ
   document.querySelectorAll("[data-filters]").forEach((box) => {
-    if (!box.firstElementChild) box.innerHTML = `<div data-chips></div><input type="search" data-q placeholder="Tìm tên bộ, ví dụ: unit 5, colours, shapes…" aria-label="Tìm bộ câu hỏi">`;
+    if (!box.firstElementChild) box.innerHTML = `<div data-chips></div><input type="search" data-q placeholder="Search sets, e.g. unit 5, colours, shapes…" aria-label="Search question sets">`;
     box.querySelector("[data-chips]").innerHTML = html;
     const inp = box.querySelector("[data-q]"); if (inp.value !== flt.q) inp.value = flt.q;
   });
@@ -323,7 +323,7 @@ document.addEventListener("input", (e) => { if (e.target.matches("[data-q]")) se
 // Danh sách chia nhóm theo Môn · Lớp, mỗi nhóm có tiêu đề
 const groupedRows = (list, row) => KHO.groupSets(list).map((g, i, all) => (i === 0 || all[i - 1].prog !== g.prog ? `<div class="prog">${esc(g.prog)}</div>` : "") +
   `<div class="grp">${esc(g.label)} <small>(${g.sets.length})</small></div>` + g.sets.map(row).join("")).join("");
-const noMatch = `<div class="empty">Không có bộ nào khớp. Bấm "All subjects" / "All books" hoặc xoá chữ trong ô tìm.</div>`;
+const noMatch = `<div class="empty">No sets match. Tap "All subjects" / "All books" or clear the search box.</div>`;
 const filtering = () => !!(flt.subj || flt.prog || flt.grade || flt.q.trim());
 
 function renderGames() {
@@ -336,9 +336,9 @@ function renderGames() {
   const builtin = (g.builtin || []).filter((b) => !flt.subj && !flt.prog && !flt.grade && fold(b.title + " " + b.note).includes(fold(flt.q.trim())));
   renderFilters();
   $("setRows").innerHTML =
-    (builtin.length ? `<div class="grp">Có sẵn trong game</div>` + builtin.map((b) => `<div class="row"><div class="grow"><b><span class="tag builtin">có sẵn</span>${esc(b.title)}</b><small>${esc(b.note)}</small></div><a class="btn alt" href="${b.url}">Chơi</a></div>`).join("") : "") +
-    groupedRows(lib, (s) => `<div class="row"><div class="grow"><b>${esc(s.title)}</b><small>${esc(shortLine(s))}</small></div><a class="btn" href="${g.url(s.id)}">Chơi</a></div>`) +
-    (!all.length ? `<div class="empty">Kho chưa có bộ câu hỏi nào.</div>` : !lib.length && !builtin.length ? noMatch : "");
+    (builtin.length ? `<div class="grp">Built into the game</div>` + builtin.map((b) => `<div class="row"><div class="grow"><b><span class="tag builtin">built-in</span>${esc(b.title)}</b><small>${esc(b.note)}</small></div><a class="btn alt" href="${b.url}">Play</a></div>`).join("") : "") +
+    groupedRows(lib, (s) => `<div class="row"><div class="grow"><b>${esc(s.title)}</b><small>${esc(shortLine(s))}</small></div><a class="btn" href="${g.url(s.id)}">Play</a></div>`) +
+    (!all.length ? `<div class="empty">No question sets yet.</div>` : !lib.length && !builtin.length ? noMatch : "");
 }
 $("games").onclick = (e) => { const b = e.target.closest(".game"); if (!b || b.disabled) return; game = b.dataset.g; renderGames(); $("pickSet").scrollIntoView({ behavior: "smooth", block: "nearest" }); };
 
