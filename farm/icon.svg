@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fdcff"/><stop offset="1" stop-color="#e3f6ff"/></linearGradient></defs>
+<rect width="512" height="512" rx="112" fill="url(#s)"/><circle cx="380" cy="130" r="62" fill="#ffd23f"/>
+<path d="M0 300 Q256 230 512 300 V512 H0Z" fill="#86c75d"/><path d="M0 360 Q256 300 512 360 V512 H0Z" fill="#5fa53c"/>
+<g fill="#a8703f"><rect x="70" y="390" width="110" height="60" rx="18"/><rect x="200" y="390" width="110" height="60" rx="18"/><rect x="330" y="390" width="110" height="60" rx="18"/></g>
+<path d="M150 300 L230 230 L310 300 V370 H150Z" fill="#e8553b"/><rect x="165" y="300" width="130" height="70" fill="#fff3d6"/><rect x="212" y="320" width="36" height="50" fill="#a8703f"/><path d="M140 305 L230 222 L320 305" stroke="#b33a24" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="#3fae4a"><path d="M125 395 q-10 -30 0 -45 q10 15 0 45z"/><path d="M255 395 q-10 -30 0 -45 q10 15 0 45z"/><path d="M385 395 q-10 -30 0 -45 q10 15 0 45z"/></g></svg>

@@ -3,6 +3,7 @@
 Nơi phát hành các app học của cô Clair (GitHub Pages).
 
 - `games/` — Kho game cả lớp. Link: https://frioscrt.github.io/msclair/games/ (link cũ `/kho/` tự chuyển sang)
+- `farm/` — Sunny Farm, game nông trại giải trí cho 3 bé ở nhà và cô (chung 1 iPad, ghé trại nhau, tặng quà, hái trộm). Không nằm trong kho game. Link: https://frioscrt.github.io/msclair/farm/
 - `toan3/` — Toán lớp 3, vừa chơi vừa học (bản 1.0.0). Link: https://frioscrt.github.io/msclair/toan3/
 - `sea-battle/` — Triangle Sea Battle, game bắn tàu cho cả lớp (tam giác lớp 5, tiếng Anh). Link: https://frioscrt.github.io/msclair/sea-battle/ · bản góc lớp 3: https://frioscrt.github.io/msclair/sea-battle/#angles
 
