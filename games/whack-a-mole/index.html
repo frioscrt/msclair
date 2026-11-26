@@ -241,10 +241,21 @@ button.hill:hover { transform: translateY(-4px); }
 .whole { position: relative; min-width: 0; min-height: 0; cursor: pointer; }
 .whole .pit { position: absolute; left: 4%; right: 4%; top: 64%; height: 28%; border-radius: 50%; background: #4a2c17; box-shadow: inset 0 10px 0 #2e1a0c; }
 .whole .mwrap { position: absolute; left: 6%; right: 6%; top: 0; bottom: 22%; overflow: hidden; pointer-events: none; }
-.whole .mole { position: absolute; left: 0; right: 0; bottom: 0; height: 94%; transform: translateY(105%); transition: transform .2s ease-out; }
-.whole .mole svg { width: 100%; height: 100%; display: block; }
-.whole.up .mole { transform: translateY(0); }
-.whole.hit .mole { transition: transform .28s ease-in .22s; transform: translateY(105%); }
+.whole .mole, .whole .bomb { position: absolute; left: 0; right: 0; bottom: 0; height: 94%; transform: translateY(105%); transition: transform .2s ease-out; }
+.whole .mole svg, .whole .bomb svg { width: 100%; height: 100%; display: block; }
+.whole.up .mole, .whole.up .bomb { transform: translateY(0); }
+.whole.hit .mole, .whole.hit .bomb { transition: transform .28s ease-in .22s; transform: translateY(105%); }
+.whole .bomb, .whole.kb .mole { display: none; }
+.whole.kb .bomb { display: block; }
+.whole.kg .mole svg { filter: sepia(1) saturate(3) hue-rotate(8deg) brightness(1.3) drop-shadow(0 0 6px #fff3a0); }
+.float1.minus { color: var(--bad); }
+.float1.gold { color: #b07800; }
+.wgrid.boom { animation: nope .4s; }
+.lvl-art { display: flex; gap: 6%; justify-content: center; align-items: flex-end; }
+.lvl-art > div { width: 34%; text-align: center; font: 700 clamp(1.2rem, 3vw, 2rem) Fredoka, Nunito, sans-serif; }
+.lvl-art svg { width: 100%; height: auto; display: block; }
+.lvl-art .g svg { filter: sepia(1) saturate(3) hue-rotate(8deg) brightness(1.3); }
+.lvl-art .g b { color: #b07800; } .lvl-art .b b { color: var(--bad); }
 .whole .lip { position: absolute; left: -2%; right: -2%; top: 76%; height: 26%; pointer-events: none; }
 .whole .lip svg { width: 100%; height: 100%; display: block; }
 .m-hit { display: none; }
@@ -429,6 +440,7 @@ button.hill:hover { transform: translateY(-4px); }
       <div class="field" id="teamNamesField"><span class="label">Team names</span><div class="team-names" id="teamNames"></div></div>
       <div class="field"><span class="label">Mole hills</span><div class="seg" id="segHills"></div></div>
       <div class="field"><span class="label">Whack time</span><div class="seg" id="segWhack"></div></div>
+      <div class="field"><span class="label">Level</span><div class="seg" id="segLevel"></div></div>
       <div class="field"><span class="label">Questions</span><div class="seg" id="segSet"></div>
         <div class="lib-row" id="libRow" hidden><select id="libSel" aria-label="Question set from the library"></select><span id="libStatus"></span></div></div>
       <div class="field"><span class="label">How to play</span><div class="seg" id="segIntro"></div></div>
@@ -559,15 +571,23 @@ const SIZES = {
 const WHACKS = [10, 12, 15];
 const TEAM_DEFAULT = [["Stars", "#e0457b"], ["Rockets", "#2563c9"], ["Turtles", "#178a5c"], ["Tigers", "#e0661b"]];
 const STORE = "whack-mole-v1";
-// Mole speed, slow enough for grade 1
-const UP_MS = 1600, GAP_MIN = 750, GAP_MAX = 1100, MAX_UP = 2;
+// Mole speed per level. Easy = the old speed, slow enough for grade 1 on a laggy TV.
+// up/gap go from the first value at GO to the second value at the end (moles speed up).
+// bomb = chance a pop is a bomb (−2), gold = chance it is a golden mole (+3).
+const LEVELS = {
+  easy:   { label: "Easy",   note: "slow · grade 1",   up: [1600, 1600], gap: [[750, 1100], [750, 1100]], max: 2, bomb: 0,   gold: 0 },
+  medium: { label: "Medium", note: "faster · bombs",   up: [1150, 900],  gap: [[550, 850], [450, 700]],   max: 2, bomb: .15, gold: .06 },
+  hard:   { label: "Hard",   note: "fastest · 3 at once", up: [850, 600], gap: [[400, 620], [280, 450]], max: 3, bomb: .22, gold: .08 },
+};
+const BOMB = 2, GOLD = 3;
+const lvl = () => LEVELS[S && S.level] || LEVELS.easy;
 const NOISE_MINUS = 2, QUIET = 2;
 
 const store = {
   get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
 };
-let prefs = Object.assign({ teams: 2, hills: 12, whack: 12, set: "lib", lib: "", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true, intro: 1 }, store.get(STORE + "-prefs") || {});
+let prefs = Object.assign({ teams: 2, hills: 12, whack: 12, level: "easy", set: "lib", lib: "", names: TEAM_DEFAULT.map(t => t[0]), custom: "", sound: true, intro: 1 }, store.get(STORE + "-prefs") || {});
 let S = null;               // game state (saved on this device)
 let aim = null, curQ = null, locked = false, newArm = 0, endArm = 0;
 
@@ -582,6 +602,17 @@ const teamStyle = (c) => `--tc:${c};--tc-l:${mixHex(c, "#ffffff", .87)};--tc-m:$
    PICTURES (drawn here, no image files)
    ===================================================================== */
 const INK = "#2b2340";
+function bombSVG() {
+  return `<svg viewBox="0 0 100 110" aria-hidden="true">
+    <path d="M62 30q8-16 22-14" fill="none" stroke="#8d5d34" stroke-width="5" stroke-linecap="round"/>
+    <g class="spark"><circle cx="86" cy="15" r="7" fill="#ffc93c"/><path d="M86 2v6M86 22v6M73 15h6M93 15h6M77 6l4 4M91 20l4 4M95 6l-4 4M81 20l-4 4" stroke="#e8452c" stroke-width="3" stroke-linecap="round"/></g>
+    <rect x="44" y="24" width="22" height="14" rx="4" fill="#555" stroke="${INK}" stroke-width="3.5" transform="rotate(20 55 31)"/>
+    <circle cx="48" cy="70" r="36" fill="#3a3550" stroke="${INK}" stroke-width="3.5"/>
+    <path d="M28 56q8-14 22-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+    <path d="M33 66l8 8M41 66l-8 8M55 66l8 8M63 66l-8 8" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <path d="M38 88q10-6 20 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  </svg>`;
+}
 function moleSVG() {
   return `<svg viewBox="0 0 100 110" aria-hidden="true">
     <path d="M14 112V54C14 24 30 6 50 6S86 24 86 54v58z" fill="#8a5a3b" stroke="${INK}" stroke-width="3.5"/>
@@ -687,7 +718,7 @@ function setLabel(set) {
 function newGame() {
   const n = SIZES[prefs.hills] ? +prefs.hills : 12;
   S = {
-    n, set: prefs.set, lib: prefs.lib, whack: WHACKS.includes(+prefs.whack) ? +prefs.whack : 12,
+    n, set: prefs.set, lib: prefs.lib, whack: WHACKS.includes(+prefs.whack) ? +prefs.whack : 12, level: LEVELS[prefs.level] ? prefs.level : "easy",
     hills: Array.from({ length: n }, () => ({ done: false, ok: false, by: -1, n: 0 })),
     teams: Array.from({ length: prefs.teams }, (_, i) => ({ name: (prefs.names[i] || TEAM_DEFAULT[i][0]).slice(0, 18), color: TEAM_DEFAULT[i][1], pts: 0, right: 0, wrong: 0, best: 0, noise: 0, skip: 0 })),
     turn: 0, q: 0, over: false, pend: null,
@@ -720,7 +751,7 @@ function renderSide() {
 function render(just) { renderBoard(just); renderSide(); }
 
 function showGame() {
-  $("setName").textContent = setLabel(S.set);
+  $("setName").textContent = [setLabel(S.set), S.level && S.level !== "easy" ? lvl().label : ""].filter(Boolean).join(" · ");
   document.title = "Whack-a-Mole" + (setLabel(S.set) ? " · " + setLabel(S.set) : "");
   $("setup").hidden = true; $("game").hidden = false;
   stopWhack();
@@ -793,7 +824,8 @@ function swapQuestion() { S.q = Math.max(0, S.q - 1); openQuestion(); }
 
 /* =====================================================================
    WHACK SCREEN
-   9 holes. Moles pop up one or two at a time. Tap a mole = +1.
+   9 holes. Moles pop up one to three at a time (by level). Tap a mole = +1.
+   Medium/Hard also have golden moles (+3) and bombs (−2).
    ===================================================================== */
 let W = null;
 function stopWhack() {
@@ -804,11 +836,11 @@ function openWhack(hill) {
   stopWhack();
   const t = S.teams[S.turn];
   aim = null; curQ = null;
-  W = { hill, hits: 0, phase: "intro", holes: Array.from({ length: 9 }, () => ({ up: false, hit: false, until: 0 })), next: 0, last: -1, raf: 0, tm: [], end: 0 };
+  W = { hill, hits: 0, pts: 0, gold: 0, bombs: 0, phase: "intro", holes: Array.from({ length: 9 }, () => ({ up: false, hit: false, until: 0 })), next: 0, last: -1, raf: 0, tm: [], end: 0 };
   $("wOverlay").style.setProperty("--tc", t.color);
   $("wTeam").textContent = teamName(t); $("wTeam").style.setProperty("--tc", t.color);
   $("wHill").textContent = "Hill " + (hill + 1);
-  $("wGrid").innerHTML = W.holes.map((_, i) => `<div class="whole" data-h="${i}"><div class="pit"></div><div class="mwrap"><div class="mole">${moleSVG()}</div></div><div class="lip">${lipSVG()}</div></div>`).join("");
+  $("wGrid").innerHTML = W.holes.map((_, i) => `<div class="whole" data-h="${i}"><div class="pit"></div><div class="mwrap"><div class="mole">${moleSVG()}</div><div class="bomb">${bombSVG()}</div></div><div class="lip">${lipSVG()}</div></div>`).join("");
   setCount(0, false);
   setBar(1);
   $("wOverlay").hidden = false;
@@ -844,20 +876,26 @@ function startPlay() {
 function loop(now) {
   if (!W || W.phase !== "play") return;
   setBar(Math.max(0, W.end - now) / (S.whack * 1000));
+  const L = lvl(), p = Math.min(1, (now - W.start) / (S.whack * 1000)), mix = (a, b) => Math.round(a + (b - a) * p);
   let upCount = 0;
   W.holes.forEach((h, i) => {
     if (h.up && now >= h.until) { h.up = false; h.hit = false; holeEl(i).classList.remove("up", "hit"); }
     if (h.up) upCount++;
   });
-  if (now >= W.next && now < W.end - 700 && upCount < MAX_UP) {
+  if (now >= W.next && now < W.end - 700 && upCount < L.max) {
     const free = W.holes.map((h, i) => i).filter(i => !W.holes[i].up && i !== W.last);
     if (free.length) {
-      const i = pick(free), h = W.holes[i];
-      Object.assign(h, { up: true, hit: false, until: now + UP_MS });
-      holeEl(i).classList.remove("hit"); holeEl(i).classList.add("up");
+      const i = pick(free), h = W.holes[i], r = Math.random();
+      // never a bomb when it would be the only thing up, so there is always a mole to hit
+      const kind = r < L.gold ? "gold" : r < L.gold + L.bomb && upCount > 0 ? "bomb" : "mole";
+      Object.assign(h, { up: true, hit: false, kind, until: now + mix(L.up[0], L.up[1]) * (kind === "gold" ? .8 : 1) });
+      const el = holeEl(i);
+      el.classList.remove("hit", "kb", "kg");
+      if (kind === "bomb") el.classList.add("kb"); else if (kind === "gold") el.classList.add("kg");
+      void el.offsetWidth; el.classList.add("up");
       W.last = i; sfx("pop");
     }
-    W.next = now + rand(GAP_MIN, GAP_MAX);
+    W.next = now + rand(mix(L.gap[0][0], L.gap[1][0]), mix(L.gap[0][1], L.gap[1][1]));
   }
   if (now >= W.end) { finishWhack(); return; }
   W.raf = requestAnimationFrame(loop);
@@ -872,10 +910,13 @@ function whackAt(e) {
   if (!h.up || h.hit) return;
   h.hit = true; h.until = performance.now() + 520;
   el.classList.add("hit");
-  W.hits++;
-  setCount(W.hits, true);
-  sfx("bop");
-  const f = document.createElement("span"); f.className = "float1"; f.textContent = "+1"; el.appendChild(f);
+  let add = 1;
+  if (h.kind === "bomb") { add = -BOMB; W.bombs++; sfx("boom"); const g = $("wGrid"); g.classList.remove("boom"); void g.offsetWidth; g.classList.add("boom"); }
+  else if (h.kind === "gold") { add = GOLD; W.gold++; sfx("praise"); }
+  else { W.hits++; sfx("bop"); }
+  W.pts = Math.max(0, W.pts + add);
+  setCount(W.pts, true);
+  const f = document.createElement("span"); f.className = "float1" + (add < 0 ? " minus" : add > 1 ? " gold" : ""); f.textContent = (add > 0 ? "+" : "−") + Math.abs(add); el.appendChild(f);
   const b = document.createElement("span"); b.className = "bonk"; b.innerHTML = STAR; el.appendChild(b);
   setTimeout(() => { f.remove(); b.remove(); }, 850);
 }
@@ -891,7 +932,11 @@ function finishWhack() {
   cancelAnimationFrame(W.raf);
   setBar(0);
   W.holes.forEach((h, i) => { h.up = false; holeEl(i).classList.remove("up"); });
-  const t = S.teams[S.turn], hill = W.hill, n = W.hits, before = t.pts;
+  const t = S.teams[S.turn], hill = W.hill, n = W.pts, before = t.pts;
+  const parts = [`${W.hits} mole${W.hits === 1 ? "" : "s"}`];
+  if (W.gold) parts.push(`${W.gold} gold`);
+  if (W.bombs) parts.push(`${W.bombs} bomb${W.bombs === 1 ? "" : "s"} −${W.bombs * BOMB}`);
+  const detail = S.level && S.level !== "easy" ? `<p class="who">${parts.join(" · ")}</p>` : "";
   t.pts += n; t.best = Math.max(t.best || 0, n);
   Object.assign(S.hills[hill], { done: true, ok: true, by: S.turn, n });
   S.pend = null; save();
@@ -899,7 +944,7 @@ function finishWhack() {
   st.className = "wstage dim";
   st.innerHTML = `<div class="wresult" style="${teamStyle(t.color)}"><span class="tu">Time's up!</span>
     <span class="chip">+${n} ${moleSVG()}</span>
-    <p class="who">${esc(teamName(t))}: ${before} → ${t.pts}</p>
+    ${detail}    <p class="who">${esc(teamName(t))}: ${before} → ${t.pts}</p>
     <button class="btn-big" id="btnWOk">Continue</button></div>`;
   sfx(n ? "win" : "bad");
   if (n >= 8) confetti();
@@ -1024,13 +1069,16 @@ function introSlides() {
     <text class="a-plus" x="150" y="50" text-anchor="middle" font-family="Fredoka, sans-serif" font-size="46" font-weight="700" fill="#17915f" stroke="#fff" stroke-width="2">+1</text></svg>`;
   const art4 = `<div class="cards-art"><div class="c1"><small>1st time</small>Warning</div><div class="c2"><small>2nd time</small>−${NOISE_MINUS} points</div><div class="c3"><small>3rd time</small>Skip a turn</div><div class="c4"><small>Quiet &amp; kind</small>+${QUIET} points</div></div>`;
   const art5 = `<div class="pts-list"><div>Right answer <b>get the hammer</b></div><div>Each mole you hit <b>+1</b></div><div>Wrong answer <b>next team</b></div></div>`;
-  return [
+  const art6 = `<div class="lvl-art"><div class="g">${moleSVG()}<b>+${GOLD}</b></div><div class="b">${bombSVG()}<b>−${BOMB}</b></div></div>`;
+  const slides = [
     ["Pick a mole hill!", ["On your turn, come and touch a hill."], art1],
     ["Answer the question", ["Right answer: you get the hammer!", "Wrong answer: next team."], art2],
     ["Whack the moles!", ["Touch the moles as fast as you can.", "Each mole = 1 point. Watch the bar!"], art3],
+    S && S.level && S.level !== "easy" ? [lvl().label + " level", [`Golden mole = +${GOLD} points!`, `Don't hit the bomb: −${BOMB} points.`], art6] : null,
     ["Teacher's cards", ["Too noisy? The teacher gives your team a card.", `Quiet and kind teams get +${QUIET} points!`], art4],
     ["How to win", ["When all the hills are done, the game ends.", "The team with the most points wins!"], art5],
   ];
+  return slides.filter(Boolean);
 }
 let iIdx = 0, iAfter = null;
 function openIntro(after) {
@@ -1074,6 +1122,7 @@ function sfx(kind) {
     else if (kind === "hammer") { tone(300, 0, .35, "sawtooth", .08, 900); tone(1400, .4, .25, "square", .12); tone(2100, .42, .4, "triangle", .14); tone(1400, 1.1, .2, "square", .1); tone(2100, 1.12, .35, "triangle", .12); }
     else if (kind === "tick") { tone(880, 0, .12, "square", .12); }
     else if (kind === "go") { tone(1320, 0, .35, "square", .14); tone(1760, .05, .4, "triangle", .14); }
+    else if (kind === "boom") { tone(120, 0, .4, "sawtooth", .25, 40); tone(80, .05, .5, "square", .2, 30); }
     else if (kind === "pop") { tone(420, 0, .09, "sine", .1, 760); }
     else if (kind === "bop") { tone(160, 0, .14, "square", .3, 60); tone(1300, .01, .12, "triangle", .14, 1900); }
     else if (kind === "card") { tone(2100, 0, .14, "sine", .18); tone(2100, .2, .4, "sine", .18); }
@@ -1106,6 +1155,7 @@ function renderSetup() {
   seg("segTeams", [[1, "Whole class"], [2, "2 teams"], [3, "3 teams"], [4, "4 teams"]], prefs.teams, v => { prefs.teams = +v; savePrefs(); renderSetup(); });
   seg("segHills", Object.entries(SIZES).map(([k, s]) => [k, s.label, s.note]), prefs.hills, v => { prefs.hills = +v; savePrefs(); renderSetup(); });
   seg("segWhack", WHACKS.map(t => [t, t + " seconds"]), prefs.whack, v => { prefs.whack = +v; savePrefs(); renderSetup(); });
+  seg("segLevel", Object.entries(LEVELS).map(([k, l]) => [k, l.label, l.note]), prefs.level, v => { prefs.level = v; savePrefs(); renderSetup(); });
   seg("segSet", [["lib", "Library", "pick a set"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
   seg("segIntro", [[1, "Show before the game"], [0, "Skip"]], prefs.intro, v => { prefs.intro = +v; savePrefs(); renderSetup(); });
   $("teamNamesField").hidden = prefs.teams === 1;
