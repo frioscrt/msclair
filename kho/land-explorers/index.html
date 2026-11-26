@@ -195,6 +195,83 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
 .podium .team { font-size: 1.3rem; padding: 14px; }
 .podium .medal { font-family: var(--display); font-size: 1.6rem; width: 1.6em; }
 #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 40; width: 100%; height: 100%; }
+
+/* ---------- v2: my questions, treasure, teacher, how to play ---------- */
+.link { background: none; border: 0; color: var(--ink-soft); text-decoration: underline; font-weight: 800; padding: 4px; }
+details.custom { margin-top: 12px; border: 2px dashed var(--line); border-radius: 14px; padding: 10px 12px; background: #fff; }
+details.custom summary { cursor: pointer; font-weight: 800; font-size: 1.05rem; }
+details.custom p { margin: 8px 0; color: var(--ink-soft); font-size: .95rem; line-height: 1.45; }
+details.custom code { background: var(--paper); padding: 1px 5px; border-radius: 5px; font-size: .9rem; }
+#customText { width: 100%; min-height: 130px; font: 600 .95rem/1.45 ui-monospace, Menlo, Consolas, monospace; border: 2px solid var(--line); border-radius: 10px; padding: 8px; color: var(--ink); background: #fff; }
+.btn:disabled { opacity: .5; cursor: default; }
+.tile .bonus {
+  position: absolute; top: 10px; left: 10px; z-index: 3; background: #fff3c4; color: #8a5a00; border: 2px solid var(--gold);
+  border-radius: 999px; padding: 1px 9px; font-weight: 900; font-size: .95rem; box-shadow: 0 2px 0 #c99500;
+}
+.tile.treasure { box-shadow: 0 5px 0 #d8c08a, 0 0 0 4px var(--gold); animation: glow 1.6s ease-in-out infinite alternate; }
+@keyframes glow { to { box-shadow: 0 5px 0 #d8c08a, 0 0 0 4px var(--gold), 0 0 22px 6px rgba(255,201,60,.75); } }
+.qhead .btag { background: #fff3c4; border: 2px solid var(--gold); padding: 1px 12px; border-radius: 999px; font-weight: 900; color: #8a5a00; }
+.team .adj { display: block; font-size: .8rem; color: var(--ink-soft); }
+.team .nb { display: inline-block; margin-top: 2px; background: var(--gold); color: #5a3d00; border-radius: 999px; padding: 0 7px; font-size: .75rem; font-weight: 900; }
+.tbox { width: min(980px, 100%); }
+.tbox h2 { font-size: clamp(1.8rem, 3.4vw, 2.4rem); margin-bottom: 6px; }
+.tladder { margin: 0 0 12px; color: var(--ink-soft); font-size: 1rem; line-height: 1.45; }
+.tladder b { color: var(--ink); }
+.trows { display: flex; flex-direction: column; gap: 8px; }
+.trow { display: grid; grid-template-columns: minmax(130px, 1.1fr) auto auto; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 16px; background: #fff; border: 3px solid var(--tc); }
+.trow .tn { font-family: var(--display); font-weight: 600; font-size: 1.5rem; color: var(--tc); min-width: 0; overflow-wrap: anywhere; }
+.trow .tn small { display: block; font-family: var(--body); font-size: .8rem; color: var(--ink-soft); font-weight: 800; }
+.tbtn { border: 3px solid var(--ink); border-radius: 14px; padding: 10px 14px; font-weight: 900; font-size: 1.1rem; background: #fff; box-shadow: 0 4px 0 var(--ink); line-height: 1.1; }
+.tbtn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.tbtn small { display: block; font-size: .7rem; font-weight: 800; opacity: .8; }
+.tbtn.noisy { background: var(--gold); }
+.tbtn.good { background: #2ecc71; color: #fff; }
+.tbtn.sm { padding: 6px 10px; font-size: .95rem; box-shadow: 0 3px 0 var(--ink); }
+.tmore { display: flex; gap: 6px; flex-wrap: wrap; grid-column: 1 / -1; justify-content: flex-end; }
+.tmore span { align-self: center; font-size: .8rem; color: var(--ink-soft); font-weight: 800; margin-right: 4px; }
+@media (max-width: 640px) { .trow { grid-template-columns: 1fr 1fr; } .trow .tn { grid-column: 1 / -1; } }
+.fxlayer { position: fixed; inset: 0; z-index: 36; display: flex; align-items: center; justify-content: center; padding: 16px; cursor: pointer; background: rgba(15,40,60,.55); }
+.fxlayer[hidden] { display: none; }
+.tcard { width: min(420px, 80vw); padding: 28px 24px 30px; border-radius: 26px; border: 6px solid #fff; box-shadow: 0 18px 40px rgba(0,0,0,.4); text-align: center; color: var(--ink); animation: cardIn .6s cubic-bezier(.2,1.5,.5,1); }
+.tcard .ct { font-family: var(--display); font-weight: 600; font-size: clamp(1rem, 2vw, 1.4rem); letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+.tcard .cn { font-family: var(--display); font-weight: 600; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin: 10px 0; overflow-wrap: anywhere; }
+.tcard .cw { font-size: clamp(1.4rem, 3.4vw, 2.4rem); font-weight: 900; }
+.tcard.warn { background: #ffd23f; } .tcard.minus { background: #ff9f43; } .tcard.big { background: #e8452c; color: #fff; } .tcard.praise { background: #2ecc71; color: #fff; }
+@keyframes cardIn { from { transform: translateY(-60vh) rotate(-25deg); } 70% { transform: rotate(4deg); } }
+#intro { z-index: 25; }
+.ibox { display: flex; flex-direction: column; gap: 14px; min-height: min(600px, 100%); }
+.ihead { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.ihead .step { font-weight: 900; color: var(--ink-soft); letter-spacing: .1em; text-transform: uppercase; font-size: .9rem; }
+#iSlides { flex: 1; display: flex; align-items: center; }
+.slide { display: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; flex: 1; width: 100%; }
+.slide.on { display: grid; }
+@media (max-width: 760px) { .slide { grid-template-columns: 1fr; gap: 14px; } }
+.slide h2 { font-size: clamp(2rem, 4.6vw, 3.6rem); line-height: 1.05; color: #10506a; margin-bottom: 14px; }
+.slide .say { font-size: clamp(1.3rem, 2.6vw, 2.1rem); font-weight: 900; line-height: 1.3; margin: 0; }
+.slide .say + .say { margin-top: 12px; color: var(--ink-soft); font-size: clamp(1.1rem, 2.1vw, 1.7rem); }
+.slide .art { background: var(--sand); border-radius: 22px; padding: 16px; display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 240px; flex-wrap: wrap; }
+.slide.on .txt { animation: fadeUp .45s both; }
+.slide.on .art { animation: pop .4s .1s both; }
+@keyframes fadeUp { from { transform: translateY(20px); opacity: 0; } }
+.art .tile { width: min(170px, 42%); pointer-events: none; }
+.art .arrow { font-size: 2.4rem; font-weight: 900; color: #10506a; }
+.art .big { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3vw, 2.4rem); color: #10506a; text-align: center; line-height: 1.3; }
+.slide.on .art .tile:nth-child(3) { animation: pop .4s .5s both; }
+.slide.on .art .tile:nth-child(5) { animation: pop .4s .9s both; }
+.tierart { display: grid; gap: 10px; width: 100%; }
+.tierart div { background: #fff; border-radius: 14px; padding: 10px 14px; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 900; display: flex; gap: 12px; align-items: center; }
+.tierart b { background: var(--gold); color: #5a3d00; border-radius: 999px; padding: 2px 12px; box-shadow: 0 2px 0 #c99500; }
+.cards-art { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.cards-art div { border-radius: 16px; padding: 14px 10px; text-align: center; font-weight: 900; font-size: clamp(1rem, 1.9vw, 1.45rem); border: 4px solid #fff; box-shadow: 0 6px 14px rgba(0,0,0,.18); line-height: 1.2; }
+.cards-art div small { display: block; font-size: .7em; opacity: .8; letter-spacing: .08em; text-transform: uppercase; }
+.cards-art .c1 { background: #ffd23f; } .cards-art .c2 { background: #ff9f43; } .cards-art .c3 { background: #e8452c; color: #fff; } .cards-art .c4 { background: #2ecc71; color: #fff; }
+.slide.on .cards-art div { animation: cardIn .6s both cubic-bezier(.2,1.5,.5,1); }
+.slide.on .cards-art div:nth-child(2) { animation-delay: .35s; } .slide.on .cards-art div:nth-child(3) { animation-delay: .7s; } .slide.on .cards-art div:nth-child(4) { animation-delay: 1.05s; }
+.idots { display: flex; gap: 8px; justify-content: center; }
+.idots i { width: 14px; height: 14px; border-radius: 50%; background: var(--line); display: block; }
+.idots i.on { background: var(--accent); width: 34px; border-radius: 8px; }
+.inav { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+@media (prefers-reduced-motion: reduce) { .tile.treasure, .tcard, .slide.on .txt, .slide.on .art, .slide.on .art .tile, .slide.on .cards-art div { animation: none !important; } }
 </style>
 </head>
 <body>
@@ -234,6 +311,12 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
       <h3>Questions</h3>
       <select class="libsel" id="libSel" aria-label="Question set"></select>
       <p class="libnote" id="libNote"></p>
+      <details class="custom" id="customBox">
+        <summary>✏️ Write my own questions</summary>
+        <p>One question per line: <code>question | right answer | wrong answer | wrong answer</code>. You can add 1 to 3 wrong answers. One wrong answer (2 choices) = a ⭐ 100 question, more = ⭐ 200 and 300. Saved on this device only. Then pick “My questions” above.</p>
+        <textarea id="customText" spellcheck="false" placeholder="What is 7 × 8? | 56 | 54 | 64 | 48&#10;Is a whale a fish? | No | Yes"></textarea>
+        <p class="libnote" id="customStatus"></p>
+      </details>
     </div>
 
     <div class="card">
@@ -261,9 +344,11 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
       <div class="row">
         <button class="pill" id="optSteal">🔁 Steal on wrong answer</button>
         <button class="pill" id="optRaid">⚔️ Raid other teams' land</button>
+        <button class="pill" id="optTreasure">💰 Treasure on empty land</button>
       </div>
       <p class="rules-note"><b>Steal:</b> if a team answers wrong, the next team can answer the same question and win the land for half the points.<br>
-      <b>Raid:</b> a team may attack land owned by another team with a harder question. Right: the land and its points change owner, and that land is locked 🔒. Wrong: the raiding team loses half the land's points.</p>
+      <b>Raid:</b> a team may attack land owned by another team with a harder question. Right: the land and its points change owner, and that land is locked 🔒. Wrong: the raiding team loses half the land's points.<br>
+      <b>Treasure:</b> from round 3, a place that nobody owns gets a 💰 bonus at the end of every round (+50, up to +200). The team that wins the place takes the treasure too.</p>
       <div id="roundsBox" hidden style="margin-top:12px">
         <div class="row" id="roundsPick" role="group" aria-label="Number of rounds">
           <b style="margin-right:6px">Rounds:</b>
@@ -275,9 +360,18 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
       </div>
     </div>
 
+    <div class="card">
+      <h3>How to play slides</h3>
+      <div class="row" id="introPick" role="group" aria-label="How to play slides">
+        <button class="pill" data-v="1">Show before the game</button>
+        <button class="pill" data-v="0">Skip</button>
+      </div>
+    </div>
+
     <div class="start-row">
       <button class="btn ghost" id="openGuide">📏 Unit Guide</button>
       <button class="btn" id="startBtn">Start exploring ▶</button>
+      <button class="btn ghost" id="resumeBtn" hidden>Continue last game</button>
       <a class="to-kho" href="../">← Game library</a>
     </div>
   </div>
@@ -287,6 +381,8 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
 <section id="game" class="screen">
   <div class="topbar">
     <h2>🏝️ Land Explorers<small id="setName"></small></h2>
+    <button class="btn small" id="teacherBtn" style="background:var(--gold);color:#5a3d00;box-shadow:0 5px 0 #c99500">🧑‍🏫 Teacher</button>
+    <button class="btn ghost small" id="howBtn">❓ How to play</button>
     <button class="btn ghost small" id="guideBtn">📏 Unit Guide</button>
     <button class="btn ghost small" id="soundBtn" aria-pressed="true">🔊 Sound</button>
     <button class="btn ghost small" id="finishBtn">🏁 Finish</button>
@@ -325,6 +421,7 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
       <span class="who" id="qWho"></span>
       <span class="place" id="qPlace"></span>
       <span class="ptag" id="qPts"></span>
+      <span class="btag" id="qBonus" hidden></span>
       <span class="mode" id="qMode" hidden></span>
       <span class="timer" id="qTimer"></span>
     </div>
@@ -356,6 +453,33 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
       <b>Area of a rectangle</b> = length × width
     </div>
     <div class="qfoot"><button class="btn" id="gClose">Got it!</button></div>
+  </div>
+</div>
+
+<!-- ============ TEACHER ============ -->
+<div class="overlay" id="tOverlay" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+  <div class="qcard tbox">
+    <h2 id="tTitle">🧑‍🏫 Teacher's tools</h2>
+    <p class="tladder"><b>Too noisy</b> (each time): 1st = yellow card (warning) · 2nd = −50 points · 3rd and more = −100 points. <b>Quiet +50</b> = a reward for a calm, kind team.</p>
+    <div class="trows" id="tRows"></div>
+    <div class="qfoot" style="justify-content:space-between">
+      <button class="link" id="tUndo" disabled>Undo last action</button>
+      <button class="btn" id="tClose">Close</button>
+    </div>
+  </div>
+</div>
+<div class="fxlayer" id="cardFx" hidden></div>
+
+<!-- ============ HOW TO PLAY ============ -->
+<div class="overlay" id="intro" role="dialog" aria-modal="true" aria-label="How to play">
+  <div class="qcard ibox">
+    <div class="ihead"><span class="step" id="iStep"></span><button class="link" id="iSkip">Skip</button></div>
+    <div id="iSlides"></div>
+    <div class="idots" id="iDots"></div>
+    <div class="inav">
+      <button class="btn ghost" id="iBack">Back</button>
+      <button class="btn" id="iNext">Next</button>
+    </div>
   </div>
 </div>
 
@@ -635,11 +759,37 @@ const prefGet = () => { try { return localStorage.getItem(PREF_KEY) || UNITS; } 
 const prefSet = v => { try { localStorage.setItem(PREF_KEY, v); } catch (e) {} };
 let chosen = prefGet();
 
+/* The teacher's own questions ("My questions"), saved on this device.
+   One line: question | right | wrong (| wrong | wrong).
+   2 choices = a 100 question (like True/False), 3–4 choices = 200 and 300. */
+const CUSTOM = "custom";
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+const CUSTOM_KEY = "land-explorers-custom", SAVE_KEY = "land-explorers-game", INTRO_KEY = "land-explorers-intro";
+let customText = store.get(CUSTOM_KEY) || "";
+let introOn = store.get(INTRO_KEY) !== 0;
+function parseCustom(text) {
+  return String(text || "").split("\n").map(l => l.split("|").map(s => s.trim()))
+    .filter(p => p.length >= 3 && p[0] && p[1] && p.slice(2).some(Boolean))
+    .map(p => ({ q: p[0], a: p[1], w: p.slice(2, 5).filter(Boolean) }));
+}
+function useCustom() {
+  const list = parseCustom(customText);
+  const byKind = { tf: [], mc: [], fill: [] };
+  for (const it of list) byKind[it.w.length === 1 ? "tf" : "mc"].push({ text: it.q, options: [it.a, ...it.w], answer: 0, explain: "", kind: it.w.length === 1 ? "tf" : "mc" });
+  Object.assign(LIB, { id: CUSTOM, set: { title: "My questions" }, byKind: list.length ? byKind : null, piles: {}, err: list.length ? "" : "Write at least one question in “Write my own questions” below." });
+  return !!list.length;
+}
+
 async function loadLibList() {
   if (!window.KHO) return;
   try { LIB.list = await KHO.list(); } catch (e) { LIB.list = []; LIB.listErr = "Can't load the game library. Check the internet. The units questions still work."; }
 }
 async function loadLib(id) {
+  if (id === CUSTOM) { const ok = useCustom(); renderLib(); return ok; }
   if (LIB.id === id && LIB.byKind) return true;
   LIB.loading = true; renderLib();
   try {
@@ -665,13 +815,14 @@ function libQuestion(level) {
   return { text: q.text, choices, answer: right, why, pic: q.figure || "", optPics: q.optPics, kind };
 }
 function setTitle() {
-  return chosen === UNITS ? "Area & Length Units · Grade 5" : LIB.set ? (LIB.set.short || LIB.set.title || "") : "";
+  return chosen === UNITS ? "Area & Length Units · Grade 5" : chosen === CUSTOM ? "My questions" : LIB.set ? (LIB.set.short || LIB.set.title || "") : "";
 }
 function renderLib() {
   const sel = $("libSel"), lib = LIB.list || [];
   sel.innerHTML = `<option value="${UNITS}">Area &amp; Length Units (Grade 5) · built-in</option>` +
+    `<option value="${CUSTOM}">✏️ My questions (write them below)</option>` +
     (lib.length ? KHO.setOptions(lib, s => `<option value="${esc(s.id)}">${esc(s.title)}${s.n ? " · " + s.n + " questions" : ""}</option>`) : "");
-  if (chosen !== UNITS && !lib.some(s => s.id === chosen) && !(LIB.set && LIB.id === chosen))
+  if (chosen !== UNITS && chosen !== CUSTOM && !lib.some(s => s.id === chosen) && !(LIB.set && LIB.id === chosen))
     sel.insertAdjacentHTML("beforeend", `<option value="${esc(chosen)}">${esc(chosen)}</option>`);
   sel.value = chosen;
   const note = $("libNote");
@@ -679,16 +830,20 @@ function renderLib() {
   if (LIB.loading) note.textContent = "Loading questions…";
   else if (chosen === UNITS) note.textContent = (LIB.listErr ? LIB.listErr + " " : "") + "Questions made by the game: m², ha, acres, km², km. ⭐ 100 easy · 200 medium · 300 hard.";
   else if (LIB.err) note.textContent = LIB.err;
+  else if (chosen === CUSTOM && LIB.byKind) note.textContent = `⭐ 100 = questions with 2 choices (${LIB.byKind.tf.length}) · 200 and 300 = 3–4 choices (${LIB.byKind.mc.length}).` + (!LIB.byKind.tf.length || !LIB.byKind.mc.length ? " Missing types use the nearest type." : "");
   else if (LIB.byKind) { const b = LIB.byKind; note.textContent = `⭐ 100 = True/False (${b.tf.length}) · 200 = Multiple choice (${b.mc.length}) · 300 = Fill in the blank (${b.fill.length}).` + (!b.tf.length || !b.mc.length || !b.fill.length ? " Missing types use the nearest type." : ""); }
   else note.textContent = "";
   const units = chosen === UNITS;
   $("heroSub").textContent = units ? "Grade 5 Math · Area & Length Units · m², hectares, acres, km², km" : setTitle() || "Claim the island, one question at a time!";
   $("openGuide").hidden = units ? false : true;
   $("startBtn").disabled = !units && (LIB.loading || !LIB.byKind);
-  $("startBtn").style.opacity = $("startBtn").disabled ? .5 : "";
+  const n = parseCustom(customText).length, cs = $("customStatus");
+  cs.textContent = n ? `${n} question${n > 1 ? "s" : ""} ready.` : chosen === CUSTOM ? "Add at least one question to start." : "No questions yet.";
+  cs.style.color = n ? "var(--good)" : chosen === CUSTOM ? "var(--bad)" : "";
 }
 const onLibChange = async e => {
   chosen = e.target.value; prefSet(chosen); LIB.err = "";
+  if (chosen === CUSTOM) $("customBox").open = true;
   if (chosen === UNITS) return renderLib();
   await loadLib(chosen);
 };
@@ -698,7 +853,13 @@ const onLibChange = async e => {
    ========================================================= */
 const TEAM_COLORS = ["#e8402f", "#2f7fd6", "#17915f", "#9b4fd1"];
 const DEFAULT_NAMES = ["Red Team", "Blue Team", "Green Team", "Purple Team"];
-const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, steal: true, raid: false, rounds: 8, teams: [], owners: {}, locked: {}, turn: 0, turnsTaken: 0, used: {}, sound: true };
+const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, steal: true, raid: false, treasure: true, rounds: 8, teams: [], owners: {}, locked: {}, bonus: {}, turn: 0, turnsTaken: 0, used: {}, sound: true };
+/* Treasure: from the end of round TREASURE_FROM, every place nobody owns
+   gets +TREASURE_STEP at the end of each round, up to TREASURE_MAX.
+   Whoever wins the place takes the treasure; then it is gone. */
+const TREASURE_FROM = 2, TREASURE_STEP = 50, TREASURE_MAX = 200;
+/* Teacher's cards (points are big in this game, so ×10 of Bowling) */
+const NOISE_STEPS = [0, 50, 100], QUIET = 50, BONUS_PICK = 100;
 const $ = id => document.getElementById(id);
 
 function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); window.scrollTo(0, 0); }
@@ -709,6 +870,10 @@ function renderSetup() {
   document.querySelectorAll("#timerPick .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.t === S.timer));
   $("optSteal").setAttribute("aria-pressed", S.steal);
   $("optRaid").setAttribute("aria-pressed", S.raid);
+  $("optTreasure").setAttribute("aria-pressed", S.treasure);
+  document.querySelectorAll("#introPick .pill").forEach(b => b.setAttribute("aria-pressed", (b.dataset.v === "1") === introOn));
+  const g = store.get(SAVE_KEY);
+  $("resumeBtn").hidden = !(g && g.teams && g.teams.length);
   $("roundsBox").hidden = !S.raid;
   document.querySelectorAll("#roundsPick .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.r === S.rounds));
   $("teamNames").innerHTML = Array.from({ length: S.n }, (_, i) =>
@@ -719,21 +884,56 @@ $("teamCount").onclick = e => { const b = e.target.closest("[data-n]"); if (b) {
 $("timerPick").onclick = e => { const b = e.target.closest("[data-t]"); if (b) { S.timer = +b.dataset.t; renderSetup(); } };
 $("optSteal").onclick = () => { S.steal = !S.steal; renderSetup(); };
 $("optRaid").onclick = () => { S.raid = !S.raid; renderSetup(); };
+$("optTreasure").onclick = () => { S.treasure = !S.treasure; renderSetup(); };
+$("introPick").onclick = e => { const b = e.target.closest("[data-v]"); if (b) { introOn = b.dataset.v === "1"; store.set(INTRO_KEY, introOn ? 1 : 0); renderSetup(); } };
+$("customText").value = customText;
+$("customText").oninput = e => {
+  customText = e.target.value; store.set(CUSTOM_KEY, customText);
+  if (chosen === CUSTOM) useCustom();
+  renderLib();
+};
 $("roundsPick").onclick = e => { const b = e.target.closest("[data-r]"); if (b) { S.rounds = +b.dataset.r; renderSetup(); } };
 $("teamNames").oninput = e => { if (e.target.dataset.i) S.names[+e.target.dataset.i] = e.target.value; };
 
 function startGame() {
-  S.teams = Array.from({ length: S.n }, (_, i) => ({ name: (S.names[i] || "").trim() || DEFAULT_NAMES[i], color: TEAM_COLORS[i], pts: 0, land: 0 }));
-  S.owners = {}; S.locked = {}; S.turn = 0; S.turnsTaken = 0; S.used = {};
   if (chosen !== UNITS && !LIB.byKind) return;
-  LIB.piles = {};
+  S.teams = Array.from({ length: S.n }, (_, i) => ({ name: (S.names[i] || "").trim() || DEFAULT_NAMES[i], color: TEAM_COLORS[i], pts: 0, land: 0, adj: 0, noise: 0 }));
+  S.owners = {}; S.locked = {}; S.bonus = {}; S.turn = 0; S.turnsTaken = 0; S.used = {};
+  LIB.piles = {}; undoSnap = null;
+  showGame(); save(); sfx("start");
+  if (introOn) openIntro();
+}
+function showGame() {
   const units = chosen === UNITS;
   $("setName").textContent = setTitle();
   $("guideBtn").hidden = !units;
-  $("ptsLegend").textContent = units ? "⭐ 100 = easy · ⭐⭐ 200 = medium · ⭐⭐⭐ 300 = hard" : "⭐ 100 = True/False · 200 = Multiple choice · 300 = Fill in the blank";
-  show("game"); renderBoard(); sfx("start");
+  $("ptsLegend").textContent = units ? "⭐ 100 = easy · ⭐⭐ 200 = medium · ⭐⭐⭐ 300 = hard"
+    : chosen === CUSTOM ? "⭐ 100 = 2 choices · 200 and 300 = 3–4 choices" : "⭐ 100 = True/False · 200 = Multiple choice · 300 = Fill in the blank";
+  show("game"); renderBoard();
 }
 $("startBtn").onclick = startGame;
+
+/* ---------- Save / continue last game ---------- */
+const SAVED = ["n", "timer", "steal", "raid", "treasure", "rounds", "teams", "owners", "locked", "bonus", "turn", "turnsTaken", "used"];
+function save() {
+  const g = { set: chosen };
+  SAVED.forEach(k => g[k] = S[k]);
+  store.set(SAVE_KEY, g);
+}
+$("resumeBtn").onclick = async () => {
+  const g = store.get(SAVE_KEY); if (!g || !g.teams) return;
+  const set = g.set || UNITS;
+  if (set !== UNITS) {
+    if (set === CUSTOM) { if (!useCustom()) { alert("“My questions” is empty now. Write the questions again, then press Continue."); return; } }
+    else if (!(await loadLib(set))) { alert("Can't load this game's question set. Check the internet and try again."); return; }
+  }
+  chosen = set; prefSet(set); renderLib();
+  SAVED.forEach(k => { if (g[k] !== undefined) S[k] = g[k]; });
+  S.bonus = S.bonus || {};
+  S.teams.forEach(t => { t.adj = t.adj || 0; t.noise = t.noise || 0; });
+  LIB.piles = {}; undoSnap = null;
+  showGame();
+};
 
 /* ---------- Board ---------- */
 function renderBoard() {
@@ -741,11 +941,12 @@ function renderBoard() {
     const o = S.owners[pl.id];
     const tm = o != null ? S.teams[o] : null;
     const raidable = tm && canRaid(pl.id);
+    const bon = !tm && S.bonus[pl.id] || 0;
     const badge = !tm ? `<span class="pts">${pl.pts}</span>` : S.locked[pl.id] ? `<span class="lock">🔒 ${pl.pts}</span>` : raidable ? `<span class="sword">⚔️ ${pl.pts}</span>` : "";
-    return `<button class="tile${tm ? " owned" : ""}${raidable ? " raidable" : ""}" data-id="${pl.id}" ${tm ? `style="--tc:${tm.color}"` : ""} ${tm && !raidable ? "disabled" : ""} aria-label="${pl.name}, ${pl.pts} points${tm ? ", owned by " + esc(tm.name) : ""}${raidable ? ", can be raided" : ""}">
+    return `<button class="tile${tm ? " owned" : ""}${raidable ? " raidable" : ""}${bon ? " treasure" : ""}" data-id="${pl.id}" ${tm ? `style="--tc:${tm.color}"` : ""} ${tm && !raidable ? "disabled" : ""} aria-label="${pl.name}, ${pl.pts} points${bon ? ", treasure " + bon : ""}${tm ? ", owned by " + esc(tm.name) : ""}${raidable ? ", can be raided" : ""}">
       ${svg(PICS[pl.id](), pl.name)}
       <div class="nm">${pl.name}</div>
-      ${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : ""}${badge}
+      ${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : ""}${badge}${bon ? `<span class="bonus">💰 +${bon}</span>` : ""}
     </button>`;
   }).join("");
   const t = S.teams[S.turn];
@@ -754,11 +955,26 @@ function renderBoard() {
   const canPlay = PLACES.some(p => S.owners[p.id] == null || canRaid(p.id));
   const hint = !canPlay ? `Nothing to pick this turn.<br><button class="btn small" id="skipBtn" style="margin-top:8px">Skip turn ▶</button>` : free ? (S.raid ? "Pick a free place, or ⚔️ raid!" : "Pick a place on the island!") : "No free land left. ⚔️ Raid a place!";
   $("turnBox").innerHTML = (S.raid ? `<div class="rnd">Round ${Math.min(Math.floor(S.turnsTaken / S.teams.length) + 1, S.rounds)} of ${S.rounds}</div>` : "") + `Your turn:<b>${esc(t.name)}</b>${hint}`;
-  if ($("skipBtn")) $("skipBtn").onclick = () => { const over = gameOverAfterThisTurn(); S.turnsTaken++; if (over) return finish(); S.turn = (S.turn + 1) % S.teams.length; renderBoard(); };
+  if ($("skipBtn")) $("skipBtn").onclick = endTurn;
   $("ruleLegend").innerHTML = (S.steal ? "<br>🔁 Steal is ON: wrong answer → next team may steal (half points)." : "") +
-    (S.raid ? "<br>⚔️ Raid is ON: harder question. Wrong raid = lose half the points. 🔒 = locked." : "");
+    (S.raid ? "<br>⚔️ Raid is ON: harder question. Wrong raid = lose half the points. 🔒 = locked." : "") +
+    (S.treasure ? `<br>💰 Treasure is ON: from round ${TREASURE_FROM + 1}, empty places get +${TREASURE_STEP} every round.` : "");
   $("scores").innerHTML = S.teams.map((tm, i) =>
-    `<div class="team${i === S.turn ? " turn" : ""}" style="--tc:${tm.color}"><span class="dot"></span><span class="tn">${esc(tm.name)}<br><span class="tl">${tm.land} ${tm.land === 1 ? "place" : "places"}</span></span><span class="tp">${tm.pts}</span></div>`).join("");
+    `<div class="team${i === S.turn ? " turn" : ""}" style="--tc:${tm.color}"><span class="dot"></span><span class="tn">${esc(tm.name)}<br><span class="tl">${tm.land} ${tm.land === 1 ? "place" : "places"}</span>${tm.adj ? `<span class="adj">teacher ${tm.adj > 0 ? "+" : ""}${tm.adj}</span>` : ""}${tm.noise ? `<span class="nb">NOISY ×${tm.noise}</span>` : ""}</span><span class="tp">${tm.pts}</span></div>`).join("");
+}
+/* One turn is over: count it, grow the treasure at the end of a round, next team. */
+function endTurn() {
+  const over = gameOverAfterThisTurn();
+  S.turnsTaken++;
+  if (over) return finish();
+  const n = S.teams.length;
+  let grew = false;
+  if (S.treasure && S.turnsTaken % n === 0 && S.turnsTaken / n >= TREASURE_FROM) {
+    for (const p of PLACES) if (S.owners[p.id] == null && (S.bonus[p.id] || 0) < TREASURE_MAX) { S.bonus[p.id] = Math.min(TREASURE_MAX, (S.bonus[p.id] || 0) + TREASURE_STEP); grew = true; }
+  }
+  S.turn = (S.turn + 1) % n;
+  save(); renderBoard();
+  if (grew) sfx("treasure");
 }
 function canRaid(id) {
   const o = S.owners[id];
@@ -786,6 +1002,8 @@ function openQuestion(id) {
   setWho(t);
   $("qPlace").textContent = pl.name;
   $("qPts").textContent = "⭐ " + pl.pts;
+  const bon = raid ? 0 : S.bonus[id] || 0;
+  $("qBonus").hidden = !bon; $("qBonus").textContent = `💰 +${bon} treasure`;
   $("qMode").hidden = !raid;
   $("qMode").textContent = raid ? `⚔️ Raid on ${S.teams[S.owners[id]].name} · harder question` : "";
   $("qPic").innerHTML = Q.pic || svg(PICS[pl.id](), pl.name);
@@ -836,16 +1054,17 @@ function answer(i) {
     head = `⚔️ Raid success! ${esc(t.name)} takes ${esc(pl.name)} from ${esc(victim.name)} (+${pl.pts})`;
     mini = "This land is now locked 🔒. Nobody can raid it again.";
   } else if (ok) {
-    const gain = Q.stealing ? half : pl.pts;
-    t.pts += gain; t.land++; S.owners[pl.id] = Q.team;
-    head = Q.stealing ? `🔁 Stolen! ${esc(pl.name)} belongs to ${esc(t.name)} (+${gain})` : `✅ Correct! ${esc(pl.name)} belongs to ${esc(t.name)} (+${gain})`;
+    const gain = Q.stealing ? half : pl.pts, bon = S.bonus[pl.id] || 0;
+    t.pts += gain + bon; t.land++; S.owners[pl.id] = Q.team; delete S.bonus[pl.id];
+    const plus = bon ? `+${gain} and 💰 +${bon} treasure` : `+${gain}`;
+    head = Q.stealing ? `🔁 Stolen! ${esc(pl.name)} belongs to ${esc(t.name)} (${plus})` : `✅ Correct! ${esc(pl.name)} belongs to ${esc(t.name)} (${plus})`;
   } else if (Q.raid) {
     t.pts = Math.max(0, t.pts - half);
     head = `${i == null ? "⏰ Time is up!" : "❌ Raid failed!"} ${esc(t.name)} loses ${half} points. The answer is ${esc(Q.answer)}.`;
   } else if (canSteal) {
     const nxt = (Q.team + 1) % S.teams.length;
     head = `${i == null ? "⏰ Time is up!" : "❌ Not this time."} Can ${esc(S.teams[nxt].name)} steal it?`;
-    mini = `Steal = answer the same question and win ${esc(pl.name)} for ${half} points.`;
+    mini = `Steal = answer the same question and win ${esc(pl.name)} for ${half} points${S.bonus[pl.id] ? ` and the 💰 +${S.bonus[pl.id]} treasure` : ""}.`;
     $("qSteal").textContent = `🔁 ${S.teams[nxt].name} steals!`;
     $("qSteal").style.background = S.teams[nxt].color;
     $("qSteal").hidden = false;
@@ -883,14 +1102,18 @@ $("qSteal").onclick = () => {
 const pl2half = pl => pl.pts / 2;
 $("qChoices").onclick = e => { const b = e.target.closest(".choice"); if (b) answer(+b.dataset.i); };
 $("qNext").onclick = () => {
-  const over = gameOverAfterThisTurn();
   $("qOverlay").classList.remove("on"); Q = null;
-  S.turnsTaken++;
-  if (over) return finish();
-  S.turn = (S.turn + 1) % S.teams.length; renderBoard();
+  endTurn();
 };
 $("qCancel").onclick = () => { clearInterval(timerId); Q = null; $("qOverlay").classList.remove("on"); };
 document.addEventListener("keydown", e => {
+  if ($("intro").classList.contains("on")) {
+    if (e.key === "ArrowRight") { e.preventDefault(); $("iNext").click(); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); showSlide(iIdx - 1); }
+    else if (e.key === "Escape") closeIntro();
+    return;
+  }
+  if ($("tOverlay").classList.contains("on")) { if (e.key === "Escape") closeTeacher(); return; }
   if ($("gOverlay").classList.contains("on") && e.key === "Escape") return closeGuide();
   if (!$("qOverlay").classList.contains("on") || !Q) return;
   if (e.target.tagName === "INPUT") return;
@@ -903,7 +1126,8 @@ document.addEventListener("keydown", e => {
 
 /* ---------- End ---------- */
 function finish() {
-  clearInterval(timerId); $("qOverlay").classList.remove("on");
+  clearInterval(timerId); $("qOverlay").classList.remove("on"); $("tOverlay").classList.remove("on");
+  store.del(SAVE_KEY);
   const ranked = S.teams.slice().sort((a, b) => b.pts - a.pts || b.land - a.land);
   const top = ranked[0], tie = ranked.filter(t => t.pts === top.pts && t.land === top.land);
   $("winTitle").textContent = tie.length > 1 ? "It’s a tie! Great explorers!" : `🏆 ${top.name} wins!`;
@@ -915,6 +1139,112 @@ function finish() {
 $("finishBtn").onclick = () => { if (confirm("Finish the game now and show the winner?")) finish(); };
 $("againSame").onclick = startGame;
 $("newGame").onclick = () => { show("setup"); renderSetup(); };
+
+/* ---------- Teacher's tools ---------- */
+let undoSnap = null, cardT = null;
+const noiseNext = t => { const v = NOISE_STEPS[Math.min(t.noise || 0, NOISE_STEPS.length - 1)]; return v ? `−${v} points` : "warning"; };
+function openTeacher() { renderTeacher(); $("tOverlay").classList.add("on"); $("tClose").focus({ preventScroll: true }); }
+function closeTeacher() { $("tOverlay").classList.remove("on"); }
+function renderTeacher() {
+  $("tRows").innerHTML = S.teams.map((t, i) => `<div class="trow" style="--tc:${t.color}">
+    <span class="tn">${esc(t.name)}<small>${t.pts} points · noisy: ${t.noise || 0}</small></span>
+    <button class="tbtn noisy" data-a="noisy" data-i="${i}">Too noisy!<small>next: ${noiseNext(t)}</small></button>
+    <button class="tbtn good" data-a="quiet" data-i="${i}">Quiet +${QUIET}<small>reward</small></button>
+    <div class="tmore"><span>Or pick one:</span>
+      <button class="tbtn sm" data-a="warn" data-i="${i}">Warning</button>
+      <button class="tbtn sm" data-a="m50" data-i="${i}">−50</button>
+      <button class="tbtn sm" data-a="m100" data-i="${i}">−100</button>
+      <button class="tbtn sm" data-a="p100" data-i="${i}">+${BONUS_PICK}</button>
+    </div></div>`).join("");
+  $("tUndo").disabled = !undoSnap;
+}
+function teacherAct(a, i) {
+  undoSnap = JSON.stringify(S.teams.map(t => ({ pts: t.pts, adj: t.adj, noise: t.noise })));
+  const t = S.teams[i];
+  let kind, title, what, d = 0;
+  if (a === "noisy") { t.noise = (t.noise || 0) + 1; const v = NOISE_STEPS[Math.min(t.noise - 1, NOISE_STEPS.length - 1)]; a = v ? "m" + v : "warn"; }
+  if (a === "warn") { kind = "warn"; title = "Yellow card"; what = "Too noisy! This is a warning."; }
+  else if (a[0] === "m") { d = -(+a.slice(1)); kind = d <= -100 ? "big" : "minus"; title = d <= -100 ? "Red card" : "Too noisy"; what = `${d} points`; }
+  else if (a === "quiet") { d = QUIET; kind = "praise"; title = "Great team!"; what = `Quiet and kind: +${QUIET} points`; }
+  else if (a === "p100") { d = BONUS_PICK; kind = "praise"; title = "Great team!"; what = `+${BONUS_PICK} points`; }
+  t.pts += d; t.adj = (t.adj || 0) + d;
+  save(); closeTeacher(); renderBoard();
+  showCard(kind, title, t.name, what);
+}
+function undoTeacher() {
+  if (!undoSnap) return;
+  JSON.parse(undoSnap).forEach((u, i) => Object.assign(S.teams[i], u)); undoSnap = null;
+  save(); renderBoard(); renderTeacher();
+}
+function showCard(kind, title, name, what) {
+  const fx = $("cardFx");
+  fx.innerHTML = `<div class="tcard ${kind}"><div class="ct">${title}</div><div class="cn">${esc(name)}</div><div class="cw">${what}</div></div>`;
+  fx.hidden = false;
+  sfx(kind === "praise" ? "praise" : "card");
+  clearTimeout(cardT);
+  const hide = () => { clearTimeout(cardT); fx.hidden = true; fx.innerHTML = ""; };
+  fx.onclick = hide; cardT = setTimeout(hide, 2800);
+}
+$("teacherBtn").onclick = openTeacher;
+$("tClose").onclick = closeTeacher;
+$("tUndo").onclick = undoTeacher;
+$("tRows").onclick = e => { const b = e.target.closest("[data-a]"); if (b) teacherAct(b.dataset.a, +b.dataset.i); };
+
+/* ---------- How to play (slides) ---------- */
+function miniTile(id, o = {}) {
+  const pl = PLACES.find(p => p.id === id);
+  const tm = o.team != null ? { name: DEFAULT_NAMES[o.team], color: TEAM_COLORS[o.team] } : null;
+  const badge = o.lock ? `<span class="lock">🔒 ${pl.pts}</span>` : o.sword ? `<span class="sword">⚔️ ${pl.pts}</span>` : !tm ? `<span class="pts">${pl.pts}</span>` : "";
+  return `<div class="tile${tm ? " owned" : ""}${o.bonus ? " treasure" : ""}" ${tm ? `style="--tc:${tm.color}"` : ""}>${svg(PICS[id](), pl.name)}<div class="nm">${pl.name}</div>${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : ""}${badge}${o.bonus ? `<span class="bonus">💰 +${o.bonus}</span>` : ""}</div>`;
+}
+function introSlides() {
+  const units = chosen === UNITS, custom = chosen === CUSTOM;
+  const tiers = units ? ["easy", "medium", "hard"] : custom ? ["2 choices", "3–4 choices", "3–4 choices"] : ["True / False", "Multiple choice", "Fill in the blank"];
+  const sl = [
+    ["Explore the island!", ["Teams take turns.", "Pick a place on the island and answer the question."],
+      miniTile("rice") + miniTile("school") + miniTile("lake") + miniTile("beach")],
+    ["Right answer = your land", ["The land and its points are yours!", "Wrong answer: the land stays free."],
+      miniTile("park") + `<span class="arrow">→</span>` + miniTile("park", { team: 0 })],
+    ["Points", ["Bigger points, harder questions."],
+      `<div class="tierart">${[100, 200, 300].map((p, i) => `<div><b>⭐ ${p}</b>${tiers[i]}</div>`).join("")}</div>`]
+  ];
+  if (S.steal) sl.push(["🔁 Steal", ["Wrong answer? The next team can answer the same question.", "Right: they win the land for half the points."],
+    miniTile("farm") + `<span class="arrow">→</span>` + miniTile("farm", { team: 1 })]);
+  if (S.raid) sl.push(["⚔️ Raid", ["Attack another team's land with a harder question.", "Right: the land is yours and locked 🔒. Wrong: lose half its points."],
+    miniTile("city", { team: 0, sword: true }) + `<span class="arrow">→</span>` + miniTile("city", { team: 1, lock: true })]);
+  if (S.treasure) sl.push(["💰 Treasure", ["Nobody wants a place? It grows a treasure every round!", `+${TREASURE_STEP}, +${TREASURE_STEP * 2}, +${TREASURE_STEP * 3}… up to +${TREASURE_MAX}. Win the place, take the treasure!`],
+    miniTile("airport", { bonus: TREASURE_STEP }) + `<span class="arrow">→</span>` + miniTile("airport", { bonus: TREASURE_STEP * 3 })]);
+  sl.push(["Teacher's cards", ["Too noisy? The teacher gives your team a card.", `Quiet and kind teams get +${QUIET} points!`],
+    `<div class="cards-art"><div class="c1"><small>1st time</small>Warning</div><div class="c2"><small>2nd time</small>−${NOISE_STEPS[1]} points</div><div class="c3"><small>3rd time</small>−${NOISE_STEPS[2]} points</div><div class="c4"><small>Quiet &amp; kind</small>+${QUIET} points</div></div>`]);
+  sl.push(["How to win", [S.raid ? `The game ends after ${S.rounds} rounds.` : "The game ends when every place has an owner.", "The team with the most points wins! 🏆"],
+    `<div class="big">🏝️<br>Most points<br>wins!</div>`]);
+  return sl;
+}
+let iIdx = 0;
+function openIntro() {
+  const sl = introSlides();
+  $("iSlides").innerHTML = sl.map(([h, says, art]) => `<div class="slide"><div class="txt"><h2>${h}</h2>${says.map(x => `<p class="say">${x}</p>`).join("")}</div><div class="art" aria-hidden="true">${art}</div></div>`).join("");
+  $("iDots").innerHTML = sl.map(() => "<i></i>").join("");
+  $("intro").classList.add("on");
+  showSlide(0);
+}
+function showSlide(i) {
+  const slides = $("iSlides").children, n = slides.length;
+  iIdx = Math.max(0, Math.min(n - 1, i));
+  Array.from(slides).forEach(s => s.classList.remove("on"));
+  void $("iSlides").offsetWidth;
+  slides[iIdx].classList.add("on");
+  Array.from($("iDots").children).forEach((d, j) => d.classList.toggle("on", j === iIdx));
+  $("iStep").textContent = `How to play · ${iIdx + 1} of ${n}`;
+  $("iBack").style.visibility = iIdx ? "visible" : "hidden";
+  $("iNext").textContent = iIdx === n - 1 ? "Let's play! ▶" : "Next";
+  $("iNext").focus({ preventScroll: true });
+}
+function closeIntro() { $("intro").classList.remove("on"); }
+$("howBtn").onclick = openIntro;
+$("iSkip").onclick = closeIntro;
+$("iBack").onclick = () => showSlide(iIdx - 1);
+$("iNext").onclick = () => iIdx === $("iSlides").children.length - 1 ? closeIntro() : showSlide(iIdx + 1);
 
 /* ---------- Guide ---------- */
 $("guideGrid").innerHTML = GUIDE.map(g => `<div class="gitem">${svg(g.s, g.t)}<h4>${g.t}</h4><p>${g.p}</p></div>`).join("");
@@ -939,6 +1269,9 @@ function sfx(k) {
   else if (k === "tick") tone(880, .06, "square", 0, .06);
   else if (k === "start") [392, 523].forEach((f, i) => tone(f, .2, "triangle", i * .12));
   else if (k === "win") [523, 659, 784, 1047, 784, 1047].forEach((f, i) => tone(f, .3, "triangle", i * .13));
+  else if (k === "treasure") [1319, 1568, 2093].forEach((f, i) => tone(f, .18, "sine", i * .07, .12));
+  else if (k === "card") { tone(2100, .14, "sine", 0, .18); tone(2100, .4, "sine", .2, .18); }
+  else if (k === "praise") [1047, 1319, 1568, 2093].forEach((f, i) => tone(f, .3, "sine", i * .08, .16));
 }
 $("soundBtn").onclick = () => { S.sound = !S.sound; $("soundBtn").setAttribute("aria-pressed", S.sound); $("soundBtn").textContent = S.sound ? "🔊 Sound" : "🔇 Muted"; };
 
@@ -962,12 +1295,14 @@ renderSetup();
   // a link ending in #bo=<set id> or #units opens with those questions chosen
   const h = (location.hash || "").slice(1);
   if (h === UNITS) chosen = UNITS;
+  else if (h === CUSTOM) chosen = CUSTOM;
   else if (h.startsWith("bo=")) chosen = decodeURIComponent(h.slice(3));
   if (h) { prefSet(chosen); history.replaceState(null, "", location.pathname + location.search); }
   $("libSel").onchange = onLibChange;
   renderLib();
   await loadLibList();
   renderLib();
+  if (chosen === CUSTOM) $("customBox").open = true;
   if (chosen !== UNITS) await loadLib(chosen);
 })();
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("../sw.js").catch(() => {});
