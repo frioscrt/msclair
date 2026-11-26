@@ -98,6 +98,13 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
 .tile.owned::after {
   content: ""; position: absolute; inset: 0; background: var(--tc); opacity: .28; pointer-events: none;
 }
+.tile.raidable { cursor: pointer; }
+.tile.raidable:hover { transform: translateY(-3px); }
+.tile .lock, .tile .sword {
+  position: absolute; top: 10px; right: 10px; z-index: 3; background: #fff; border-radius: 999px; padding: 2px 9px;
+  font-size: .95rem; font-weight: 900; box-shadow: 0 2px 0 rgba(0,0,0,.2);
+}
+.tile .sword { background: var(--gold); color: #5a3d00; }
 .tile .flag {
   position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 2;
   background: var(--tc); color: #fff; font-family: var(--display); font-weight: 600; font-size: 1.1rem;
@@ -113,6 +120,8 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
 .team .tl { font-size: .85rem; color: var(--ink-soft); }
 .team .tp { font-family: var(--display); font-weight: 600; font-size: 1.8rem; color: var(--tc); font-variant-numeric: tabular-nums; }
 .turnbox { text-align: center; font-size: 1.15rem; }
+.turnbox .rnd { font-size: .95rem; color: var(--ink-soft); margin-bottom: 4px; }
+.rules-note { font-size: .95rem; color: var(--ink-soft); margin: 8px 0 0; line-height: 1.45; }
 .turnbox b { display: block; font-family: var(--display); font-size: 1.6rem; color: var(--tc); }
 .legend { font-size: .95rem; color: var(--ink-soft); line-height: 1.5; }
 
@@ -151,6 +160,9 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
 .result.on { display: block; }
 .result.good { background: #e2f7ec; border: 3px solid var(--good); }
 .result.bad { background: #fde6ea; border: 3px solid var(--bad); }
+.result .mini { margin-top: 6px; font-size: 1.05rem; color: var(--ink-soft); }
+.btn.steal { background: #2f7fd6; box-shadow: 0 5px 0 #1d5aa0; }
+.qhead .mode { background: #23324a; color: #fff; padding: 3px 12px; border-radius: 999px; font-weight: 900; }
 .result h3 { font-size: 1.6rem; margin-bottom: 4px; }
 .result .why { color: var(--ink); line-height: 1.45; }
 .qfoot { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
@@ -202,6 +214,7 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
         Teams take turns. Pick a place on the island and answer the question.
         Right answer: the land is yours and you win its points. Wrong answer: the land stays free.
         When every place has an owner, the team with the most points wins.
+        (Turn on <b>Steal</b> and <b>Raid</b> below for more action!)
       </div>
     </div>
 
@@ -222,6 +235,25 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
         <button class="pill" data-t="20">20 seconds</button>
         <button class="pill" data-t="30">30 seconds</button>
         <button class="pill" data-t="45">45 seconds</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Rules</h3>
+      <div class="row">
+        <button class="pill" id="optSteal">🔁 Steal on wrong answer</button>
+        <button class="pill" id="optRaid">⚔️ Raid other teams' land</button>
+      </div>
+      <p class="rules-note"><b>Steal:</b> if a team answers wrong, the next team can answer the same question and win the land for half the points.<br>
+      <b>Raid:</b> a team may attack land owned by another team with a harder question. Right: the land and its points change owner, and that land is locked 🔒. Wrong: the raiding team loses half the land's points.</p>
+      <div id="roundsBox" hidden style="margin-top:12px">
+        <div class="row" id="roundsPick" role="group" aria-label="Number of rounds">
+          <b style="margin-right:6px">Rounds:</b>
+          <button class="pill" data-r="6">6</button>
+          <button class="pill" data-r="8">8</button>
+          <button class="pill" data-r="10">10</button>
+        </div>
+        <p class="rules-note">One round = every team plays one turn. The game ends after the last round.</p>
       </div>
     </div>
 
@@ -249,6 +281,7 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
         <b style="color:var(--ink)">Points</b><br>
         ⭐ 100 = easy · ⭐⭐ 200 = medium · ⭐⭐⭐ 300 = hard<br>
         Keys 1–4 or A–D choose an answer.
+        <div id="ruleLegend"></div>
       </div>
     </div>
   </div>
@@ -273,6 +306,7 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
       <span class="who" id="qWho"></span>
       <span class="place" id="qPlace"></span>
       <span class="ptag" id="qPts"></span>
+      <span class="mode" id="qMode" hidden></span>
       <span class="timer" id="qTimer"></span>
     </div>
     <div class="qbody">
@@ -285,6 +319,7 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
     <div class="result" id="qResult"></div>
     <div class="qfoot">
       <button class="btn ghost small" id="qCancel">Back to map</button>
+      <button class="btn steal" id="qSteal" hidden></button>
       <button class="btn" id="qNext" hidden>Next team ▶</button>
     </div>
   </div>
@@ -567,7 +602,7 @@ const POOLS = {
    ========================================================= */
 const TEAM_COLORS = ["#e8402f", "#2f7fd6", "#17915f", "#9b4fd1"];
 const DEFAULT_NAMES = ["Red Team", "Blue Team", "Green Team", "Purple Team"];
-const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, teams: [], owners: {}, turn: 0, used: {}, sound: true };
+const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, steal: true, raid: false, rounds: 8, teams: [], owners: {}, locked: {}, turn: 0, turnsTaken: 0, used: {}, sound: true };
 const $ = id => document.getElementById(id);
 
 function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); window.scrollTo(0, 0); }
@@ -576,17 +611,24 @@ function show(id) { document.querySelectorAll(".screen").forEach(s => s.classLis
 function renderSetup() {
   document.querySelectorAll("#teamCount .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.n === S.n));
   document.querySelectorAll("#timerPick .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.t === S.timer));
+  $("optSteal").setAttribute("aria-pressed", S.steal);
+  $("optRaid").setAttribute("aria-pressed", S.raid);
+  $("roundsBox").hidden = !S.raid;
+  document.querySelectorAll("#roundsPick .pill").forEach(b => b.setAttribute("aria-pressed", +b.dataset.r === S.rounds));
   $("teamNames").innerHTML = Array.from({ length: S.n }, (_, i) =>
     `<label style="--tc:${TEAM_COLORS[i]}"><span class="dot"></span><input data-i="${i}" value="${esc(S.names[i])}" maxlength="18" aria-label="Team ${i + 1} name"></label>`).join("");
 }
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 $("teamCount").onclick = e => { const b = e.target.closest("[data-n]"); if (b) { S.n = +b.dataset.n; renderSetup(); } };
 $("timerPick").onclick = e => { const b = e.target.closest("[data-t]"); if (b) { S.timer = +b.dataset.t; renderSetup(); } };
+$("optSteal").onclick = () => { S.steal = !S.steal; renderSetup(); };
+$("optRaid").onclick = () => { S.raid = !S.raid; renderSetup(); };
+$("roundsPick").onclick = e => { const b = e.target.closest("[data-r]"); if (b) { S.rounds = +b.dataset.r; renderSetup(); } };
 $("teamNames").oninput = e => { if (e.target.dataset.i) S.names[+e.target.dataset.i] = e.target.value; };
 
 function startGame() {
   S.teams = Array.from({ length: S.n }, (_, i) => ({ name: (S.names[i] || "").trim() || DEFAULT_NAMES[i], color: TEAM_COLORS[i], pts: 0, land: 0 }));
-  S.owners = {}; S.turn = 0; S.used = {};
+  S.owners = {}; S.locked = {}; S.turn = 0; S.turnsTaken = 0; S.used = {};
   show("game"); renderBoard(); sfx("start");
 }
 $("startBtn").onclick = startGame;
@@ -596,24 +638,36 @@ function renderBoard() {
   $("island").innerHTML = PLACES.map(pl => {
     const o = S.owners[pl.id];
     const tm = o != null ? S.teams[o] : null;
-    return `<button class="tile${tm ? " owned" : ""}" data-id="${pl.id}" ${tm ? `style="--tc:${tm.color}" disabled` : ""} aria-label="${pl.name}, ${pl.pts} points${tm ? ", owned by " + esc(tm.name) : ""}">
+    const raidable = tm && canRaid(pl.id);
+    const badge = !tm ? `<span class="pts">${pl.pts}</span>` : S.locked[pl.id] ? `<span class="lock">🔒 ${pl.pts}</span>` : raidable ? `<span class="sword">⚔️ ${pl.pts}</span>` : "";
+    return `<button class="tile${tm ? " owned" : ""}${raidable ? " raidable" : ""}" data-id="${pl.id}" ${tm ? `style="--tc:${tm.color}"` : ""} ${tm && !raidable ? "disabled" : ""} aria-label="${pl.name}, ${pl.pts} points${tm ? ", owned by " + esc(tm.name) : ""}${raidable ? ", can be raided" : ""}">
       ${svg(PICS[pl.id](), pl.name)}
       <div class="nm">${pl.name}</div>
-      ${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : `<span class="pts">${pl.pts}</span>`}
+      ${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : ""}${badge}
     </button>`;
   }).join("");
   const t = S.teams[S.turn];
   $("turnBox").style.setProperty("--tc", t.color);
-  $("turnBox").innerHTML = `Your turn:<b>${esc(t.name)}</b>Pick a place on the island!`;
+  const free = PLACES.some(p => S.owners[p.id] == null);
+  const canPlay = PLACES.some(p => S.owners[p.id] == null || canRaid(p.id));
+  const hint = !canPlay ? `Nothing to pick this turn.<br><button class="btn small" id="skipBtn" style="margin-top:8px">Skip turn ▶</button>` : free ? (S.raid ? "Pick a free place, or ⚔️ raid!" : "Pick a place on the island!") : "No free land left. ⚔️ Raid a place!";
+  $("turnBox").innerHTML = (S.raid ? `<div class="rnd">Round ${Math.min(Math.floor(S.turnsTaken / S.teams.length) + 1, S.rounds)} of ${S.rounds}</div>` : "") + `Your turn:<b>${esc(t.name)}</b>${hint}`;
+  if ($("skipBtn")) $("skipBtn").onclick = () => { const over = gameOverAfterThisTurn(); S.turnsTaken++; if (over) return finish(); S.turn = (S.turn + 1) % S.teams.length; renderBoard(); };
+  $("ruleLegend").innerHTML = (S.steal ? "<br>🔁 Steal is ON: wrong answer → next team may steal (half points)." : "") +
+    (S.raid ? "<br>⚔️ Raid is ON: harder question. Wrong raid = lose half the points. 🔒 = locked." : "");
   $("scores").innerHTML = S.teams.map((tm, i) =>
     `<div class="team${i === S.turn ? " turn" : ""}" style="--tc:${tm.color}"><span class="dot"></span><span class="tn">${esc(tm.name)}<br><span class="tl">${tm.land} ${tm.land === 1 ? "place" : "places"}</span></span><span class="tp">${tm.pts}</span></div>`).join("");
+}
+function canRaid(id) {
+  const o = S.owners[id];
+  return S.raid && o != null && o !== S.turn && !S.locked[id];
 }
 $("island").onclick = e => { const b = e.target.closest(".tile"); if (b && !b.disabled) openQuestion(b.dataset.id); };
 
 /* ---------- Question ---------- */
 let Q = null, timerId = null;
-function makeQuestion(pl) {
-  const pool = POOLS[pl.pts];
+function makeQuestion(pl, level) {
+  const pool = POOLS[level];
   const used = S.used[pl.id] || [];
   let key = pick(pool.filter(k => !used.includes(k)));
   if (!key) { S.used[pl.id] = []; key = pick(pool); }
@@ -624,22 +678,28 @@ function makeQuestion(pl) {
 }
 function openQuestion(id) {
   const pl = PLACES.find(p => p.id === id), t = S.teams[S.turn];
-  Q = { pl, ...makeQuestion(pl), done: false };
-  const card = $("qOverlay").querySelector(".qcard");
-  card.style.setProperty("--tc", t.color);
-  $("qWho").textContent = t.name;
+  const raid = S.owners[id] != null;
+  const level = raid ? Math.min(pl.pts + 100, 300) : pl.pts;
+  Q = { pl, ...makeQuestion(pl, level), done: false, raid, team: S.turn, stealing: false };
+  setWho(t);
   $("qPlace").textContent = pl.name;
   $("qPts").textContent = "⭐ " + pl.pts;
+  $("qMode").hidden = !raid;
+  $("qMode").textContent = raid ? `⚔️ Raid on ${S.teams[S.owners[id]].name} · harder question` : "";
   $("qPic").innerHTML = Q.pic || svg(PICS[pl.id](), pl.name);
   $("qText").textContent = Q.text;
   const CC = ["#e8402f", "#2f7fd6", "#e8a700", "#17915f"];
   $("qChoices").innerHTML = Q.choices.map((c, i) =>
     `<button class="choice" data-i="${i}" style="--cc:${CC[i]}"><span class="k">${"ABCD"[i]}</span><span>${esc(c)}</span></button>`).join("");
   $("qResult").className = "result"; $("qResult").innerHTML = "";
-  $("qNext").hidden = true; $("qCancel").hidden = false;
+  $("qNext").hidden = true; $("qSteal").hidden = true; $("qCancel").hidden = false;
   $("qOverlay").classList.add("on");
   startTimer();
   setTimeout(() => $("qChoices").querySelector(".choice")?.focus({ preventScroll: true }), 50);
+}
+function setWho(t) {
+  $("qOverlay").querySelector(".qcard").style.setProperty("--tc", t.color);
+  $("qWho").textContent = t.name;
 }
 function startTimer() {
   clearInterval(timerId);
@@ -657,30 +717,72 @@ function answer(i) {
   if (!Q || Q.done) return;
   Q.done = true; clearInterval(timerId);
   const btns = [...$("qChoices").children];
-  btns.forEach((b, j) => { b.disabled = true; if (Q.choices[j] === Q.answer) b.classList.add("right"); });
+  btns.forEach(b => b.disabled = true);
   const ok = i != null && Q.choices[i] === Q.answer;
-  const t = S.teams[S.turn];
   if (i != null && !ok) btns[i].classList.add("wrong");
-  const r = $("qResult");
-  if (ok) {
-    t.pts += Q.pl.pts; t.land++; S.owners[Q.pl.id] = S.turn;
-    r.className = "result on good";
-    r.innerHTML = `<h3>✅ Correct! ${esc(Q.pl.name)} belongs to ${esc(t.name)} (+${Q.pl.pts})</h3><div class="why">${esc(Q.why)}</div>`;
-    sfx("good"); confetti(60);
+  const pl = Q.pl, t = S.teams[Q.team], r = $("qResult");
+  const half = pl.pts / 2;
+  const canSteal = !ok && S.steal && !Q.raid && !Q.stealing && S.teams.length > 1;
+  if (ok || !canSteal) btns.forEach((b, j) => { if (Q.choices[j] === Q.answer) b.classList.add("right"); });
+  let head, mini = "", good = ok;
+  if (ok && Q.raid) {
+    const victim = S.teams[S.owners[pl.id]];
+    victim.pts = Math.max(0, victim.pts - pl.pts); victim.land--;
+    t.pts += pl.pts; t.land++; S.owners[pl.id] = Q.team; S.locked[pl.id] = true;
+    head = `⚔️ Raid success! ${esc(t.name)} takes ${esc(pl.name)} from ${esc(victim.name)} (+${pl.pts})`;
+    mini = "This land is now locked 🔒. Nobody can raid it again.";
+  } else if (ok) {
+    const gain = Q.stealing ? half : pl.pts;
+    t.pts += gain; t.land++; S.owners[pl.id] = Q.team;
+    head = Q.stealing ? `🔁 Stolen! ${esc(pl.name)} belongs to ${esc(t.name)} (+${gain})` : `✅ Correct! ${esc(pl.name)} belongs to ${esc(t.name)} (+${gain})`;
+  } else if (Q.raid) {
+    t.pts = Math.max(0, t.pts - half);
+    head = `${i == null ? "⏰ Time is up!" : "❌ Raid failed!"} ${esc(t.name)} loses ${half} points. The answer is ${esc(Q.answer)}.`;
+  } else if (canSteal) {
+    const nxt = (Q.team + 1) % S.teams.length;
+    head = `${i == null ? "⏰ Time is up!" : "❌ Not this time."} Can ${esc(S.teams[nxt].name)} steal it?`;
+    mini = `Steal = answer the same question and win ${esc(pl.name)} for ${half} points.`;
+    $("qSteal").textContent = `🔁 ${S.teams[nxt].name} steals!`;
+    $("qSteal").style.background = S.teams[nxt].color;
+    $("qSteal").hidden = false;
   } else {
-    r.className = "result on bad";
-    r.innerHTML = `<h3>${i == null ? "⏰ Time is up!" : "❌ Not this time."} The answer is ${esc(Q.answer)}.</h3><div class="why">${esc(Q.why)}</div>`;
-    sfx("bad");
+    head = `${i == null ? "⏰ Time is up!" : "❌ Not this time."} The answer is ${esc(Q.answer)}.`;
   }
+  r.className = "result on " + (good ? "good" : "bad");
+  r.innerHTML = `<h3>${head}</h3>` + (canSteal ? "" : `<div class="why">${esc(Q.why)}</div>`) + (mini ? `<div class="mini">${mini}</div>` : "");
+  if (good) { sfx("good"); confetti(60); } else sfx("bad");
   $("qCancel").hidden = true;
-  const over = PLACES.every(p => S.owners[p.id] != null);
-  $("qNext").textContent = over ? "See the winner 🏆" : "Next team ▶";
-  $("qNext").hidden = false; $("qNext").focus({ preventScroll: true });
+  const over = gameOverAfterThisTurn();
+  $("qNext").textContent = canSteal ? "No steal, next team ▶" : over ? "See the winner 🏆" : "Next team ▶";
+  $("qNext").hidden = false;
+  (canSteal ? $("qSteal") : $("qNext")).focus({ preventScroll: true });
 }
+function gameOverAfterThisTurn() {
+  if (S.raid) {
+    if (S.turnsTaken + 1 >= S.rounds * S.teams.length) return true;
+    const free = PLACES.some(p => S.owners[p.id] == null);
+    const raidLeft = PLACES.some(p => S.owners[p.id] != null && !S.locked[p.id]);
+    return !free && !raidLeft;
+  }
+  return PLACES.every(p => S.owners[p.id] != null);
+}
+$("qSteal").onclick = () => {
+  if (!Q) return;
+  Q.stealing = true; Q.done = false; Q.team = (Q.team + 1) % S.teams.length;
+  setWho(S.teams[Q.team]);
+  [...$("qChoices").children].forEach(b => { if (!b.classList.contains("wrong")) b.disabled = false; });
+  $("qResult").className = "result"; $("qResult").innerHTML = "";
+  $("qSteal").hidden = true; $("qNext").hidden = true;
+  $("qMode").hidden = false; $("qMode").textContent = `🔁 Steal · ${pl2half(Q.pl)} points`;
+  startTimer();
+};
+const pl2half = pl => pl.pts / 2;
 $("qChoices").onclick = e => { const b = e.target.closest(".choice"); if (b) answer(+b.dataset.i); };
 $("qNext").onclick = () => {
-  $("qOverlay").classList.remove("on");
-  if (PLACES.every(p => S.owners[p.id] != null)) return finish();
+  const over = gameOverAfterThisTurn();
+  $("qOverlay").classList.remove("on"); Q = null;
+  S.turnsTaken++;
+  if (over) return finish();
   S.turn = (S.turn + 1) % S.teams.length; renderBoard();
 };
 $("qCancel").onclick = () => { clearInterval(timerId); Q = null; $("qOverlay").classList.remove("on"); };
@@ -690,8 +792,8 @@ document.addEventListener("keydown", e => {
   if (e.target.tagName === "INPUT") return;
   const map = { "1": 0, "2": 1, "3": 2, "4": 3, a: 0, b: 1, c: 2, d: 3 };
   const k = e.key.toLowerCase();
-  if (!Q.done && k in map && map[k] < Q.choices.length) answer(map[k]);
-  else if (Q.done && (e.key === "Enter" || e.key === " ") && document.activeElement !== $("qNext")) { e.preventDefault(); $("qNext").click(); }
+  if (!Q.done && k in map && map[k] < Q.choices.length && !$("qChoices").children[map[k]].disabled) answer(map[k]);
+  else if (Q.done && (e.key === "Enter" || e.key === " ") && document.activeElement.tagName !== "BUTTON") { e.preventDefault(); $("qNext").click(); }
   else if (!Q.done && e.key === "Escape") $("qCancel").click();
 });
 
