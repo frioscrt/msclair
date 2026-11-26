@@ -1,0 +1,583 @@
+{
+  "id": "m4-sum-difference",
+  "title": "Find two numbers from their sum and difference",
+  "subject": "Math",
+  "grade": "4",
+  "book": "E-project Math",
+  "lang": "en",
+  "status": "pending",
+  "source": "E-project Math Grade 4, Find two numbers when knowing Sum and Difference (Big = (Sum + Difference) ÷ 2; Small = (Sum − Difference) ÷ 2). Clair không nhớ số unit.",
+  "updated": "2026-11-26T09:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "Big number = (Sum ___ Difference) ÷ 2",
+      "a": "+",
+      "w": [
+        "−",
+        "×",
+        "÷"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Small number = (Sum ___ Difference) ÷ 2",
+      "a": "−",
+      "w": [
+        "+",
+        "×",
+        "÷"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Big number = (Sum + Difference) ÷ ___",
+      "a": "2",
+      "w": [
+        "3",
+        "4",
+        "1"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which formula finds the BIG number?",
+      "a": "(Sum + Difference) ÷ 2",
+      "w": [
+        "(Sum − Difference) ÷ 2",
+        "Sum + Difference",
+        "Sum − Difference"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which formula finds the SMALL number?",
+      "a": "(Sum − Difference) ÷ 2",
+      "w": [
+        "(Sum + Difference) ÷ 2",
+        "Sum − Difference",
+        "Sum ÷ 2"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "Big number = (Sum + Difference) ÷ 2",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Small number = (Sum + Difference) ÷ 2",
+      "a": false,
+      "explain": "Small number = (Sum − Difference) ÷ 2"
+    },
+    {
+      "type": "tf",
+      "q": "Big number − Small number = Difference",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Big number + Small number = Sum",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "Big number + Small number = Difference",
+      "a": false,
+      "explain": "Big number + Small number = Sum"
+    },
+    {
+      "type": "tf",
+      "q": "If we know the big number, small number = Sum − Big number.",
+      "a": true
+    },
+    {
+      "type": "tf",
+      "q": "If we know the small number, big number = Small number − Difference.",
+      "a": false,
+      "explain": "Big number = Small number + Difference"
+    },
+    {
+      "type": "mc",
+      "q": "We found the big number. How can we find the small number?",
+      "a": "Big number − Difference",
+      "w": [
+        "Big number + Difference",
+        "Big number + Sum",
+        "Difference − Big number"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "In this lesson, “difference” means…",
+      "a": "big number − small number",
+      "w": [
+        "big number + small number",
+        "big number × small number",
+        "big number ÷ 2"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "In this lesson, “sum” means…",
+      "a": "big number + small number",
+      "w": [
+        "big number − small number",
+        "big number × small number",
+        "sum ÷ 2"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 50, Difference = 10. Big number = ___",
+      "a": "30",
+      "w": [
+        "20",
+        "60",
+        "25"
+      ],
+      "explain": "(50 + 10) ÷ 2 = 30"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 80, Difference = 20. Big number = ___",
+      "a": "50",
+      "w": [
+        "30",
+        "100",
+        "40"
+      ],
+      "explain": "(80 + 20) ÷ 2 = 50"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 36, Difference = 8. Big number = ___",
+      "a": "22",
+      "w": [
+        "14",
+        "44",
+        "18"
+      ],
+      "explain": "(36 + 8) ÷ 2 = 22"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 100, Difference = 40. Big number = ___",
+      "a": "70",
+      "w": [
+        "30",
+        "140",
+        "50"
+      ],
+      "explain": "(100 + 40) ÷ 2 = 70"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 64, Difference = 16. Big number = ___",
+      "a": "40",
+      "w": [
+        "24",
+        "80",
+        "32"
+      ],
+      "explain": "(64 + 16) ÷ 2 = 40"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 90, Difference = 30. Big number = ___",
+      "a": "60",
+      "w": [
+        "30",
+        "120",
+        "45"
+      ],
+      "explain": "(90 + 30) ÷ 2 = 60"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 75, Difference = 25. Big number = ___",
+      "a": "50",
+      "w": [
+        "25",
+        "100",
+        "37"
+      ],
+      "explain": "(75 + 25) ÷ 2 = 50"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 120, Difference = 48. Big number = ___",
+      "a": "84",
+      "w": [
+        "36",
+        "168",
+        "60"
+      ],
+      "explain": "(120 + 48) ÷ 2 = 84"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 40, Difference = 6. Small number = ___",
+      "a": "17",
+      "w": [
+        "23",
+        "34",
+        "20"
+      ],
+      "explain": "(40 − 6) ÷ 2 = 17"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 70, Difference = 10. Small number = ___",
+      "a": "30",
+      "w": [
+        "40",
+        "60",
+        "35"
+      ],
+      "explain": "(70 − 10) ÷ 2 = 30"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 58, Difference = 12. Small number = ___",
+      "a": "23",
+      "w": [
+        "35",
+        "46",
+        "29"
+      ],
+      "explain": "(58 − 12) ÷ 2 = 23"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 150, Difference = 50. Small number = ___",
+      "a": "50",
+      "w": [
+        "100",
+        "75",
+        "51"
+      ],
+      "explain": "(150 − 50) ÷ 2 = 50"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 96, Difference = 24. Small number = ___",
+      "a": "36",
+      "w": [
+        "60",
+        "72",
+        "48"
+      ],
+      "explain": "(96 − 24) ÷ 2 = 36"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 84, Difference = 36. Small number = ___",
+      "a": "24",
+      "w": [
+        "60",
+        "48",
+        "42"
+      ],
+      "explain": "(84 − 36) ÷ 2 = 24"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 200, Difference = 80. Small number = ___",
+      "a": "60",
+      "w": [
+        "140",
+        "120",
+        "100"
+      ],
+      "explain": "(200 − 80) ÷ 2 = 60"
+    },
+    {
+      "type": "fill",
+      "q": "Sum = 45, Difference = 15. Small number = ___",
+      "a": "15",
+      "w": [
+        "30",
+        "22",
+        "16"
+      ],
+      "explain": "(45 − 15) ÷ 2 = 15"
+    },
+    {
+      "type": "mc",
+      "q": "The sum of two numbers is 30. Their difference is 4. What are the two numbers?",
+      "a": "17 and 13",
+      "w": [
+        "34 and 26",
+        "19 and 11",
+        "15 and 4"
+      ],
+      "explain": "Big: (30 + 4) ÷ 2 = 17. Small: 17 − 4 = 13"
+    },
+    {
+      "type": "mc",
+      "q": "The sum of two numbers is 60. Their difference is 14. What are the two numbers?",
+      "a": "37 and 23",
+      "w": [
+        "74 and 46",
+        "39 and 21",
+        "30 and 14"
+      ],
+      "explain": "Big: (60 + 14) ÷ 2 = 37. Small: 37 − 14 = 23"
+    },
+    {
+      "type": "mc",
+      "q": "The sum of two numbers is 110. Their difference is 30. What are the two numbers?",
+      "a": "70 and 40",
+      "w": [
+        "140 and 80",
+        "72 and 38",
+        "55 and 30"
+      ],
+      "explain": "Big: (110 + 30) ÷ 2 = 70. Small: 70 − 30 = 40"
+    },
+    {
+      "type": "mc",
+      "q": "The sum of two numbers is 1000. Their difference is 200. What are the two numbers?",
+      "a": "600 and 400",
+      "w": [
+        "1200 and 800",
+        "602 and 398",
+        "500 and 200"
+      ],
+      "explain": "Big: (1000 + 200) ÷ 2 = 600. Small: 600 − 200 = 400"
+    },
+    {
+      "type": "mc",
+      "q": "Sum = 48, Difference = 12. First we do 48 + 12 = 60. Then 60 ÷ 2 = ___",
+      "a": "30",
+      "w": [
+        "60",
+        "18",
+        "36"
+      ],
+      "explain": "60 ÷ 2 = 30 (big number)"
+    },
+    {
+      "type": "mc",
+      "q": "Sum = 48, Difference = 12. The big number is 30. The small number is ___",
+      "a": "18",
+      "w": [
+        "42",
+        "24",
+        "12"
+      ],
+      "explain": "30 − 12 = 18, or 48 − 30 = 18"
+    },
+    {
+      "type": "tf",
+      "q": "Sum = 40, Difference = 10. The numbers are 25 and 15.",
+      "a": true,
+      "explain": "25 + 15 = 40 and 25 − 15 = 10"
+    },
+    {
+      "type": "tf",
+      "q": "Sum = 50, Difference = 20. The numbers are 30 and 20.",
+      "a": false,
+      "explain": "30 − 20 = 10, not 20. The numbers are 35 and 15."
+    },
+    {
+      "type": "tf",
+      "q": "Sum = 66, Difference = 6. The numbers are 36 and 30.",
+      "a": true,
+      "explain": "36 + 30 = 66 and 36 − 30 = 6"
+    },
+    {
+      "type": "tf",
+      "q": "Sum = 100, Difference = 20. The small number is 60.",
+      "a": false,
+      "explain": "Small number = (100 − 20) ÷ 2 = 40"
+    },
+    {
+      "type": "mc",
+      "q": "Lan says the numbers are 45 and 35. Check: 45 + 35 = ___",
+      "a": "80",
+      "w": [
+        "10",
+        "70",
+        "90"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Tom and Ben have 40 marbles in total. Tom has 8 more marbles than Ben. How many marbles does Tom have?",
+      "a": "24",
+      "w": [
+        "16",
+        "32",
+        "48"
+      ],
+      "explain": "(40 + 8) ÷ 2 = 24"
+    },
+    {
+      "type": "mc",
+      "q": "Tom and Ben have 40 marbles in total. Tom has 8 more marbles than Ben. How many marbles does Ben have?",
+      "a": "16",
+      "w": [
+        "24",
+        "32",
+        "20"
+      ],
+      "explain": "(40 − 8) ÷ 2 = 16"
+    },
+    {
+      "type": "mc",
+      "q": "A class has 34 students. There are 4 more girls than boys. How many girls are there?",
+      "a": "19",
+      "w": [
+        "15",
+        "17",
+        "30"
+      ],
+      "explain": "(34 + 4) ÷ 2 = 19"
+    },
+    {
+      "type": "mc",
+      "q": "A class has 34 students. There are 4 more girls than boys. How many boys are there?",
+      "a": "15",
+      "w": [
+        "19",
+        "17",
+        "30"
+      ],
+      "explain": "(34 − 4) ÷ 2 = 15"
+    },
+    {
+      "type": "mc",
+      "q": "Dad and his son are 46 years old in total. Dad is 28 years older than his son. How old is the son?",
+      "a": "9",
+      "w": [
+        "37",
+        "18",
+        "23"
+      ],
+      "explain": "(46 − 28) ÷ 2 = 9"
+    },
+    {
+      "type": "mc",
+      "q": "Mom and her daughter are 50 years old in total. Mom is 26 years older. How old is Mom?",
+      "a": "38",
+      "w": [
+        "12",
+        "24",
+        "25"
+      ],
+      "explain": "(50 + 26) ÷ 2 = 38"
+    },
+    {
+      "type": "mc",
+      "q": "Two boxes have 120 apples. Box A has 20 more apples than Box B. How many apples are in Box A?",
+      "a": "70",
+      "w": [
+        "50",
+        "60",
+        "100"
+      ],
+      "explain": "(120 + 20) ÷ 2 = 70"
+    },
+    {
+      "type": "mc",
+      "q": "Two boxes have 120 apples. Box A has 20 more apples than Box B. How many apples are in Box B?",
+      "a": "50",
+      "w": [
+        "70",
+        "60",
+        "100"
+      ],
+      "explain": "(120 − 20) ÷ 2 = 50"
+    },
+    {
+      "type": "mc",
+      "q": "A rope 90 m long is cut into two pieces. One piece is 10 m longer than the other. How long is the longer piece?",
+      "a": "50",
+      "w": [
+        "40",
+        "45",
+        "80"
+      ],
+      "explain": "(90 + 10) ÷ 2 = 50 m"
+    },
+    {
+      "type": "mc",
+      "q": "Two shelves hold 250 books. The top shelf has 30 fewer books than the bottom shelf. How many books are on the top shelf?",
+      "a": "110",
+      "w": [
+        "140",
+        "125",
+        "220"
+      ],
+      "explain": "(250 − 30) ÷ 2 = 110"
+    },
+    {
+      "type": "mc",
+      "q": "A farm has 64 chickens and ducks. There are 12 more chickens than ducks. How many ducks are there?",
+      "a": "26",
+      "w": [
+        "38",
+        "32",
+        "52"
+      ],
+      "explain": "(64 − 12) ÷ 2 = 26"
+    },
+    {
+      "type": "mc",
+      "q": "Two classes collected 300 kg of paper. Class 4A collected 40 kg more than Class 4B. How many kilograms did Class 4A collect?",
+      "a": "170",
+      "w": [
+        "130",
+        "150",
+        "260"
+      ],
+      "explain": "(300 + 40) ÷ 2 = 170 kg"
+    },
+    {
+      "type": "mc",
+      "q": "The length and the width of a rectangle add up to 30 cm. The length is 6 cm longer than the width. What is the length?",
+      "a": "18",
+      "w": [
+        "12",
+        "15",
+        "24"
+      ],
+      "explain": "(30 + 6) ÷ 2 = 18 cm"
+    },
+    {
+      "type": "mc",
+      "q": "A rectangle has a perimeter of 56 cm. The length is 4 cm longer than the width. What is the width? (Hint: length + width = 56 ÷ 2)",
+      "a": "12",
+      "w": [
+        "16",
+        "26",
+        "14"
+      ],
+      "explain": "Length + width = 28. Width = (28 − 4) ÷ 2 = 12 cm"
+    },
+    {
+      "type": "fill",
+      "q": "Mai and Hoa have 60 stickers together. Mai has 14 more stickers than Hoa. Mai has ___ stickers.",
+      "a": "37",
+      "w": [
+        "23",
+        "30",
+        "46"
+      ],
+      "explain": "(60 + 14) ÷ 2 = 37"
+    },
+    {
+      "type": "fill",
+      "q": "Mai and Hoa have 60 stickers together. Mai has 14 more stickers than Hoa. Hoa has ___ stickers.",
+      "a": "23",
+      "w": [
+        "37",
+        "30",
+        "46"
+      ],
+      "explain": "(60 − 14) ÷ 2 = 23"
+    }
+  ]
+}
