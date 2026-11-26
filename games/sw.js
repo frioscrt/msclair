@@ -1,6 +1,6 @@
 // Cho trang kho mở được cả khi mất mạng.
 // Có mạng: lấy bản mới nhất rồi cất. Mất mạng: dùng bản đã cất.
-const CACHE = 'games-v18';
+const CACHE = 'games-v19';
 const FILES = ['./', './index.html', './kho.js', './icon.svg', './manifest.webmanifest', './icons/icon-180.png', './icons/icon-192.png', './icons/icon-512.png', './mystery-box/', './mystery-box/index.html', './mystery-box/icon.svg', './boat-race/', './boat-race/index.html', './boat-race/icon.svg', './bowling/', './bowling/index.html', './bowling/icon.svg', './land-explorers/', './land-explorers/index.html', './land-explorers/icon.svg', './whack-a-mole/', './whack-a-mole/index.html', './whack-a-mole/icon.svg', './star-collector/', './star-collector/index.html', './star-collector/icon.svg'];
 
 self.addEventListener('install', (e) => {
