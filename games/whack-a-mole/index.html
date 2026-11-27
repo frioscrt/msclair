@@ -318,6 +318,10 @@ button.hill:hover { transform: translateY(-4px); }
 .tbtn.sm { padding: 6px 10px; font-size: .95rem; box-shadow: 0 3px 0 var(--ink); }
 .tmore { display: flex; gap: 6px; flex-wrap: wrap; grid-column: 1 / -1; justify-content: flex-end; }
 .tmore span { align-self: center; font-size: .8rem; color: var(--ink-soft); font-weight: 800; margin-right: 4px; }
+.ttime { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border-radius: 16px; border: 3px solid var(--line); background: #fff; }
+.ttime .label { font-weight: 900; }
+.ttime .seg.big button { font-size: 1.15rem; padding: 10px 16px; min-width: 76px; border-width: 3px; }
+.ttime small { flex-basis: 100%; color: var(--ink-soft); font-weight: 800; font-size: .9rem; }
 .tladder { margin: 0; color: var(--ink-soft); font-size: 1rem; line-height: 1.45; }
 .tladder b { color: var(--ink); }
 .tfoot { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; align-items: center; }
@@ -528,6 +532,7 @@ button.hill:hover { transform: translateY(-4px); }
     <h2 id="tTitle">Teacher's tools</h2>
     <p class="tladder"><b>Too noisy</b> (each time): 1st = yellow card (warning) · 2nd = −2 points · 3rd and more = skip a turn. <b>Quiet +2</b> = a reward for a calm, kind team.</p>
     <div class="teams" id="tRows"></div>
+    <div class="ttime"><span class="label">Whack time</span><div class="seg big" id="tWhack"></div><small id="tWhackNote"></small></div>
     <div class="tfoot">
       <button class="link" id="btnUndo" disabled>Undo last action</button>
       <button class="btn-big" id="btnTClose">Close</button>
@@ -568,7 +573,7 @@ const SIZES = {
   12: { c: 4, r: 3, label: "12 hills", note: "about 12 questions" },
   16: { c: 4, r: 4, label: "16 hills", note: "long game" },
 };
-const WHACKS = [10, 12, 15];
+const WHACKS = [5, 8, 10, 12, 15, 20, 30];
 const TEAM_DEFAULT = [["Stars", "#e0457b"], ["Rockets", "#2563c9"], ["Turtles", "#178a5c"], ["Tigers", "#e0661b"]];
 const STORE = "whack-mole-v1";
 // Mole speed per level. Easy = the old speed, slow enough for grade 1 on a laggy TV.
@@ -749,9 +754,12 @@ function renderSide() {
   $("hint").textContent = S.over ? "Game over. Press New game to play again." : solo ? "Pick a mole hill." : `${S.teams[S.turn].name}: pick a mole hill.`;
 }
 function render(just) { renderBoard(just); renderSide(); }
+function renderSetName() {
+  $("setName").textContent = [setLabel(S.set), S.level && S.level !== "easy" ? lvl().label : "", S.whack + " sec"].filter(Boolean).join(" · ");
+}
 
 function showGame() {
-  $("setName").textContent = [setLabel(S.set), S.level && S.level !== "easy" ? lvl().label : ""].filter(Boolean).join(" · ");
+  renderSetName();
   document.title = "Whack-a-Mole" + (setLabel(S.set) ? " · " + setLabel(S.set) : "");
   $("setup").hidden = true; $("game").hidden = false;
   stopWhack();
@@ -870,13 +878,13 @@ function holeEl(i) { return $("wGrid").children[i]; }
 function startPlay() {
   W.phase = "play";
   const now = performance.now();
-  W.start = now; W.end = now + S.whack * 1000; W.next = now + 250;
+  W.dur = S.whack * 1000; W.start = now; W.end = now + W.dur; W.next = now + 250;
   W.raf = requestAnimationFrame(loop);
 }
 function loop(now) {
   if (!W || W.phase !== "play") return;
-  setBar(Math.max(0, W.end - now) / (S.whack * 1000));
-  const L = lvl(), p = Math.min(1, (now - W.start) / (S.whack * 1000)), mix = (a, b) => Math.round(a + (b - a) * p);
+  setBar(Math.max(0, W.end - now) / W.dur);
+  const L = lvl(), p = Math.min(1, (now - W.start) / W.dur), mix = (a, b) => Math.round(a + (b - a) * p);
   let upCount = 0;
   W.holes.forEach((h, i) => {
     if (h.up && now >= h.until) { h.up = false; h.hit = false; holeEl(i).classList.remove("up", "hit"); }
@@ -1017,6 +1025,16 @@ function renderTeacher() {
       <button class="tbtn sm" data-a="p5" data-i="${i}">+5</button>
     </div></div>`).join("");
   $("btnUndo").disabled = !undoSnap;
+  renderTeacherTime();
+}
+// The teacher can change how long each whack lasts in the middle of a game.
+// A whack that is already running keeps its time; the new time starts next turn.
+function renderTeacherTime(changed) {
+  seg("tWhack", WHACKS.map(t => [t, t + " sec"]), S.whack, v => {
+    S.whack = prefs.whack = +v; save(); savePrefs(); renderSetName(); renderTeacherTime(true);
+  });
+  const running = W && W.phase === "play";
+  $("tWhackNote").textContent = changed ? (running ? `Saved. ${S.whack} seconds from the next turn.` : `Saved. Each whack is now ${S.whack} seconds.`) : "Shorter time = more turns, more kids can play.";
 }
 function teacherAct(a, i) {
   undoSnap = JSON.stringify({ teams: S.teams, turn: S.turn });
@@ -1154,7 +1172,7 @@ function renderSetup() {
   document.title = "Whack-a-Mole";
   seg("segTeams", [[1, "Whole class"], [2, "2 teams"], [3, "3 teams"], [4, "4 teams"]], prefs.teams, v => { prefs.teams = +v; savePrefs(); renderSetup(); });
   seg("segHills", Object.entries(SIZES).map(([k, s]) => [k, s.label, s.note]), prefs.hills, v => { prefs.hills = +v; savePrefs(); renderSetup(); });
-  seg("segWhack", WHACKS.map(t => [t, t + " seconds"]), prefs.whack, v => { prefs.whack = +v; savePrefs(); renderSetup(); });
+  seg("segWhack", WHACKS.map(t => [t, t + " sec"]), prefs.whack, v => { prefs.whack = +v; savePrefs(); renderSetup(); });
   seg("segLevel", Object.entries(LEVELS).map(([k, l]) => [k, l.label, l.note]), prefs.level, v => { prefs.level = v; savePrefs(); renderSetup(); });
   seg("segSet", [["lib", "Library", "pick a set"], ["custom", "My questions", "written below"]], prefs.set, v => { prefs.set = v; savePrefs(); renderSetup(); if (v === "custom") $("customBox").open = true; });
   seg("segIntro", [[1, "Show before the game"], [0, "Skip"]], prefs.intro, v => { prefs.intro = +v; savePrefs(); renderSetup(); });
