@@ -248,6 +248,18 @@ button.hill:hover { transform: translateY(-4px); }
 .whole .bomb, .whole.kb .mole { display: none; }
 .whole.kb .bomb { display: block; }
 .whole.kg .mole svg { filter: sepia(1) saturate(3) hue-rotate(8deg) brightness(1.3) drop-shadow(0 0 6px #fff3a0); }
+.whole.kr .mole svg { filter: hue-rotate(75deg) saturate(2.4) brightness(1.15) drop-shadow(0 0 7px #8dff3a); }
+.whole.kr .mole::after { content: "☢"; position: absolute; left: 50%; top: 58%; transform: translateX(-50%); font-size: clamp(1rem, 4.5vh, 2.6rem); line-height: 1; color: #1d1d1d; background: #ffe03a; border: 3px solid var(--ink); border-radius: 50%; width: 1.3em; height: 1.3em; display: flex; align-items: center; justify-content: center; }
+.float1.rad { color: #5fd12a; font-size: clamp(1.6rem, 4.6vh, 3rem); }
+.giant { position: fixed; top: 50%; left: 0; z-index: 23; width: min(62vh, 60vw); pointer-events: none; transform: translate(-110%, -50%); animation: giantRun 1.1s linear forwards; }
+.giant.rtl { left: auto; right: 0; transform: translate(110%, -50%) scaleX(-1); animation-name: giantRunR; }
+.giant .gbody { animation: giantBob .18s ease-in-out infinite alternate; }
+.giant svg { width: 100%; height: auto; display: block; filter: hue-rotate(75deg) saturate(2.4) brightness(1.15); }
+@keyframes giantRun { from { transform: translate(-110%, -50%) rotate(8deg); } to { transform: translate(calc(100vw + 10%), -50%) rotate(8deg); } }
+@keyframes giantRunR { from { transform: translate(110%, -50%) rotate(-8deg); } to { transform: translate(calc(-100vw - 10%), -50%) rotate(-8deg); } }
+@keyframes giantBob { to { transform: translateY(-6%); } }
+.lvl-art .r svg { filter: hue-rotate(75deg) saturate(2.4) brightness(1.15); }
+.lvl-art .r b { color: #3f9a16; }
 .float1.minus { color: var(--bad); }
 .float1.gold { color: #b07800; }
 .wgrid.boom { animation: nope .4s; }
@@ -578,11 +590,13 @@ const TEAM_DEFAULT = [["Stars", "#e0457b"], ["Rockets", "#2563c9"], ["Turtles", 
 const STORE = "whack-mole-v1";
 // Mole speed per level. Easy = the old speed, slow enough for grade 1 on a laggy TV.
 // up/gap go from the first value at GO to the second value at the end (moles speed up).
-// bomb = chance a pop is a bomb (−2), gold = chance it is a golden mole (+3).
+// bomb = chance a pop is a bomb (−2), gold = chance it is a golden mole (+3), rad = radioactive mole (0, giant mole runs by).
 const LEVELS = {
   easy:   { label: "Easy",   note: "slow · grade 1",   up: [1600, 1600], gap: [[750, 1100], [750, 1100]], max: 2, bomb: 0,   gold: 0 },
   medium: { label: "Medium", note: "faster · bombs",   up: [1150, 900],  gap: [[550, 850], [450, 700]],   max: 2, bomb: .15, gold: .06 },
-  hard:   { label: "Hard",   note: "fastest · 3 at once", up: [850, 600], gap: [[400, 620], [280, 450]], max: 3, bomb: .22, gold: .08 },
+  hard:   { label: "Hard",   note: "fast · 3 at once", up: [850, 600], gap: [[400, 620], [280, 450]], max: 3, bomb: .22, gold: .08 },
+  // Expert (grade 4): faster than Hard, plus radioactive moles. Hit one = a giant mole runs across the screen.
+  expert: { label: "Expert", note: "fastest · radioactive", up: [680, 460], gap: [[320, 500], [220, 360]], max: 3, bomb: .16, gold: .08, rad: .14 },
 };
 const BOMB = 2, GOLD = 3;
 const lvl = () => LEVELS[S && S.level] || LEVELS.easy;
@@ -837,6 +851,7 @@ function swapQuestion() { S.q = Math.max(0, S.q - 1); openQuestion(); }
    ===================================================================== */
 let W = null;
 function stopWhack() {
+  document.querySelectorAll(".giant").forEach(g => g.remove());
   if (!W) return;
   cancelAnimationFrame(W.raf); W.tm.forEach(clearTimeout); W = null;
 }
@@ -844,7 +859,7 @@ function openWhack(hill) {
   stopWhack();
   const t = S.teams[S.turn];
   aim = null; curQ = null;
-  W = { hill, hits: 0, pts: 0, gold: 0, bombs: 0, phase: "intro", holes: Array.from({ length: 9 }, () => ({ up: false, hit: false, until: 0 })), next: 0, last: -1, raf: 0, tm: [], end: 0 };
+  W = { hill, hits: 0, pts: 0, gold: 0, bombs: 0, rad: 0, phase: "intro", holes: Array.from({ length: 9 }, () => ({ up: false, hit: false, until: 0 })), next: 0, last: -1, raf: 0, tm: [], end: 0 };
   $("wOverlay").style.setProperty("--tc", t.color);
   $("wTeam").textContent = teamName(t); $("wTeam").style.setProperty("--tc", t.color);
   $("wHill").textContent = "Hill " + (hill + 1);
@@ -895,11 +910,12 @@ function loop(now) {
     if (free.length) {
       const i = pick(free), h = W.holes[i], r = Math.random();
       // never a bomb when it would be the only thing up, so there is always a mole to hit
-      const kind = r < L.gold ? "gold" : r < L.gold + L.bomb && upCount > 0 ? "bomb" : "mole";
+      const rad = L.rad || 0;
+      const kind = r < L.gold ? "gold" : upCount === 0 ? "mole" : r < L.gold + L.bomb ? "bomb" : r < L.gold + L.bomb + rad ? "rad" : "mole";
       Object.assign(h, { up: true, hit: false, kind, until: now + mix(L.up[0], L.up[1]) * (kind === "gold" ? .8 : 1) });
       const el = holeEl(i);
-      el.classList.remove("hit", "kb", "kg");
-      if (kind === "bomb") el.classList.add("kb"); else if (kind === "gold") el.classList.add("kg");
+      el.classList.remove("hit", "kb", "kg", "kr");
+      if (kind === "bomb") el.classList.add("kb"); else if (kind === "gold") el.classList.add("kg"); else if (kind === "rad") el.classList.add("kr");
       void el.offsetWidth; el.classList.add("up");
       W.last = i; sfx("pop");
     }
@@ -921,12 +937,22 @@ function whackAt(e) {
   let add = 1;
   if (h.kind === "bomb") { add = -BOMB; W.bombs++; sfx("boom"); const g = $("wGrid"); g.classList.remove("boom"); void g.offsetWidth; g.classList.add("boom"); }
   else if (h.kind === "gold") { add = GOLD; W.gold++; sfx("praise"); }
+  else if (h.kind === "rad") { add = 0; W.rad++; sfx("boom"); giantRun(); }
   else { W.hits++; sfx("bop"); }
   W.pts = Math.max(0, W.pts + add);
   setCount(W.pts, true);
-  const f = document.createElement("span"); f.className = "float1" + (add < 0 ? " minus" : add > 1 ? " gold" : ""); f.textContent = (add > 0 ? "+" : "−") + Math.abs(add); el.appendChild(f);
+  const f = document.createElement("span"); f.className = "float1" + (add < 0 ? " minus" : add > 1 ? " gold" : add === 0 ? " rad" : ""); f.textContent = add === 0 ? "Oh no!" : (add > 0 ? "+" : "−") + Math.abs(add); el.appendChild(f);
   const b = document.createElement("span"); b.className = "bonk"; b.innerHTML = STAR; el.appendChild(b);
   setTimeout(() => { f.remove(); b.remove(); }, 850);
+}
+// A giant radioactive mole dashes across the whack screen. It only hides the holes for a moment
+// (taps still go through). Only transform moves, so it stays light on a laggy TV.
+function giantRun() {
+  const g = document.createElement("div");
+  g.className = "giant" + (Math.random() < .5 ? " rtl" : "");
+  g.innerHTML = `<div class="gbody">${moleSVG()}</div>`;
+  $("wOverlay").appendChild(g);
+  setTimeout(() => g.remove(), 1300);
 }
 function hammerFx(x, y) {
   const d = document.createElement("div");
@@ -944,6 +970,7 @@ function finishWhack() {
   const parts = [`${W.hits} mole${W.hits === 1 ? "" : "s"}`];
   if (W.gold) parts.push(`${W.gold} gold`);
   if (W.bombs) parts.push(`${W.bombs} bomb${W.bombs === 1 ? "" : "s"} −${W.bombs * BOMB}`);
+  if (W.rad) parts.push(`${W.rad} radioactive`);
   const detail = S.level && S.level !== "easy" ? `<p class="who">${parts.join(" · ")}</p>` : "";
   t.pts += n; t.best = Math.max(t.best || 0, n);
   Object.assign(S.hills[hill], { done: true, ok: true, by: S.turn, n });
@@ -1088,11 +1115,13 @@ function introSlides() {
   const art4 = `<div class="cards-art"><div class="c1"><small>1st time</small>Warning</div><div class="c2"><small>2nd time</small>−${NOISE_MINUS} points</div><div class="c3"><small>3rd time</small>Skip a turn</div><div class="c4"><small>Quiet &amp; kind</small>+${QUIET} points</div></div>`;
   const art5 = `<div class="pts-list"><div>Right answer <b>get the hammer</b></div><div>Each mole you hit <b>+1</b></div><div>Wrong answer <b>next team</b></div></div>`;
   const art6 = `<div class="lvl-art"><div class="g">${moleSVG()}<b>+${GOLD}</b></div><div class="b">${bombSVG()}<b>−${BOMB}</b></div></div>`;
+  const art7 = `<div class="lvl-art"><div class="r">${moleSVG()}<b>☢ Oh no!</b></div></div>`;
   const slides = [
     ["Pick a mole hill!", ["On your turn, come and touch a hill."], art1],
     ["Answer the question", ["Right answer: you get the hammer!", "Wrong answer: next team."], art2],
     ["Whack the moles!", ["Touch the moles as fast as you can.", "Each mole = 1 point. Watch the bar!"], art3],
     S && S.level && S.level !== "easy" ? [lvl().label + " level", [`Golden mole = +${GOLD} points!`, `Don't hit the bomb: −${BOMB} points.`], art6] : null,
+    S && S.level === "expert" ? ["Radioactive mole!", ["Green mole? Don't hit it!", "If you hit it, a GIANT mole runs across the screen."], art7] : null,
     ["Teacher's cards", ["Too noisy? The teacher gives your team a card.", `Quiet and kind teams get +${QUIET} points!`], art4],
     ["How to win", ["When all the hills are done, the game ends.", "The team with the most points wins!"], art5],
   ];
