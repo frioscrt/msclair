@@ -1,0 +1,697 @@
+{
+  "id": "m3-triangles-quadrilaterals",
+  "title": "Triangles and quadrilaterals",
+  "subject": "Math",
+  "grade": "3",
+  "book": "E-project Math",
+  "lang": "en",
+  "status": "approved",
+  "source": "E-project Math Grade 3, Triangles and Quadrilaterals (sides, vertices, naming with letters: triangle ABC, quadrilateral MNPQ; square, rectangle; counting shapes). Soạn theo tên bài Clair đưa, chưa đối chiếu sách.",
+  "updated": "2026-11-27T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-tri-eq.svg",
+      "explain": "It has 3 sides and 3 vertices, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-tri-right.svg",
+      "explain": "It has 3 sides and 3 vertices, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-tri-down.svg",
+      "explain": "It has 3 sides and 3 vertices, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-tri-tall.svg",
+      "explain": "It has 3 sides and 3 vertices, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-quad-irr.svg",
+      "explain": "It has 4 sides and 4 vertices, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-quad-trap.svg",
+      "explain": "It has 4 sides and 4 vertices, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-quad-kite.svg",
+      "explain": "It has 4 sides and 4 vertices, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "What shape is this?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-quad-para.svg",
+      "explain": "It has 4 sides and 4 vertices, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "How many sides does this shape have?",
+      "a": "3",
+      "w": [
+        "4",
+        "5",
+        "6"
+      ],
+      "img": "img/m3-tq-tri-wide.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many sides does this shape have?",
+      "a": "4",
+      "w": [
+        "3",
+        "5",
+        "6"
+      ],
+      "img": "img/m3-tq-quad-kite.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many vertices does this shape have?",
+      "a": "3",
+      "w": [
+        "4",
+        "5",
+        "6"
+      ],
+      "img": "img/m3-tq-tri-right.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many vertices does this shape have?",
+      "a": "4",
+      "w": [
+        "3",
+        "5",
+        "6"
+      ],
+      "img": "img/m3-tq-quad-trap.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many sides does this shape have?",
+      "a": "5",
+      "w": [
+        "3",
+        "4",
+        "6"
+      ],
+      "img": "img/m3-tq-pent.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many vertices does this shape have?",
+      "a": "6",
+      "w": [
+        "3",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-hex.svg"
+    },
+    {
+      "type": "fill",
+      "q": "A triangle has ___ sides.",
+      "a": "3",
+      "w": [
+        "4",
+        "2",
+        "5"
+      ],
+      "alt": [
+        "three"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A quadrilateral has ___ vertices.",
+      "a": "4",
+      "w": [
+        "3",
+        "5",
+        "6"
+      ],
+      "alt": [
+        "four"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "The corners of a shape are called ___.",
+      "a": "vertices",
+      "w": [
+        "sides",
+        "lines",
+        "points"
+      ],
+      "alt": [
+        "vertex"
+      ],
+      "explain": "One corner is a vertex. Many corners are vertices."
+    },
+    {
+      "type": "mc",
+      "q": "What do we call the straight lines around a shape?",
+      "a": "sides",
+      "w": [
+        "vertices",
+        "corners",
+        "points"
+      ],
+      "img": "img/m3-tq-quad-irr.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a triangle? Choose the colour.",
+      "a": "pink",
+      "w": [
+        "purple",
+        "blue",
+        "red"
+      ],
+      "pics": {
+        "pink": "img/m3-tq-tri-down.svg",
+        "purple": "img/m3-tq-hex.svg",
+        "blue": "img/m3-tq-quad-para.svg",
+        "red": "img/m3-tq-circle.svg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a quadrilateral? Choose the colour.",
+      "a": "orange",
+      "w": [
+        "yellow",
+        "blue",
+        "red"
+      ],
+      "pics": {
+        "orange": "img/m3-tq-quad-trap.svg",
+        "yellow": "img/m3-tq-tri-eq.svg",
+        "blue": "img/m3-tq-pent.svg",
+        "red": "img/m3-tq-circle.svg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a quadrilateral? Choose the colour.",
+      "a": "green",
+      "w": [
+        "blue",
+        "purple",
+        "orange"
+      ],
+      "pics": {
+        "green": "img/m3-tq-quad-kite.svg",
+        "blue": "img/m3-tq-pent.svg",
+        "purple": "img/m3-tq-hex.svg",
+        "orange": "img/m3-tq-tri-tall.svg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which one is NOT a triangle? Choose the colour.",
+      "a": "purple",
+      "w": [
+        "yellow",
+        "green",
+        "blue"
+      ],
+      "pics": {
+        "purple": "img/m3-tq-quad-irr.svg",
+        "yellow": "img/m3-tq-tri-eq.svg",
+        "green": "img/m3-tq-tri-wide.svg",
+        "blue": "img/m3-tq-tri-right.svg"
+      },
+      "explain": "The purple shape has 4 sides. It is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "Which one is NOT a quadrilateral? Choose the colour.",
+      "a": "blue",
+      "w": [
+        "red",
+        "yellow",
+        "orange"
+      ],
+      "pics": {
+        "blue": "img/m3-tq-pent.svg",
+        "red": "img/m3-tq-square.svg",
+        "yellow": "img/m3-tq-rect.svg",
+        "orange": "img/m3-tq-quad-trap.svg"
+      },
+      "explain": "The blue shape has 5 sides. It is a pentagon."
+    },
+    {
+      "type": "tf",
+      "q": "This is a triangle.",
+      "a": false,
+      "img": "img/m3-tq-open-tri.svg",
+      "explain": "The lines do not close. A triangle must be closed."
+    },
+    {
+      "type": "tf",
+      "q": "This is a triangle.",
+      "a": false,
+      "img": "img/m3-tq-curved.svg",
+      "explain": "One side is curved. A triangle has 3 straight sides."
+    },
+    {
+      "type": "tf",
+      "q": "This is a quadrilateral.",
+      "a": true,
+      "img": "img/m3-tq-quad-para.svg"
+    },
+    {
+      "type": "tf",
+      "q": "This is a quadrilateral.",
+      "a": false,
+      "img": "img/m3-tq-pent.svg",
+      "explain": "It has 5 sides. A quadrilateral has 4 sides."
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this triangle?",
+      "a": "triangle ABC",
+      "w": [
+        "triangle ABD",
+        "quadrilateral ABC",
+        "triangle ACD"
+      ],
+      "img": "img/m3-tq-tri-abc.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this quadrilateral?",
+      "a": "quadrilateral MNPQ",
+      "w": [
+        "triangle MNP",
+        "quadrilateral MNPK",
+        "quadrilateral MNQK"
+      ],
+      "img": "img/m3-tq-quad-mnpq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this shape?",
+      "a": "triangle DEG",
+      "w": [
+        "triangle DEH",
+        "quadrilateral DEGH",
+        "triangle DGK"
+      ],
+      "img": "img/m3-tq-tri-deg.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What are the vertices of this triangle?",
+      "a": "M, N, P",
+      "w": [
+        "M, N, Q",
+        "N, P, Q",
+        "M, P, K"
+      ],
+      "img": "img/m3-tq-tri-mnp.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What are the vertices of this quadrilateral?",
+      "a": "E, G, H, K",
+      "w": [
+        "E, G, H",
+        "E, H, K, M",
+        "G, H, K"
+      ],
+      "img": "img/m3-tq-quad-eghk.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a side of triangle ABC?",
+      "a": "AB",
+      "w": [
+        "AD",
+        "BD",
+        "CD"
+      ],
+      "img": "img/m3-tq-tri-abc.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a side of triangle HIK?",
+      "a": "IK",
+      "w": [
+        "HM",
+        "IN",
+        "KP"
+      ],
+      "img": "img/m3-tq-tri-hik.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Triangle DEG has 3 sides: DE, EG and ___.",
+      "a": "GD",
+      "w": [
+        "DK",
+        "EH",
+        "GH"
+      ],
+      "img": "img/m3-tq-tri-deg.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a side of quadrilateral ABCD?",
+      "a": "BC",
+      "w": [
+        "AC",
+        "BD",
+        "AE"
+      ],
+      "img": "img/m3-tq-quad-abcd.svg",
+      "explain": "AC and BD go across the middle. They are not sides."
+    },
+    {
+      "type": "mc",
+      "q": "Quadrilateral MNPQ has 4 sides: MN, NP, PQ and ___.",
+      "a": "QM",
+      "w": [
+        "MP",
+        "NQ",
+        "PM"
+      ],
+      "img": "img/m3-tq-quad-mnpq.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Look at the dashed line. Is MP a side of quadrilateral MNPQ?",
+      "a": "No, it goes across the middle.",
+      "w": [
+        "Yes, it is a side.",
+        "Yes, it is a vertex."
+      ],
+      "img": "img/m3-tq-quad-mnpq-diag.svg",
+      "explain": "The sides are MN, NP, PQ and QM. MP goes across the inside."
+    },
+    {
+      "type": "mc",
+      "q": "How many sides does quadrilateral EGHK have?",
+      "a": "4",
+      "w": [
+        "3",
+        "5",
+        "6"
+      ],
+      "img": "img/m3-tq-quad-eghk.svg"
+    },
+    {
+      "type": "match",
+      "q": "Match the shape and its vertices.",
+      "pairs": [
+        [
+          "triangle ABC",
+          "A, B, C"
+        ],
+        [
+          "quadrilateral MNPQ",
+          "M, N, P, Q"
+        ],
+        [
+          "triangle DEG",
+          "D, E, G"
+        ],
+        [
+          "quadrilateral EGHK",
+          "E, G, H, K"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match triangle ABC: the side and its two vertices.",
+      "pairs": [
+        [
+          "side AB",
+          "A and B"
+        ],
+        [
+          "side BC",
+          "B and C"
+        ],
+        [
+          "side CA",
+          "C and A"
+        ]
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "This quadrilateral is a ___.",
+      "a": "square",
+      "w": [
+        "rectangle",
+        "triangle",
+        "circle"
+      ],
+      "img": "img/m3-tq-square.svg",
+      "explain": "All 4 sides are the same length. It is a square."
+    },
+    {
+      "type": "mc",
+      "q": "This quadrilateral is a ___.",
+      "a": "rectangle",
+      "w": [
+        "square",
+        "triangle",
+        "pentagon"
+      ],
+      "img": "img/m3-tq-rect.svg"
+    },
+    {
+      "type": "mc",
+      "q": "This quadrilateral is a ___.",
+      "a": "rectangle",
+      "w": [
+        "square",
+        "triangle",
+        "hexagon"
+      ],
+      "img": "img/m3-tq-rect-tall.svg"
+    },
+    {
+      "type": "tf",
+      "q": "A square is a quadrilateral.",
+      "a": true,
+      "img": "img/m3-tq-square.svg",
+      "explain": "A square has 4 sides and 4 vertices."
+    },
+    {
+      "type": "tf",
+      "q": "A rectangle has 3 vertices.",
+      "a": false,
+      "img": "img/m3-tq-rect.svg",
+      "explain": "A rectangle has 4 vertices."
+    },
+    {
+      "type": "tf",
+      "q": "All 4 sides of a square are the same length.",
+      "a": true,
+      "img": "img/m3-tq-square.svg"
+    },
+    {
+      "type": "tf",
+      "q": "A triangle can have 4 sides.",
+      "a": false,
+      "explain": "A triangle always has 3 sides."
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "6"
+      ],
+      "img": "img/m3-tq-mix1.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many quadrilaterals are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "6"
+      ],
+      "img": "img/m3-tq-mix1.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there?",
+      "a": "2",
+      "w": [
+        "1",
+        "3",
+        "4"
+      ],
+      "img": "img/m3-tq-mix2.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many quadrilaterals are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-mix2.svg",
+      "explain": "The kite, the slanted shape and the square each have 4 sides."
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there in this picture?",
+      "a": "2",
+      "w": [
+        "1",
+        "3",
+        "4"
+      ],
+      "img": "img/m3-tq-rect-diag.svg",
+      "explain": "The line cuts the rectangle into 2 triangles."
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there in this picture?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "1"
+      ],
+      "img": "img/m3-tq-tri-split.svg",
+      "explain": "2 small triangles + 1 big triangle = 3 triangles."
+    },
+    {
+      "type": "mc",
+      "q": "How many quadrilaterals are there in this picture?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "1"
+      ],
+      "img": "img/m3-tq-rect-split.svg",
+      "explain": "2 small rectangles + 1 big rectangle = 3 quadrilaterals."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the house. How many quadrilaterals can you see?",
+      "a": "2",
+      "w": [
+        "1",
+        "3",
+        "4"
+      ],
+      "img": "img/m3-tq-house.svg",
+      "explain": "The wall and the door are quadrilaterals."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the house. The roof is a ___.",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle",
+        "square"
+      ],
+      "img": "img/m3-tq-house.svg"
+    },
+    {
+      "type": "mc",
+      "q": "A door is shaped like a ___.",
+      "a": "rectangle",
+      "w": [
+        "triangle",
+        "circle",
+        "pentagon"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "A slice of sandwich cut from corner to corner is a ___.",
+      "a": "triangle",
+      "w": [
+        "square",
+        "circle",
+        "rectangle"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "A page of a book is a quadrilateral.",
+      "a": true
+    }
+  ]
+}
