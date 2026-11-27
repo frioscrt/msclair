@@ -179,6 +179,16 @@
       "status": "approved",
       "n": 58,
       "updated": "2026-11-26T09:00:00Z"
+    },
+    {
+      "id": "m3-c2-u3-triangles-quadrilaterals",
+      "title": "Chapter 2 · Unit 3 · Triangles and quadrilaterals",
+      "subject": "Math",
+      "grade": "3",
+      "book": "E-project Math",
+      "status": "approved",
+      "n": 65,
+      "updated": "2026-11-27T03:00:00Z"
     }
   ]
 }
