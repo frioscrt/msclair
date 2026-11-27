@@ -100,7 +100,7 @@ button:focus-visible { outline: 4px solid var(--accent); outline-offset: 3px; }
 }
 .tile.raidable { cursor: pointer; }
 .tile.raidable:hover { transform: translateY(-3px); }
-.tile .lock, .tile .sword {
+.tile .lock, .tile .shield, .tile .sword {
   position: absolute; top: 10px; right: 10px; z-index: 3; background: #fff; border-radius: 999px; padding: 2px 9px;
   font-size: .95rem; font-weight: 900; box-shadow: 0 2px 0 rgba(0,0,0,.2);
 }
@@ -290,9 +290,9 @@ details.custom code { background: var(--paper); padding: 1px 5px; border-radius:
 .chip .flg { display: block; width: 58%; height: auto; margin: 0 auto 3px; border-radius: 3px; box-shadow: 0 0 0 1.5px rgba(0,0,0,.18); }
 .chip .cn { display: block; font-family: var(--display); font-weight: 600; white-space: nowrap; }
 .chip .ot { display: block; font-size: .72em; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chip .pts, .chip .lock, .chip .sword, .chip .bonus { position: absolute; top: -12px; font-size: .78em; padding: 1px 7px; border-radius: 999px; font-weight: 900; z-index: 2; }
+.chip .pts, .chip .lock, .chip .shield, .chip .sword, .chip .bonus { position: absolute; top: -12px; font-size: .78em; padding: 1px 7px; border-radius: 999px; font-weight: 900; z-index: 2; }
 .chip .pts { right: -10px; background: var(--gold); color: #5a3d00; box-shadow: 0 2px 0 #c99500; }
-.chip .lock { right: -10px; background: #fff; box-shadow: 0 2px 0 rgba(0,0,0,.25); color: var(--ink); }
+.chip .lock, .chip .shield { right: -10px; background: #fff; box-shadow: 0 2px 0 rgba(0,0,0,.25); color: var(--ink); }
 .chip .sword { right: -10px; background: var(--gold); color: #5a3d00; box-shadow: 0 2px 0 #c99500; }
 .chip .bonus { left: -10px; background: #fff3c4; color: #8a5a00; border: 2px solid var(--gold); }
 .chip.owned { background: var(--tc); color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,.3), 0 0 0 3px #fff; cursor: default; }
@@ -374,7 +374,7 @@ details.custom code { background: var(--paper); padding: 1px 5px; border-radius:
         <button class="pill" id="optTreasure">💰 Treasure on empty countries</button>
       </div>
       <p class="rules-note"><b>Steal:</b> if a team answers wrong, the next team can answer the same question and win the country for half the points.<br>
-      <b>Raid:</b> a team may attack a country owned by another team with a harder question. Right: the country and its points change owner, and that country is locked 🔒. Wrong: the raiding team loses half the country's points.<br>
+      <b>Raid:</b> a team that owns at least one country may attack a country owned by another team with a harder question. Right: the country and its points change owner. Wrong: the raiding team loses half the country's points. A newly planted country has a 🛡️ shield for one round, so nobody can raid it yet.<br>
       <b>Treasure:</b> from round 3, a country that nobody owns gets a 💰 bonus at the end of every round (+50, up to +200). The team that wins the country takes the treasure too.</p>
       <div id="roundsBox" hidden style="margin-top:12px">
         <div class="row" id="roundsPick" role="group" aria-label="Number of rounds">
@@ -963,7 +963,7 @@ const onLibChange = async e => {
    ========================================================= */
 const TEAM_COLORS = ["#e8402f", "#2f7fd6", "#17915f", "#9b4fd1"];
 const DEFAULT_NAMES = ["Red Team", "Blue Team", "Green Team", "Purple Team"];
-const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, steal: true, raid: false, treasure: true, rounds: 8, teams: [], owners: {}, locked: {}, bonus: {}, turn: 0, turnsTaken: 0, used: {}, sound: true };
+const S = { n: 2, names: DEFAULT_NAMES.slice(), timer: 30, steal: true, raid: false, treasure: true, rounds: 8, teams: [], owners: {}, locked: {}, shield: {}, bonus: {}, turn: 0, turnsTaken: 0, used: {}, sound: true };
 /* Treasure: from the end of round TREASURE_FROM, every place nobody owns
    gets +TREASURE_STEP at the end of each round, up to TREASURE_MAX.
    Whoever wins the place takes the treasure; then it is gone. */
@@ -1008,7 +1008,7 @@ $("teamNames").oninput = e => { if (e.target.dataset.i) S.names[+e.target.datase
 function startGame() {
   if (chosen !== UNITS && !LIB.byKind) return;
   S.teams = Array.from({ length: S.n }, (_, i) => ({ name: (S.names[i] || "").trim() || DEFAULT_NAMES[i], color: TEAM_COLORS[i], pts: 0, land: 0, adj: 0, noise: 0 }));
-  S.owners = {}; S.locked = {}; S.bonus = {}; S.turn = 0; S.turnsTaken = 0; S.used = {};
+  S.owners = {}; S.locked = {}; S.shield = {}; S.bonus = {}; S.turn = 0; S.turnsTaken = 0; S.used = {};
   LIB.piles = {}; undoSnap = null;
   showGame(); save(); sfx("start");
   if (introOn) openIntro();
@@ -1024,7 +1024,7 @@ function showGame() {
 $("startBtn").onclick = startGame;
 
 /* ---------- Save / continue last game ---------- */
-const SAVED = ["n", "timer", "steal", "raid", "treasure", "rounds", "teams", "owners", "locked", "bonus", "turn", "turnsTaken", "used"];
+const SAVED = ["n", "timer", "steal", "raid", "treasure", "rounds", "teams", "owners", "locked", "shield", "bonus", "turn", "turnsTaken", "used"];
 function save() {
   const g = { v: 2, set: chosen };
   SAVED.forEach(k => g[k] = S[k]);
@@ -1039,7 +1039,7 @@ $("resumeBtn").onclick = async () => {
   }
   chosen = set; prefSet(set); renderLib();
   SAVED.forEach(k => { if (g[k] !== undefined) S[k] = g[k]; });
-  S.bonus = S.bonus || {};
+  S.bonus = S.bonus || {}; S.shield = S.shield || {};
   S.teams.forEach(t => { t.adj = t.adj || 0; t.noise = t.noise || 0; });
   LIB.piles = {}; undoSnap = null;
   showGame();
@@ -1049,7 +1049,7 @@ $("resumeBtn").onclick = async () => {
 function placeView(pl) {
   const o = S.owners[pl.id], tm = o != null ? S.teams[o] : null;
   const raidable = !!tm && canRaid(pl.id), bon = !tm && S.bonus[pl.id] || 0;
-  const badge = !tm ? `<span class="pts">${pl.pts}</span>` : S.locked[pl.id] ? `<span class="lock">🔒 ${pl.pts}</span>` : raidable ? `<span class="sword">⚔️ ${pl.pts}</span>` : "";
+  const badge = !tm ? `<span class="pts">${pl.pts}</span>` : S.raid && shielded(pl.id) ? `<span class="shield">🛡️ ${pl.pts}</span>` : raidable ? `<span class="sword">⚔️ ${pl.pts}</span>` : "";
   const cls = `${tm ? " owned" : ""}${raidable ? " raidable" : ""}${bon ? " treasure" : ""}`;
   const attrs = `data-id="${pl.id}" ${tm && !raidable ? "disabled" : ""} aria-label="${pl.name}, ${pl.pts} points${bon ? ", treasure " + bon : ""}${tm ? ", owned by " + esc(tm.name) : ""}${raidable ? ", can be raided" : ""}"`;
   const bonus = bon ? `<span class="bonus">💰 +${bon}</span>` : "";
@@ -1076,11 +1076,11 @@ function renderBoard() {
   $("turnBox").style.setProperty("--tc", t.color);
   const free = PLACES.some(p => S.owners[p.id] == null);
   const canPlay = PLACES.some(p => S.owners[p.id] == null || canRaid(p.id));
-  const hint = !canPlay ? `Nothing to pick this turn.<br><button class="btn small" id="skipBtn" style="margin-top:8px">Skip turn ▶</button>` : free ? (S.raid ? "Pick a free country, or ⚔️ raid!" : "Pick a country on the map!") : "No free countries left. ⚔️ Raid one!";
+  const hint = !canPlay ? `Nothing to pick this turn.<br><button class="btn small" id="skipBtn" style="margin-top:8px">Skip turn ▶</button>` : free ? (S.raid ? (ownsLand(S.turn) ? "Pick a free country, or ⚔️ raid!" : "Pick a free country! Plant your first flag to unlock ⚔️ raids.") : "Pick a country on the map!") : "No free countries left. ⚔️ Raid one!";
   $("turnBox").innerHTML = (S.raid ? `<div class="rnd">Round ${Math.min(Math.floor(S.turnsTaken / S.teams.length) + 1, S.rounds)} of ${S.rounds}</div>` : "") + `Your turn:<b>${esc(t.name)}</b>${hint}`;
   if ($("skipBtn")) $("skipBtn").onclick = endTurn;
   $("ruleLegend").innerHTML = (S.steal ? "<br>🔁 Steal is ON: wrong answer → next team may steal (half points)." : "") +
-    (S.raid ? "<br>⚔️ Raid is ON: harder question. Wrong raid = lose half the points. 🔒 = locked." : "") +
+    (S.raid ? "<br>⚔️ Raid is ON: harder question. You need a country to raid. Wrong raid = lose half the points. 🛡️ = new flag, safe for one round." : "") +
     (S.treasure ? `<br>💰 Treasure is ON: from round ${TREASURE_FROM + 1}, empty countries get +${TREASURE_STEP} every round.` : "");
   $("scores").innerHTML = S.teams.map((tm, i) =>
     `<div class="team${i === S.turn ? " turn" : ""}" style="--tc:${tm.color}"><span class="dot"></span><span class="tn">${esc(tm.name)}<br><span class="tl">${tm.land} ${tm.land === 1 ? "country" : "countries"}</span>${tm.adj ? `<span class="adj">teacher ${tm.adj > 0 ? "+" : ""}${tm.adj}</span>` : ""}${tm.noise ? `<span class="nb">NOISY ×${tm.noise}</span>` : ""}</span><span class="tp">${tm.pts}</span></div>`).join("");
@@ -1101,8 +1101,12 @@ function endTurn() {
 }
 function canRaid(id) {
   const o = S.owners[id];
-  return S.raid && o != null && o !== S.turn && !S.locked[id];
+  return S.raid && o != null && o !== S.turn && ownsLand(S.turn) && !shielded(id);
 }
+/* A team must own a country before it can raid. */
+const ownsLand = team => PLACES.some(p => S.owners[p.id] === team);
+/* A newly planted country is safe until every other team has had one turn. */
+const shielded = id => S.shield[id] != null && S.turnsTaken - S.shield[id] < S.teams.length;
 const onPick = e => { const b = e.target.closest(".tile, .chip"); if (b && !b.disabled) openQuestion(b.dataset.id); };
 $("island").onclick = onPick; $("worldMap").onclick = onPick;
 
@@ -1174,12 +1178,12 @@ function answer(i) {
   if (ok && Q.raid) {
     const victim = S.teams[S.owners[pl.id]];
     victim.pts = Math.max(0, victim.pts - pl.pts); victim.land--;
-    t.pts += pl.pts; t.land++; S.owners[pl.id] = Q.team; S.locked[pl.id] = true;
+    t.pts += pl.pts; t.land++; S.owners[pl.id] = Q.team; delete S.shield[pl.id];
     head = `⚔️ Raid success! ${esc(t.name)} takes ${esc(pl.name)} from ${esc(victim.name)} (+${pl.pts})`;
-    mini = "This land is now locked 🔒. Nobody can raid it again.";
+    mini = "Keep it safe: other teams can raid it back.";
   } else if (ok) {
     const gain = Q.stealing ? half : pl.pts, bon = S.bonus[pl.id] || 0;
-    t.pts += gain + bon; t.land++; S.owners[pl.id] = Q.team; delete S.bonus[pl.id];
+    t.pts += gain + bon; t.land++; S.owners[pl.id] = Q.team; delete S.bonus[pl.id]; S.shield[pl.id] = S.turnsTaken;
     const plus = bon ? `+${gain} and 💰 +${bon} treasure` : `+${gain}`;
     head = Q.stealing ? `🔁 Stolen! ${esc(pl.name)} belongs to ${esc(t.name)} (${plus})` : `✅ Correct! ${esc(pl.name)} belongs to ${esc(t.name)} (${plus})`;
   } else if (Q.raid) {
@@ -1208,8 +1212,7 @@ function gameOverAfterThisTurn() {
   if (S.raid) {
     if (S.turnsTaken + 1 >= S.rounds * S.teams.length) return true;
     const free = PLACES.some(p => S.owners[p.id] == null);
-    const raidLeft = PLACES.some(p => S.owners[p.id] != null && !S.locked[p.id]);
-    return !free && !raidLeft;
+    return !free && new Set(PLACES.map(p => S.owners[p.id])).size < 2;
   }
   return PLACES.every(p => S.owners[p.id] != null);
 }
@@ -1319,7 +1322,7 @@ $("tRows").onclick = e => { const b = e.target.closest("[data-a]"); if (b) teach
 function miniTile(id, o = {}) {
   const pl = PLACES.find(p => p.id === id);
   const tm = o.team != null ? { name: DEFAULT_NAMES[o.team], color: TEAM_COLORS[o.team] } : null;
-  const badge = o.lock ? `<span class="lock">🔒 ${pl.pts}</span>` : o.sword ? `<span class="sword">⚔️ ${pl.pts}</span>` : !tm ? `<span class="pts">${pl.pts}</span>` : "";
+  const badge = o.shield ? `<span class="shield">🛡️ ${pl.pts}</span>` : o.lock ? `<span class="lock">🔒 ${pl.pts}</span>` : o.sword ? `<span class="sword">⚔️ ${pl.pts}</span>` : !tm ? `<span class="pts">${pl.pts}</span>` : "";
   return `<div class="tile${tm ? " owned" : ""}${o.bonus ? " treasure" : ""}" ${tm ? `style="--tc:${tm.color}"` : ""}>${svg(PICS[id](), pl.name)}<div class="nm">${flag(id)} ${pl.name}</div>${tm ? `<span class="flag">🚩 ${esc(tm.name)}</span>` : ""}${badge}${o.bonus ? `<span class="bonus">💰 +${o.bonus}</span>` : ""}</div>`;
 }
 function introSlides() {
@@ -1335,8 +1338,8 @@ function introSlides() {
   ];
   if (S.steal) sl.push(["🔁 Steal", ["Wrong answer? The next team can answer the same question.", "Right: they win the country for half the points."],
     miniTile("korea") + `<span class="arrow">→</span>` + miniTile("korea", { team: 1 })]);
-  if (S.raid) sl.push(["⚔️ Raid", ["Attack another team's country with a harder question.", "Right: the country is yours and locked 🔒. Wrong: lose half its points."],
-    miniTile("china", { team: 0, sword: true }) + `<span class="arrow">→</span>` + miniTile("china", { team: 1, lock: true })]);
+  if (S.raid) sl.push(["⚔️ Raid", ["Own a country first, then attack another team's country with a harder question.", "Right: the country is yours. Wrong: lose half its points. 🛡️ New flags are safe for one round."],
+    miniTile("china", { team: 0, shield: true }) + `<span class="arrow">→</span>` + miniTile("china", { team: 0, sword: true }) + `<span class="arrow">→</span>` + miniTile("china", { team: 1 })]);
   if (S.treasure) sl.push(["💰 Treasure", ["Nobody wants a country? It grows a treasure every round!", `+${TREASURE_STEP}, +${TREASURE_STEP * 2}, +${TREASURE_STEP * 3}… up to +${TREASURE_MAX}. Win the country, take the treasure!`],
     miniTile("brazil", { bonus: TREASURE_STEP }) + `<span class="arrow">→</span>` + miniTile("brazil", { bonus: TREASURE_STEP * 3 })]);
   sl.push(["Teacher's cards", ["Too noisy? The teacher gives your team a card.", `Quiet and kind teams get +${QUIET} points!`],
