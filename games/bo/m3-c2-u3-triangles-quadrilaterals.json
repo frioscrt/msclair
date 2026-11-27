@@ -1,0 +1,706 @@
+{
+  "id": "m3-c2-u3-triangles-quadrilaterals",
+  "title": "Chapter 2 · Unit 3 · Triangles and quadrilaterals",
+  "subject": "Math",
+  "grade": "3",
+  "book": "E-project Math",
+  "lang": "en",
+  "status": "approved",
+  "source": "E-project Math Grade 3, Chapter 2 Unit 3: Triangles and quadrilaterals. Từ vựng sách (Clair đưa): equilateral, isosceles, scalene triangle, square, quadrilateral, rectangle, trapezoid, three/four sides, angles, 90 degree, 3/4 corners.",
+  "updated": "2026-11-27T03:00:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle"
+      ],
+      "img": "img/m3-tq-tri-eq.svg",
+      "explain": "It has three sides and 3 corners, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle"
+      ],
+      "img": "img/m3-tq-tri-right.svg",
+      "explain": "It has three sides and 3 corners, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle"
+      ],
+      "img": "img/m3-tq-tri-down.svg",
+      "explain": "It has three sides and 3 corners, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "triangle",
+      "w": [
+        "quadrilateral",
+        "circle"
+      ],
+      "img": "img/m3-tq-tri-tall.svg",
+      "explain": "It has three sides and 3 corners, so it is a triangle."
+    },
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle"
+      ],
+      "img": "img/m3-tq-quad-irr.svg",
+      "explain": "It has four sides and 4 corners, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle"
+      ],
+      "img": "img/m3-tq-quad-kite.svg",
+      "explain": "It has four sides and 4 corners, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "Is this a triangle or a quadrilateral?",
+      "a": "quadrilateral",
+      "w": [
+        "triangle",
+        "circle"
+      ],
+      "img": "img/m3-tq-quad-para.svg",
+      "explain": "It has four sides and 4 corners, so it is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "How many sides does this shape have?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-tri-wide.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many sides does this shape have?",
+      "a": "4",
+      "w": [
+        "2",
+        "3",
+        "5"
+      ],
+      "img": "img/m3-tq-quad-kite.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many corners does this shape have?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-tri-right.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many corners does this shape have?",
+      "a": "4",
+      "w": [
+        "2",
+        "3",
+        "5"
+      ],
+      "img": "img/m3-tq-quad-trap.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many angles does this shape have?",
+      "a": "4",
+      "w": [
+        "2",
+        "3",
+        "5"
+      ],
+      "img": "img/m3-tq-quad-irr.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many angles does this shape have?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-tri-tall.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Count the red dots. How many corners does a triangle have?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-corners-tri.svg"
+    },
+    {
+      "type": "fill",
+      "q": "A triangle has ___ sides.",
+      "a": "three",
+      "w": [
+        "four",
+        "two",
+        "five"
+      ],
+      "alt": [
+        "3"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A quadrilateral has ___ sides.",
+      "a": "four",
+      "w": [
+        "three",
+        "five",
+        "six"
+      ],
+      "alt": [
+        "4"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "A quadrilateral has 4 sides and 4 ___.",
+      "a": "corners",
+      "w": [
+        "circles",
+        "triangles",
+        "dots"
+      ],
+      "alt": [
+        "angles"
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "A triangle has 3 angles.",
+      "a": true,
+      "img": "img/m3-tq-tri-eq.svg"
+    },
+    {
+      "type": "tf",
+      "q": "A quadrilateral has 3 corners.",
+      "a": false,
+      "img": "img/m3-tq-quad-irr.svg",
+      "explain": "A quadrilateral has 4 corners."
+    },
+    {
+      "type": "tf",
+      "q": "A triangle can have four sides.",
+      "a": false,
+      "explain": "A triangle always has three sides."
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a triangle? Choose the colour.",
+      "a": "pink",
+      "w": [
+        "purple",
+        "blue",
+        "red"
+      ],
+      "pics": {
+        "pink": "img/m3-tq-tri-down.svg",
+        "purple": "img/m3-tq-hex.svg",
+        "blue": "img/m3-tq-quad-para.svg",
+        "red": "img/m3-tq-circle.svg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which one is a quadrilateral? Choose the colour.",
+      "a": "green",
+      "w": [
+        "blue",
+        "purple",
+        "orange"
+      ],
+      "pics": {
+        "green": "img/m3-tq-quad-kite.svg",
+        "blue": "img/m3-tq-pent.svg",
+        "purple": "img/m3-tq-hex.svg",
+        "orange": "img/m3-tq-tri-tall.svg"
+      }
+    },
+    {
+      "type": "mc",
+      "q": "Which one is NOT a triangle? Choose the colour.",
+      "a": "purple",
+      "w": [
+        "yellow",
+        "green",
+        "blue"
+      ],
+      "pics": {
+        "purple": "img/m3-tq-quad-irr.svg",
+        "yellow": "img/m3-tq-tri-eq.svg",
+        "green": "img/m3-tq-tri-wide.svg",
+        "blue": "img/m3-tq-tri-right.svg"
+      },
+      "explain": "The purple shape has four sides. It is a quadrilateral."
+    },
+    {
+      "type": "mc",
+      "q": "Which one is NOT a quadrilateral? Choose the colour.",
+      "a": "blue",
+      "w": [
+        "red",
+        "yellow",
+        "orange"
+      ],
+      "pics": {
+        "blue": "img/m3-tq-pent.svg",
+        "red": "img/m3-tq-square.svg",
+        "yellow": "img/m3-tq-rect.svg",
+        "orange": "img/m3-tq-quad-trap.svg"
+      },
+      "explain": "The blue shape has 5 sides. A quadrilateral has four sides."
+    },
+    {
+      "type": "tf",
+      "q": "This is a triangle.",
+      "a": false,
+      "img": "img/m3-tq-open-tri.svg",
+      "explain": "The sides do not meet at the bottom. A triangle must be closed."
+    },
+    {
+      "type": "tf",
+      "q": "This is a triangle.",
+      "a": false,
+      "img": "img/m3-tq-curved.svg",
+      "explain": "One side is curved. A triangle has three straight sides."
+    },
+    {
+      "type": "tf",
+      "q": "This is a quadrilateral.",
+      "a": false,
+      "img": "img/m3-tq-pent.svg",
+      "explain": "It has 5 sides. A quadrilateral has four sides."
+    },
+    {
+      "type": "mc",
+      "q": "All three sides are the same length. What kind of triangle is it?",
+      "a": "equilateral triangle",
+      "w": [
+        "isosceles triangle",
+        "scalene triangle",
+        "right triangle"
+      ],
+      "img": "img/m3-tq-equi-ticks.svg"
+    },
+    {
+      "type": "mc",
+      "q": "Two sides are the same length. What kind of triangle is it?",
+      "a": "isosceles triangle",
+      "w": [
+        "equilateral triangle",
+        "scalene triangle",
+        "square"
+      ],
+      "img": "img/m3-tq-isos-ticks.svg"
+    },
+    {
+      "type": "mc",
+      "q": "All three sides are different. What kind of triangle is it?",
+      "a": "scalene triangle",
+      "w": [
+        "equilateral triangle",
+        "isosceles triangle",
+        "rectangle"
+      ],
+      "img": "img/m3-tq-scal-ticks.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What kind of triangle is this?",
+      "a": "equilateral triangle",
+      "w": [
+        "isosceles triangle",
+        "scalene triangle"
+      ],
+      "img": "img/m3-tq-equi-cm.svg",
+      "explain": "All three sides are 5 cm."
+    },
+    {
+      "type": "mc",
+      "q": "What kind of triangle is this?",
+      "a": "isosceles triangle",
+      "w": [
+        "equilateral triangle",
+        "scalene triangle"
+      ],
+      "img": "img/m3-tq-isos-cm.svg",
+      "explain": "Two sides are 6 cm."
+    },
+    {
+      "type": "mc",
+      "q": "What kind of triangle is this?",
+      "a": "scalene triangle",
+      "w": [
+        "equilateral triangle",
+        "isosceles triangle"
+      ],
+      "img": "img/m3-tq-scal-cm.svg",
+      "explain": "7 cm, 4 cm and 6 cm are all different."
+    },
+    {
+      "type": "mc",
+      "q": "A triangle has three sides: 4 cm, 4 cm and 4 cm. It is a ___ triangle.",
+      "a": "equilateral",
+      "w": [
+        "isosceles",
+        "scalene"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "A triangle has three sides: 5 cm, 5 cm and 2 cm. It is a ___ triangle.",
+      "a": "isosceles",
+      "w": [
+        "equilateral",
+        "scalene"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "A triangle has three sides: 3 cm, 5 cm and 6 cm. It is a ___ triangle.",
+      "a": "scalene",
+      "w": [
+        "equilateral",
+        "isosceles"
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the triangle and its sides.",
+      "pairs": [
+        [
+          "equilateral triangle",
+          "3 sides the same"
+        ],
+        [
+          "isosceles triangle",
+          "2 sides the same"
+        ],
+        [
+          "scalene triangle",
+          "no sides the same"
+        ]
+      ]
+    },
+    {
+      "type": "tf",
+      "q": "An equilateral triangle has 3 equal sides.",
+      "a": true,
+      "img": "img/m3-tq-equi-ticks.svg"
+    },
+    {
+      "type": "tf",
+      "q": "A scalene triangle has 2 equal sides.",
+      "a": false,
+      "img": "img/m3-tq-scal-ticks.svg",
+      "explain": "A scalene triangle has no equal sides. 2 equal sides is an isosceles triangle."
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this quadrilateral?",
+      "a": "square",
+      "w": [
+        "trapezoid",
+        "triangle",
+        "circle"
+      ],
+      "img": "img/m3-tq-square.svg",
+      "explain": "It has four sides of the same length and four 90 degree angles."
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this quadrilateral?",
+      "a": "rectangle",
+      "w": [
+        "square",
+        "trapezoid",
+        "triangle"
+      ],
+      "img": "img/m3-tq-rect.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this quadrilateral?",
+      "a": "rectangle",
+      "w": [
+        "square",
+        "trapezoid",
+        "triangle"
+      ],
+      "img": "img/m3-tq-rect-tall.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this quadrilateral?",
+      "a": "trapezoid",
+      "w": [
+        "square",
+        "rectangle",
+        "triangle"
+      ],
+      "img": "img/m3-tq-quad-trap.svg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the name of this quadrilateral?",
+      "a": "trapezoid",
+      "w": [
+        "square",
+        "rectangle",
+        "triangle"
+      ],
+      "img": "img/m3-tq-trap-right.svg"
+    },
+    {
+      "type": "tf",
+      "q": "A square is a quadrilateral.",
+      "a": true,
+      "img": "img/m3-tq-square.svg",
+      "explain": "A square has four sides and 4 corners."
+    },
+    {
+      "type": "tf",
+      "q": "A rectangle has 3 corners.",
+      "a": false,
+      "img": "img/m3-tq-rect.svg",
+      "explain": "A rectangle has 4 corners."
+    },
+    {
+      "type": "tf",
+      "q": "All four sides of a square are the same length.",
+      "a": true,
+      "img": "img/m3-tq-square.svg"
+    },
+    {
+      "type": "tf",
+      "q": "A trapezoid is a quadrilateral.",
+      "a": true,
+      "img": "img/m3-tq-quad-trap.svg",
+      "explain": "A trapezoid has four sides."
+    },
+    {
+      "type": "match",
+      "q": "Match the shape and the number of corners.",
+      "pairs": [
+        [
+          "triangle",
+          "3 corners"
+        ],
+        [
+          "quadrilateral",
+          "4 corners"
+        ],
+        [
+          "circle",
+          "no corners"
+        ]
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "This angle is ___ degrees.",
+      "a": "90",
+      "w": [
+        "30",
+        "60",
+        "180"
+      ],
+      "img": "img/m3-tq-angle-90.svg",
+      "explain": "This small square mark means a 90 degree angle."
+    },
+    {
+      "type": "mc",
+      "q": "How many 90 degree angles does a square have?",
+      "a": "4",
+      "w": [
+        "2",
+        "3",
+        "0"
+      ],
+      "img": "img/m3-tq-square-right.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many 90 degree angles does a rectangle have?",
+      "a": "4",
+      "w": [
+        "1",
+        "2",
+        "3"
+      ],
+      "img": "img/m3-tq-rect-right.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many 90 degree angles does this triangle have?",
+      "a": "1",
+      "w": [
+        "2",
+        "3",
+        "0"
+      ],
+      "img": "img/m3-tq-tri-right-mark.svg"
+    },
+    {
+      "type": "tf",
+      "q": "All the angles of a rectangle are 90 degrees.",
+      "a": true,
+      "img": "img/m3-tq-rect-right.svg"
+    },
+    {
+      "type": "tf",
+      "q": "All the angles of a trapezoid are 90 degrees.",
+      "a": false,
+      "img": "img/m3-tq-quad-trap.svg",
+      "explain": "Look at the trapezoid. Its angles are not all 90 degrees."
+    },
+    {
+      "type": "mc",
+      "q": "Which shape has four sides and four 90 degree angles, but not all sides are the same?",
+      "a": "rectangle",
+      "w": [
+        "square",
+        "trapezoid",
+        "triangle"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Which shape has four equal sides and four 90 degree angles?",
+      "a": "square",
+      "w": [
+        "rectangle",
+        "trapezoid",
+        "triangle"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "6"
+      ],
+      "img": "img/m3-tq-mix1.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many quadrilaterals are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "6"
+      ],
+      "img": "img/m3-tq-mix1.svg"
+    },
+    {
+      "type": "mc",
+      "q": "How many quadrilaterals are there?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "5"
+      ],
+      "img": "img/m3-tq-mix2.svg",
+      "explain": "The kite, the slanted shape and the square each have four sides."
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there in this picture?",
+      "a": "2",
+      "w": [
+        "1",
+        "3",
+        "4"
+      ],
+      "img": "img/m3-tq-rect-diag.svg",
+      "explain": "The line cuts the rectangle into 2 triangles."
+    },
+    {
+      "type": "mc",
+      "q": "How many triangles are there in this picture?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "1"
+      ],
+      "img": "img/m3-tq-tri-split.svg",
+      "explain": "2 small triangles + 1 big triangle = 3 triangles."
+    },
+    {
+      "type": "mc",
+      "q": "How many rectangles are there in this picture?",
+      "a": "3",
+      "w": [
+        "2",
+        "4",
+        "1"
+      ],
+      "img": "img/m3-tq-rect-split.svg",
+      "explain": "2 small rectangles + 1 big rectangle = 3 rectangles."
+    },
+    {
+      "type": "mc",
+      "q": "Look at the house. The roof is a ___.",
+      "a": "triangle",
+      "w": [
+        "square",
+        "rectangle",
+        "trapezoid"
+      ],
+      "img": "img/m3-tq-house.svg"
+    },
+    {
+      "type": "mc",
+      "q": "A door is shaped like a ___.",
+      "a": "rectangle",
+      "w": [
+        "triangle",
+        "trapezoid",
+        "circle"
+      ]
+    }
+  ]
+}
