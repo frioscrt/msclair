@@ -1,0 +1,550 @@
+{
+  "id": "e5-u5-p2-rainy-days",
+  "title": "Unit 5 · Part 2 · Rainy days",
+  "subject": "English",
+  "grade": "5",
+  "book": "Communication",
+  "lang": "en",
+  "status": "approved",
+  "source": "Slide E-project lớp 5, Unit 5 Part 2 Clair gửi 27/11/2026: puddle, splash, soaking wet, reach, take off; hội thoại It's going to rain / I'm going to take out my umbrella; ngữ pháp be + going to + V.",
+  "updated": "2026-11-27T01:10:00Z",
+  "questions": [
+    {
+      "type": "mc",
+      "q": "Look at the picture. Which word is it?",
+      "a": "puddle",
+      "w": [
+        "splash",
+        "soaking wet",
+        "reach"
+      ],
+      "img": "img/e5-u5-puddle.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Look at the picture. Which word is it?",
+      "a": "splash",
+      "w": [
+        "puddle",
+        "soaking wet",
+        "reach"
+      ],
+      "img": "img/e5-u5-splash.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Look at the picture. Which word is it?",
+      "a": "soaking wet",
+      "w": [
+        "puddle",
+        "splash",
+        "reach"
+      ],
+      "img": "img/e5-u5-soaking-wet.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Look at the picture. Which word is it?",
+      "a": "reach",
+      "w": [
+        "puddle",
+        "splash",
+        "soaking wet"
+      ],
+      "img": "img/e5-u5-reach.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Look at the picture. Which word is it?",
+      "a": "take off",
+      "w": [
+        "puddle",
+        "splash",
+        "soaking wet"
+      ],
+      "img": "img/e5-u5-take-off.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What is this?",
+      "a": "It's a puddle.",
+      "w": [
+        "It's a fountain.",
+        "It's a statue.",
+        "It's an umbrella."
+      ],
+      "img": "img/e5-u5-puddle.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the girl doing?",
+      "a": "She is splashing in a puddle.",
+      "w": [
+        "She is sleeping.",
+        "She is reaching the door.",
+        "She is taking off her coat."
+      ],
+      "img": "img/e5-u5-splash.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "How is the boy?",
+      "a": "He is soaking wet.",
+      "w": [
+        "He is dry.",
+        "He is sleepy.",
+        "He is happy."
+      ],
+      "img": "img/e5-u5-soaking-wet.jpg",
+      "explain": "The boy is very, very wet."
+    },
+    {
+      "type": "mc",
+      "q": "What is the boy doing?",
+      "a": "He is taking off his raincoat.",
+      "w": [
+        "He is reaching the door.",
+        "He is splashing in a puddle.",
+        "He is taking out his umbrella."
+      ],
+      "img": "img/e5-u5-take-off.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What is the boy doing?",
+      "a": "He is reaching the door.",
+      "w": [
+        "He is taking off his raincoat.",
+        "He is splashing in a puddle.",
+        "He is playing football."
+      ],
+      "img": "img/e5-u5-reach.jpg"
+    },
+    {
+      "type": "tf",
+      "q": "This is a puddle.",
+      "a": true,
+      "img": "img/e5-u5-puddle.jpg"
+    },
+    {
+      "type": "tf",
+      "q": "The girl is splashing.",
+      "a": true,
+      "img": "img/e5-u5-splash.jpg"
+    },
+    {
+      "type": "tf",
+      "q": "The boy is dry.",
+      "a": false,
+      "img": "img/e5-u5-soaking-wet.jpg",
+      "explain": "He is soaking wet."
+    },
+    {
+      "type": "tf",
+      "q": "The boy is taking off his raincoat.",
+      "a": true,
+      "img": "img/e5-u5-take-off.jpg"
+    },
+    {
+      "type": "tf",
+      "q": "The boy is splashing in a puddle.",
+      "a": false,
+      "img": "img/e5-u5-reach.jpg",
+      "explain": "He is reaching the door."
+    },
+    {
+      "type": "match",
+      "q": "Match the word and the meaning.",
+      "pairs": [
+        [
+          "puddle",
+          "vũng nước"
+        ],
+        [
+          "splash",
+          "té nước, làm nước bắn lên"
+        ],
+        [
+          "soaking wet",
+          "ướt sũng"
+        ],
+        [
+          "reach",
+          "với tới, đến nơi"
+        ],
+        [
+          "take off",
+          "cởi ra"
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the word and what it means.",
+      "pairs": [
+        [
+          "puddle",
+          "water on the ground after rain"
+        ],
+        [
+          "splash",
+          "jump and make water fly up"
+        ],
+        [
+          "soaking wet",
+          "very, very wet"
+        ],
+        [
+          "take off",
+          "remove your coat"
+        ]
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "After the rain, there is a big ___ on the road.",
+      "a": "puddle",
+      "w": [
+        "splash",
+        "reach",
+        "take off"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I like to jump and ___ in the puddles!",
+      "a": "splash",
+      "w": [
+        "puddle",
+        "soaking wet",
+        "reach"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "I didn't have an umbrella, so I am ___.",
+      "a": "soaking wet",
+      "w": [
+        "puddle",
+        "reach",
+        "take off"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "Please ___ your wet raincoat before you come in.",
+      "a": "take off",
+      "w": [
+        "puddle",
+        "splash",
+        "soaking wet"
+      ]
+    },
+    {
+      "type": "fill",
+      "q": "He walks home and ___ the door.",
+      "a": "reaches",
+      "w": [
+        "puddles",
+        "splashes",
+        "takes off"
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "Look at the sky. What does the boy say?",
+      "a": "It's going to rain.",
+      "w": [
+        "It's going to be sunny.",
+        "It's going to snow.",
+        "I'm going to sleep."
+      ],
+      "img": "img/e5-u5-rain-talk.jpg",
+      "explain": "The sky is dark and windy."
+    },
+    {
+      "type": "mc",
+      "q": "“It's going to rain.” What does the girl say?",
+      "a": "I'm going to take out my umbrella.",
+      "w": [
+        "I'm going to take off my shoes.",
+        "I'm going to play football.",
+        "I'm going to sleep."
+      ],
+      "img": "img/e5-u5-rain-talk.jpg"
+    },
+    {
+      "type": "fill",
+      "q": "It's going to ___.",
+      "a": "rain",
+      "w": [
+        "sleep",
+        "swim",
+        "splash"
+      ],
+      "img": "img/e5-u5-rain-talk.jpg",
+      "explain": "It's going to rain."
+    },
+    {
+      "type": "fill",
+      "q": "I'm going to take out my ___.",
+      "a": "umbrella",
+      "w": [
+        "puddle",
+        "football",
+        "grandma"
+      ],
+      "img": "img/e5-u5-rain-talk.jpg",
+      "explain": "I'm going to take out my umbrella."
+    },
+    {
+      "type": "tf",
+      "q": "The weather is sunny in the picture.",
+      "a": false,
+      "img": "img/e5-u5-rain-talk.jpg",
+      "explain": "It is dark and windy. It's going to rain."
+    },
+    {
+      "type": "tf",
+      "q": "The girl has an umbrella in her bag.",
+      "a": true,
+      "img": "img/e5-u5-rain-talk.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "It's going to rain. What are you going to do?",
+      "a": "I'm going to take out my umbrella.",
+      "w": [
+        "I'm going to take off my raincoat.",
+        "I'm going to splash in the sea.",
+        "I'm going to wear sunglasses."
+      ]
+    },
+    {
+      "type": "mc",
+      "q": "She ___ going to visit her grandma.",
+      "a": "is",
+      "w": [
+        "am",
+        "are",
+        "be"
+      ],
+      "img": "img/e5-u5-grandma.jpg",
+      "explain": "She → is."
+    },
+    {
+      "type": "mc",
+      "q": "I ___ going to sleep.",
+      "a": "am",
+      "w": [
+        "is",
+        "are",
+        "be"
+      ],
+      "img": "img/e5-u5-sleep.jpg",
+      "explain": "I → am."
+    },
+    {
+      "type": "mc",
+      "q": "They ___ going to play football after school.",
+      "a": "are",
+      "w": [
+        "is",
+        "am",
+        "be"
+      ],
+      "img": "img/e5-u5-football.jpg",
+      "explain": "They → are."
+    },
+    {
+      "type": "mc",
+      "q": "We ___ going to have a picnic.",
+      "a": "are",
+      "w": [
+        "is",
+        "am",
+        "be"
+      ],
+      "explain": "We → are."
+    },
+    {
+      "type": "mc",
+      "q": "He ___ going to read a book.",
+      "a": "is",
+      "w": [
+        "am",
+        "are",
+        "be"
+      ],
+      "explain": "He → is."
+    },
+    {
+      "type": "mc",
+      "q": "What is she going to do?",
+      "a": "She is going to visit her grandma.",
+      "w": [
+        "She is going to sleep.",
+        "She is going to play football.",
+        "She is going to take out her umbrella."
+      ],
+      "img": "img/e5-u5-grandma.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What is she going to do?",
+      "a": "She is going to sleep.",
+      "w": [
+        "She is going to visit her grandma.",
+        "She is going to play football.",
+        "She is going to splash in a puddle."
+      ],
+      "img": "img/e5-u5-sleep.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "What are they going to do after school?",
+      "a": "They are going to play football.",
+      "w": [
+        "They are going to sleep.",
+        "They are going to visit their grandma.",
+        "They are going to take off their coats."
+      ],
+      "img": "img/e5-u5-football.jpg"
+    },
+    {
+      "type": "fill",
+      "q": "She is going to ___ her grandma.",
+      "a": "visit",
+      "w": [
+        "sleep",
+        "play",
+        "rain"
+      ],
+      "img": "img/e5-u5-grandma.jpg"
+    },
+    {
+      "type": "fill",
+      "q": "I am going to ___.",
+      "a": "sleep",
+      "w": [
+        "visit",
+        "play",
+        "reach"
+      ],
+      "img": "img/e5-u5-sleep.jpg"
+    },
+    {
+      "type": "fill",
+      "q": "They are going to ___ football after school.",
+      "a": "play",
+      "w": [
+        "visit",
+        "sleep",
+        "take"
+      ],
+      "img": "img/e5-u5-football.jpg"
+    },
+    {
+      "type": "mc",
+      "q": "Which sentence is correct?",
+      "a": "She is going to visit her grandma.",
+      "w": [
+        "She are going to visit her grandma.",
+        "She is going visit her grandma.",
+        "She going to visit her grandma."
+      ],
+      "explain": "be + going to + V"
+    },
+    {
+      "type": "mc",
+      "q": "Which sentence is correct?",
+      "a": "They are going to play football.",
+      "w": [
+        "They is going to play football.",
+        "They are going to playing football.",
+        "They going to play football."
+      ],
+      "explain": "be + going to + V"
+    },
+    {
+      "type": "mc",
+      "q": "Which sentence is correct?",
+      "a": "I am going to sleep.",
+      "w": [
+        "I is going to sleep.",
+        "I am going sleep.",
+        "I am going to sleeping."
+      ],
+      "explain": "be + going to + V"
+    },
+    {
+      "type": "tf",
+      "q": "“I is going to sleep.” is correct.",
+      "a": false,
+      "explain": "I am going to sleep."
+    },
+    {
+      "type": "tf",
+      "q": "“They are going to play football.” is correct.",
+      "a": true
+    },
+    {
+      "type": "mc",
+      "q": "We use “be + going to + V” to talk about ___.",
+      "a": "future plans",
+      "w": [
+        "things in the past",
+        "things we do every day",
+        "our names"
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the start and the end.",
+      "pairs": [
+        [
+          "She is going to",
+          "visit her grandma."
+        ],
+        [
+          "I am going to",
+          "sleep."
+        ],
+        [
+          "They are going to",
+          "play football after school."
+        ],
+        [
+          "It's going to",
+          "rain."
+        ]
+      ]
+    },
+    {
+      "type": "match",
+      "q": "Match the word and be.",
+      "pairs": [
+        [
+          "I",
+          "am"
+        ],
+        [
+          "She",
+          "is"
+        ],
+        [
+          "They",
+          "are"
+        ],
+        [
+          "He",
+          "is"
+        ],
+        [
+          "We",
+          "are"
+        ]
+      ]
+    }
+  ]
+}
